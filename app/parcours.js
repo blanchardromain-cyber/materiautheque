@@ -2,6 +2,7 @@
 import { chargerDonnees } from "./donnees.js";
 import {
   evaluer, verifierChoix, procedesCompatibles, criteresDuNiveau, materiauxVisibles, testerRegle, formaterValeur, usageRequis,
+  verifierClassement, verifierCoherence, verdictFinal,
 } from "./moteur.js";
 import { fondPastille, turbineSVG, robinetCoupeSVG, consequence, schemaProcede } from "./illustrations.js";
 
@@ -11,6 +12,7 @@ const STATUTS = [["indispensable", "Indispensable"], ["souhaitable", "Souhaitabl
 const NIVEAUX_ACTIFS = [4];
 const GESTES = { ajout: "ajout de matière", enlevement: "enlèvement de matière", "mise-en-forme": "mise en forme", assemblage: "assemblage" };
 const minuscule = (t) => t.charAt(0).toLowerCase() + t.slice(1);
+const majuscule = (t) => t.charAt(0).toUpperCase() + t.slice(1);
 const VOYELLE = /^[aeiouyhéèêàâîôûAEIOUYHÉÈÊ]/;
 const le = (n) => (VOYELLE.test(n) ? `l'${n}` : `le ${n}`);
 const du = (n) => (VOYELLE.test(n) ? `de l'${n}` : `du ${n}`);
@@ -21,7 +23,7 @@ let etat = nouvelEtat();
 let robinetOuvert = false;
 
 function nouvelEtat() {
-  return { niveau: 4, etape: 0, max: 0, contraintes: {}, contraintesVues: false, ordre: null, classement: {}, justif: {},
+  return { niveau: 4, etape: 0, max: 0, contraintes: {}, contraintesVues: false, ordre: null, classement: {}, criteresVus: false, justif: {},
     actifs: [], comparer: [], choix: null, essais: 0, serie: null, proto: null, texte: {} };
 }
 
@@ -128,11 +130,11 @@ function etape1() {
   return `<section class="deux-colonnes">
     <div>
       <h2 tabindex="-1">1. J'observe la pièce</h2>
-      <p class="consigne">Ouvre le robinet et regarde où se trouve la turbine. Coche ce qu'elle subit vraiment.</p>
+      <p class="consigne">Approche les mains du capteur et regarde où se trouve la turbine. Coche ce qu'elle subit vraiment.</p>
       <figure class="cadre">${robinetCoupeSVG().replace('class="robinet"', `class="robinet${robinetOuvert ? " en-marche" : ""}"`)}
-        <figcaption><button type="button" class="bouton-discret" data-action="eau" aria-pressed="${robinetOuvert}">${robinetOuvert ? "Fermer le robinet" : "Ouvrir le robinet"}</button></figcaption>
+        <figcaption><button type="button" class="bouton-discret" data-action="eau" aria-pressed="${robinetOuvert}">${robinetOuvert ? "Retirer les mains" : "Approcher les mains du capteur"}</button></figcaption>
       </figure>
-      <p class="aide">Quand l'eau coule, la turbine tourne et fait tourner l'aimant du générateur, fixé sur le même axe : c'est ce qui produit l'électricité du robinet.</p>
+      <p class="aide">Le capteur détecte les mains : l'électrovanne s'ouvre et l'eau coule. La turbine tourne alors et fait tourner l'aimant du générateur, fixé sur le même axe : c'est ce qui produit l'électricité du robinet. Mains retirées, l'eau s'arrête aussitôt.</p>
       ${lexique(["aube", "générateur", "rotor", "bobine"])}
     </div>
     <div>
@@ -155,9 +157,11 @@ function carteCritere(c) {
   const pourquoi = statut && statut !== "sans"
     ? `<label class="pourquoi"><span>Pourquoi ?</span><input type="text" data-justif="${c.id}" value="${esc(etat.justif[c.id])}"
        placeholder="Parce que la turbine…" maxlength="140"></label>` : "";
-  return `<li class="carte-critere" draggable="true" data-carte="${c.id}">
+  const aRevoir = etat.criteresVus && verifierClassement(S, etat.niveau, etat.classement).find((x) => x.critere === c.id);
+  const retour = aRevoir ? `<p class="retour ko"><strong>À revoir.</strong> ${esc(aRevoir.question)}</p>` : "";
+  return `<li class="carte-critere ${aRevoir ? "a-revoir" : ""}" draggable="true" data-carte="${c.id}">
     <p class="carte-critere-texte">${esc(c.carte[etat.niveau])}</p>
-    <div class="segments" role="radiogroup" aria-label="Importance : ${esc(c.carte[etat.niveau])}">${radios}</div>${pourquoi}</li>`;
+    <div class="segments" role="radiogroup" aria-label="Importance : ${esc(c.carte[etat.niveau])}">${radios}</div>${pourquoi}${retour}</li>`;
 }
 
 function etape2() {
@@ -165,7 +169,12 @@ function etape2() {
   const pile = cs.filter((c) => !etat.classement[c.id]);
   const zone = (v, t, aide) => `<div class="zone zone-${v}" data-zone="${v}"><h3>${t}</h3><p class="aide">${aide}</p>
     <ul>${cs.filter((c) => etat.classement[c.id] === v).map(carteCritere).join("")}</ul></div>`;
-  const pret = pile.length === 0 && cs.some((c) => etat.classement[c.id] === "indispensable");
+  const range = pile.length === 0;
+  const erreurs = verifierClassement(S, etat.niveau, etat.classement);
+  const juste = etat.criteresVus && erreurs.length === 0;
+  const bilan = !etat.criteresVus ? "" : juste
+    ? `<p class="retour ok"><strong>Tes critères tiennent compte de ce que subit la turbine.</strong> Tu peux trier les matériaux.</p>`
+    : `<p class="retour ko"><strong>${erreurs.length} carte${erreurs.length > 1 ? "s" : ""} à revoir.</strong> Lis la question sous chaque carte marquée, puis vérifie à nouveau.</p>`;
   return `<section>
     <h2 tabindex="-1">2. Je définis mes critères</h2>
     <p class="consigne">Range chaque carte selon ce que tu as observé. Un critère <strong>indispensable</strong> élimine tout matériau qui ne le respecte pas ; un critère <strong>souhaitable</strong> départage ceux qui restent.</p>
@@ -175,10 +184,12 @@ function etape2() {
       ${zone("souhaitable", "Souhaitable", "Un plus, qui départage.")}
       ${zone("sans", "Sans importance", "Ne concerne pas cette pièce.")}
     </div>
+    ${bilan}
     <div class="actions">
-      <button type="button" class="bouton" data-aller="3" ${pret ? "" : "disabled"}>Trier les matériaux</button>
+      <button type="button" class="bouton-discret" data-action="verifier-criteres" ${range ? "" : "disabled"}>Vérifier mes critères</button>
+      <button type="button" class="bouton" data-aller="3" ${juste ? "" : "disabled"}>Trier les matériaux</button>
     </div>
-    ${pret ? "" : `<p class="aide">Range toutes les cartes, dont au moins une indispensable.</p>`}
+    ${range ? (juste ? "" : `<p class="aide">Vérifie tes critères pour passer au tri.</p>`) : `<p class="aide">Range toutes les cartes, puis vérifie tes critères.</p>`}
   </section>`;
 }
 
@@ -213,15 +224,15 @@ function carteMateriau(r) {
     <dl class="proprietes">${PROPS_CARTE.map(([c, t]) => `<div><dt>${t}</dt><dd>${valeur(m, c)}</dd></div>`).join("")}</dl>
     ${points}${bande}
     <div class="echantillon-actions">
-      <label class="case petite"><input type="checkbox" data-comparer="${m.id}" ${compare ? "checked" : ""}
-        ${!compare && etat.comparer.length >= 3 ? "disabled" : ""}><span>Comparer</span></label>
+      <label class="case petite"><input type="checkbox" data-comparer="${m.id}" ${compare ? "checked" : ""}><span>Comparer</span></label>
       <button type="button" class="bouton-choix" data-choisir="${m.id}" aria-pressed="${choisi}">${choisi ? "✓ Mon choix · retirer" : "Je choisis"}</button>
     </div>
   </li>`;
 }
 
 function comparateur() {
-  if (etat.comparer.length < 2) return `<p class="aide">Coche « Comparer » sur 2 ou 3 matériaux pour les voir côte à côte.</p>`;
+  const vider = etat.comparer.length ? `<button type="button" class="bouton-discret" data-action="vider-comparaison">Vider la comparaison</button>` : "";
+  if (etat.comparer.length < 2) return `<p class="aide">Coche « Comparer » sur 2 ou 3 matériaux pour les voir côte à côte (au-delà de 3, le plus ancien est retiré).</p>${vider}`;
   const ms = etat.comparer.map(mat);
   const lignes = [["masseVolumique", "Masse volumique"], ["notes.rigidite", "Rigidité"], ["notes.chocs", "Chocs"],
     ["notes.usure", "Usure"], ["notes.eau", "Résistance à l'eau"], ["tempMax", "Temp. max (°C)"], ["cout", "Coût"],
@@ -230,7 +241,7 @@ function comparateur() {
     <thead><tr><th scope="col">Propriété</th>${ms.map((m) => `<th scope="col">${esc(nomM(m))}</th>`).join("")}</tr></thead>
     <tbody>${lignes.map(([c, t]) => `<tr><th scope="row">${t}</th>${ms.map((m) =>
       `<td>${c === "tempMax" ? esc(m.tempMaxTexte) : c === "recyclage.note" ? `<span class="jauge" style="--n:${m.recyclage.note}"></span>` : valeur(m, c)}</td>`).join("")}</tr>`).join("")}</tbody>
-  </table></div>`;
+  </table></div>${vider}`;
 }
 
 function etape3() {
@@ -265,23 +276,40 @@ function etape3() {
 }
 
 function validerChoix() {
-  const v = verifierChoix(S, D.materiaux, etat.niveau, etat.choix, D.procedes);
+  // Rendez-vous 2 : le choix doit respecter tous les critères indispensables de l'élève, puis la référence et la fabrication.
+  const propres = verifierCoherence(S, D.materiaux, etat.niveau, etat.classement, etat.choix);
+  const ref = verifierChoix(S, D.materiaux, etat.niveau, etat.choix, D.procedes).violations
+    .filter((x) => !propres.some((p) => p.critere === x.critere));
+  const violations = [...propres, ...ref];
   etat.essais += 1;
   sauver();
-  if (v.ok) return aller(4);
+  if (!violations.length) return aller(4);
   const m = mat(etat.choix);
-  const premiere = v.violations[0];
-  const c = consequence(premiere.consequence, m);
+  const premiere = violations.find((x) => x.consequence) || violations[0];
   const dlg = $("#consequence");
-  dlg.innerHTML = `<div class="consequence ${c.classe}">
-    <div class="consequence-scene">${c.svg}</div>
-    <div class="consequence-texte">
-      <p class="surtitre">Turbine en ${esc(nomM(m))}</p>
-      <h2 id="consequence-titre">${esc(c.titre)}</h2>
-      <p>${esc(c.texte)}</p>
-      <p class="question"><strong>À toi :</strong> ${esc(premiere.question)}</p>
-      <button type="button" class="bouton" data-action="fermer-consequence">Retourner au tri</button>
-    </div></div>`;
+  if (premiere.consequence) {
+    const c = consequence(premiere.consequence, m);
+    dlg.innerHTML = `<div class="consequence ${c.classe}">
+      <div class="consequence-scene">${c.svg}</div>
+      <div class="consequence-texte">
+        <p class="surtitre">Turbine en ${esc(nomM(m))}</p>
+        <h2 id="consequence-titre">${esc(c.titre)}</h2>
+        <p>${esc(c.texte)}</p>
+        <p class="question"><strong>À toi :</strong> ${esc(premiere.question)}</p>
+        <button type="button" class="bouton" data-action="fermer-consequence">Retourner au tri</button>
+      </div></div>`;
+  } else {
+    const carte = critere(premiere.critere)?.carte[etat.niveau] || "";
+    dlg.innerHTML = `<div class="consequence">
+      <div class="consequence-scene">${turbineSVG(m.peau3D, `Turbine en ${nomM(m)}`)}</div>
+      <div class="consequence-texte">
+        <p class="surtitre">Turbine en ${esc(nomM(m))}</p>
+        <h2 id="consequence-titre">Ce matériau n'est plus en lice</h2>
+        <p>Il ne respecte pas ton critère indispensable « ${esc(carte)} » : il ${esc(premiere.texte)}.</p>
+        <p class="question"><strong>À toi :</strong> active tous tes critères et choisis un matériau encore en lice.</p>
+        <button type="button" class="bouton" data-action="fermer-consequence">Retourner au tri</button>
+      </div></div>`;
+  }
   dlg.showModal();
 }
 
@@ -324,12 +352,8 @@ function etape4() {
     const q = proc(p.id);
     const labo = q.lieu.includes("labo");
     const enSerie = etat.serie === p.id, enProto = etat.proto === p.id;
-    const photos = q.photos?.length
-      ? q.photos.map((ph) => `<figure><a href="${esc(ph.src)}" target="_blank" rel="noopener" title="Voir la photo en grand">
-          <img src="${esc(ph.src)}" alt="${esc(ph.legende)}" loading="lazy"></a><figcaption>${esc(ph.legende)}${ph.credit ? `<small>${esc(ph.credit)}</small>` : ""}</figcaption></figure>`).join("")
-      : `<figure>${schemaProcede(q.id, q.nom)}<figcaption>Schéma de principe</figcaption></figure>`;
     return `<li class="fiche-procede ${enSerie || enProto ? "retenu" : ""}">
-      <div class="fiche-media ${q.photos?.length > 1 ? "deux" : ""}">${photos}</div>
+      <figure class="fiche-media">${schemaProcede(q.id, q.nom)}<figcaption>${esc(q.machineCollege || "Schéma de principe")}</figcaption></figure>
       <div class="fiche-corps">
         <h3>${esc(q.nom)}</h3>
         <p>${esc(q.principe)}</p>
@@ -369,8 +393,15 @@ function etape5() {
   const res = evaluer(S, D.materiaux, etat.niveau, etat.classement);
   const autres = etat.comparer.filter((id) => id !== m.id);
   const candidats = [m.id, ...(autres.length ? autres : res.filter((r) => !r.elimine && r.id !== m.id).map((r) => r.id))].slice(0, 3).map(mat);
-  const elimines = res.filter((r) => r.elimine);
-  const ref = evaluer(S, D.materiaux, etat.niveau, S.reference[etat.niveau]).find((r) => r.id === m.id);
+  const elimines = res.filter((r) => r.elimine && r.id !== m.id);
+  // Rendez-vous 3 : verdict selon la référence, sans nommer le meilleur compromis.
+  const v = verdictFinal(S, D.materiaux, etat.niveau, m.id);
+  const cartes = (ids) => ids.map((id) => `« ${esc(critere(id).carte[etat.niveau])} »`).join(", ");
+  const verdict = v.niveau === "meilleur"
+    ? `<div class="verdict meilleur"><p><strong>Meilleur compromis.</strong> ${esc(majuscule(le(nomM(m))))} respecte tous les critères indispensables et satisfait le plus de critères souhaitables. À toi de le justifier.</p></div>`
+    : `<div class="verdict acceptable"><p><strong>Choix acceptable.</strong> ${esc(majuscule(le(nomM(m))))} respecte tous les critères indispensables, mais il ${v.pertes.map((p) => esc(p.texte)).join(" ; il ")}.</p>
+        ${v.mieux.length ? `<p>Un autre matériau encore en lice fait mieux sur ${cartes(v.mieux)}. Explique pourquoi tu acceptes ce compromis, ou retourne au tri pour le trouver.</p>` : ""}
+        <div class="actions ecran-seul"><button type="button" class="bouton-discret" data-aller="3">Retourner au tri</button></div></div>`;
   const nomProc = (id) => D.procedes.find((p) => p.id === id).nom;
   const protoDirect = procedesCompatibles(m, D.procedes, S, etat.niveau).find((p) => p.id === etat.proto)?.compatible;
   const matProto = protoDirect ? m : mat(S.materiauPrototype);
@@ -379,10 +410,10 @@ function etape5() {
   return `<section class="justification">
     <div class="justif-visuel">
       <figure class="cadre">${turbineSVG(m.peau3D, `Turbine en ${nomM(m)}`)}<figcaption>La turbine en <strong>${esc(nomM(m))}</strong></figcaption></figure>
-      ${ref.verdict === "acceptable" ? `<p class="retour neutre">Choix possible. Ce que l'on perd avec ${esc(le(nomM(m)))} : ${ref.pertes.map((p) => esc(p.texte)).join(" ; ")}.</p>` : ""}
     </div>
     <div class="justif-texte">
       <h2 tabindex="-1">5. Je justifie mon choix</h2>
+      ${verdict}
       <p class="impression-seule">Nom : ............................................ Classe : ........ Date : ............</p>
       <div class="tableau-defile"><table class="tableau-choix"><caption>Mon tableau de choix</caption>
         <thead><tr><th scope="col">Critère</th>${candidats.map((c) => `<th scope="col">${esc(nomM(c))}</th>`).join("")}</tr></thead>
@@ -391,7 +422,7 @@ function etape5() {
           return `<td class="${t.ok ? "ok" : "ko"}">${t.ok ? "oui" : "non"}</td>`;
         }).join("")}</tr>`).join("")}</tbody>
       </table></div>
-      ${elimines.length ? `<h3>Matériaux éliminés</h3><ul class="elimines">${elimines.map((r) =>
+      ${elimines.length ? `<h3>Matériaux écartés par mes critères indispensables</h3><ul class="elimines">${elimines.map((r) =>
         `<li><strong>${esc(nomM(mat(r.id)))}</strong> : ${r.raisons.map((x) => esc(x.texte)).join(" ; ")}</li>`).join("")}</ul>` : ""}
       <h3>Mon argumentaire</h3>
       <p class="fixe">Je choisis <strong>${esc(le(nomM(m)))}</strong>, un matériau de la famille des ${esc(f.nom[etat.niveau].toLowerCase())}, sous-famille : ${esc(m.sousFamille[etat.niveau].toLowerCase())}.</p>
@@ -433,6 +464,8 @@ function brancher() {
     }
     const action = b.dataset.action;
     if (action === "eau") { robinetOuvert = !robinetOuvert; rendreGarderFocus('[data-action="eau"]'); }
+    if (action === "verifier-criteres") { etat.criteresVus = true; sauver(); rendreGarderFocus('[data-action="verifier-criteres"]'); }
+    if (action === "vider-comparaison") { etat.comparer = []; sauver(); rendreGarderFocus(".tri-grille"); }
     if (action === "verifier-contraintes") { etat.contraintesVues = true; sauver(); rendreGarderFocus('[data-action="verifier-contraintes"]'); }
     if (action === "valider-choix") validerChoix();
     if (action === "fermer-consequence") $("#consequence").close();
@@ -453,7 +486,7 @@ function brancher() {
     if (t.dataset.classer) classer(t.dataset.classer, t.value);
     if (t.dataset.comparer) {
       const id = t.dataset.comparer;
-      etat.comparer = t.checked ? [...etat.comparer, id].slice(0, 3) : etat.comparer.filter((x) => x !== id);
+      etat.comparer = t.checked ? [...etat.comparer, id].slice(-3) : etat.comparer.filter((x) => x !== id);
       sauver(); rendreGarderFocus(`[data-comparer="${id}"]`);
     }
   });
@@ -481,7 +514,9 @@ function brancher() {
 function classer(id, statut) {
   if (!critere(id)) return;
   etat.classement[id] = statut;
+  etat.criteresVus = false;
   etat.actifs = etat.actifs.filter((x) => x !== id);
+  etat.max = Math.min(etat.max, 2);
   sauver();
   rendreGarderFocus(`[data-classer="${id}"][value="${statut}"]`);
 }
