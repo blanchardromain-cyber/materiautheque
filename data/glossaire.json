@@ -1,0 +1,17 @@
+[
+  { "terme": "masse volumique", "niveaux": [4, 3], "definition": "Masse d'un centimètre cube du matériau, en g/cm³. L'eau vaut 1 : en dessous, le matériau flotte." },
+  { "terme": "léger", "niveaux": [5], "definition": "Un objet léger a une petite masse pour sa taille." },
+  { "terme": "rigide", "niveaux": [5, 4, 3], "definition": "Qui garde sa forme quand on appuie dessus. Le contraire : souple." },
+  { "terme": "usure", "niveaux": [4, 3], "definition": "Perte de matière quand deux pièces frottent l'une contre l'autre." },
+  { "terme": "corrosion", "niveaux": [3], "definition": "Attaque chimique d'un matériau par son milieu, par exemple la rouille de l'acier dans l'eau." },
+  { "terme": "isolant", "niveaux": [5, 4, 3], "definition": "Qui laisse mal passer le courant électrique ou la chaleur." },
+  { "terme": "conducteur", "niveaux": [5, 4, 3], "definition": "Qui laisse bien passer le courant électrique ou la chaleur." },
+  { "terme": "thermoplastique", "niveaux": [3], "definition": "Plastique qui ramollit à la chaleur et peut être remis en forme : il se recycle." },
+  { "terme": "élastomère", "niveaux": [3], "definition": "Matériau très souple qui reprend sa forme, comme le caoutchouc." },
+  { "terme": "injection", "niveaux": [4, 3], "definition": "Procédé industriel : le plastique fondu est poussé dans un moule, puis refroidi. Idéal pour de grandes séries de pièces complexes." },
+  { "terme": "prototype", "niveaux": [4, 3], "definition": "Premier exemplaire fabriqué pour tester une pièce avant de la produire en série." },
+  { "terme": "aube", "niveaux": [5, 4, 3], "definition": "Pale de la turbine, poussée par l'eau." },
+  { "terme": "critère indispensable", "niveaux": [4, 3], "definition": "Exigence que le matériau doit absolument respecter : sinon, il est éliminé." },
+  { "terme": "critère souhaitable", "niveaux": [4, 3], "definition": "Exigence qui départage les matériaux restants, sans éliminer." },
+  { "terme": "biosourcé", "niveaux": [3], "definition": "Fabriqué à partir de matière végétale (maïs, canne à sucre…) plutôt que de pétrole." }
+]
