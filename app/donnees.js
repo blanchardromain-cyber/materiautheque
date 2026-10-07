@@ -1,5 +1,5 @@
 // Chargement du référentiel (data/*.json).
-const FICHIERS = ["familles", "proprietes", "materiaux", "procedes", "composants", "glossaire"];
+const FICHIERS = ["familles", "proprietes", "materiaux", "procedes", "composants", "glossaire", "essais"];
 
 export async function chargerDonnees(base = "data/") {
   const entrees = await Promise.all(
