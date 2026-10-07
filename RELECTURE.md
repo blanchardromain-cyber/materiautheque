@@ -52,13 +52,13 @@ Notes de 1 (faible) à 5 (fort) ; coût de 1 (€) à 3 (€€€).
 | ABS | Acceptable | 3 | s'use vite (usure 3/5) |  |
 | PMMA | Acceptable | 3 | s'use vite (usure 3/5) |  |
 | PLA | Acceptable | 2 | s'use vite (usure 2/5) ; ne se moule pas par injection : pas d'aubes fines en grande série |  |
-| PE-HD | Acceptable | 2 | trop souple (rigidité 2/5) : les aubes se tordent ; s'use vite (usure 3/5) |  |
-| PP | Acceptable | 2 | trop souple (rigidité 2/5) : les aubes se tordent ; s'use vite (usure 3/5) |  |
-| Acier | Éliminé |  | s'abîme dans l'eau (résistance à l'eau 1/5) ; trop lourd (7,85 g/cm³) : la turbine démarre mal |  |
-| Inox | Éliminé |  | trop lourd (7,9 g/cm³) : la turbine démarre mal |  |
-| Alu | Éliminé |  | trop lourd (2,7 g/cm³) : la turbine démarre mal |  |
-| Cu | Éliminé |  | trop lourd (8,96 g/cm³) : la turbine démarre mal |  |
-| Laiton | Éliminé |  | trop lourd (8,5 g/cm³) : la turbine démarre mal |  |
+| PE-HD | Acceptable | 2 | est trop souple (rigidité 2/5) : les aubes se tordent ; s'use vite (usure 3/5) |  |
+| PP | Acceptable | 2 | est trop souple (rigidité 2/5) : les aubes se tordent ; s'use vite (usure 3/5) |  |
+| Acier | Éliminé |  | s'abîme dans l'eau (résistance à l'eau 1/5) ; est trop lourd (7,85 g/cm³) : la turbine démarre mal |  |
+| Inox | Éliminé |  | est trop lourd (7,9 g/cm³) : la turbine démarre mal |  |
+| Alu | Éliminé |  | est trop lourd (2,7 g/cm³) : la turbine démarre mal |  |
+| Cu | Éliminé |  | est trop lourd (8,96 g/cm³) : la turbine démarre mal |  |
+| Laiton | Éliminé |  | est trop lourd (8,5 g/cm³) : la turbine démarre mal |  |
 | PA | Éliminé |  | s'abîme dans l'eau (résistance à l'eau 2/5) |  |
 
 ### Niveau 5e
@@ -74,9 +74,9 @@ Notes de 1 (faible) à 5 (fort) ; coût de 1 (€) à 3 (€€€).
 | Acrylonitrile butadiène styrène | Choix de référence | 0 | — |  |
 | Polypropylène | Choix de référence | 0 | — |  |
 | Polyacétal | Choix de référence | 0 | — |  |
-| Acier | Éliminé |  | s'abîme dans l'eau (résistance à l'eau 1/5) ; trop lourd (7,85 g/cm³) : la turbine démarre mal |  |
-| Aluminium | Éliminé |  | trop lourd (2,7 g/cm³) : la turbine démarre mal |  |
-| Laiton | Éliminé |  | trop lourd (8,5 g/cm³) : la turbine démarre mal |  |
+| Acier | Éliminé |  | s'abîme dans l'eau (résistance à l'eau 1/5) ; est trop lourd (7,85 g/cm³) : la turbine démarre mal |  |
+| Aluminium | Éliminé |  | est trop lourd (2,7 g/cm³) : la turbine démarre mal |  |
+| Laiton | Éliminé |  | est trop lourd (8,5 g/cm³) : la turbine démarre mal |  |
 
 ### Niveau 3e
 
@@ -102,18 +102,18 @@ Notes de 1 (faible) à 5 (fort) ; coût de 1 (€) à 3 (€€€).
 | PMMA | Acceptable | 6 | s'use vite (usure 3/5) |  |
 | Composite verre-époxy | Acceptable | 5 | ne se moule pas par injection : pas d'aubes fines en grande série ; coûte cher (€€€) ; se recycle mal (1/5) |  |
 | PLA (biosourcé) | Acceptable | 3 | s'use vite (usure 2/5) ; ne se moule pas par injection : pas d'aubes fines en grande série ; se recycle mal (2/5) |  |
-| Acier S235 | Éliminé |  | se dégrade dans l'eau (tenue 1/5) ; trop lourd (7,85 g/cm³) : la turbine démarre mal ; est attiré par l'aimant et freine le rotor |  |
-| Inox X5CrNi18-10 (304) | Éliminé |  | trop lourd (7,9 g/cm³) : la turbine démarre mal |  |
-| Aluminium EN AW-6060 | Éliminé |  | trop lourd (2,7 g/cm³) : la turbine démarre mal |  |
-| Cuivre Cu-ETP | Éliminé |  | trop lourd (8,96 g/cm³) : la turbine démarre mal |  |
-| Laiton CuZn39Pb3 | Éliminé |  | trop lourd (8,5 g/cm³) : la turbine démarre mal |  |
-| PE-HD | Éliminé |  | trop souple (rigidité 2/5) : les aubes se tordent |  |
-| PP | Éliminé |  | trop souple (rigidité 2/5) : les aubes se tordent |  |
-| Silicone | Éliminé |  | trop souple (rigidité 1/5) : les aubes se tordent |  |
+| Acier S235 | Éliminé |  | se dégrade dans l'eau (tenue 1/5) ; est trop lourd (7,85 g/cm³) : la turbine démarre mal ; est attiré par l'aimant et freine le rotor |  |
+| Inox X5CrNi18-10 (304) | Éliminé |  | est trop lourd (7,9 g/cm³) : la turbine démarre mal |  |
+| Aluminium EN AW-6060 | Éliminé |  | est trop lourd (2,7 g/cm³) : la turbine démarre mal |  |
+| Cuivre Cu-ETP | Éliminé |  | est trop lourd (8,96 g/cm³) : la turbine démarre mal |  |
+| Laiton CuZn39Pb3 | Éliminé |  | est trop lourd (8,5 g/cm³) : la turbine démarre mal |  |
+| PE-HD | Éliminé |  | est trop souple (rigidité 2/5) : les aubes se tordent |  |
+| PP | Éliminé |  | est trop souple (rigidité 2/5) : les aubes se tordent |  |
+| Silicone | Éliminé |  | est trop souple (rigidité 1/5) : les aubes se tordent |  |
 | Bois massif | Éliminé |  | se dégrade dans l'eau (tenue 1/5) |  |
 | Bois aggloméré | Éliminé |  | se dégrade dans l'eau (tenue 1/5) |  |
-| Verre sodocalcique | Éliminé |  | trop lourd (2,5 g/cm³) : la turbine démarre mal |  |
-| Céramique technique | Éliminé |  | trop lourd (2,4 g/cm³) : la turbine démarre mal |  |
+| Verre sodocalcique | Éliminé |  | est trop lourd (2,5 g/cm³) : la turbine démarre mal |  |
+| Céramique technique | Éliminé |  | est trop lourd (2,4 g/cm³) : la turbine démarre mal |  |
 
 ## 3. Questions pour le relecteur
 
