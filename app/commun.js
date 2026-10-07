@@ -113,22 +113,65 @@ export async function enregistrerPDF({ entete, ident, contenu, fichier }) {
       <h1>${esc(entete.titre)}</h1>${entete.sousTitre ? `<p class="pdf-sous">${esc(entete.sousTitre)}</p>` : ""}
       <p class="pdf-ident">${esc(texteIdentite(ident))}</p>
     </header>`;
+  bandeHaute(contenu);
   page.appendChild(contenu);
   const hote = document.createElement("div");
   hote.className = "pdf-hote";
   hote.appendChild(page);
   document.body.appendChild(hote);
   try {
+    const { source, pages } = miseEnPage(page, hote);
     await window.html2pdf().set({
-      margin: [10, 10, 12, 10], filename: fichier,
+      margin: MARGES_MM, filename: fichier,
       image: { type: "jpeg", quality: 0.92 },
       html2canvas: { scale: 2, backgroundColor: "#ffffff" },
       jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-      pagebreak: { mode: ["css", "legacy"], avoid: ["tr", ".verdict", ".fixe", "figure", "li"] },
-    }).from(page).save();
+      pagebreak: { mode: ["css", "legacy"], avoid: ["tr", ".verdict", ".fixe", "figure", "li", ".pdf-bande"] },
+    }).from(source).save();
+    return pages;
   } finally {
     hote.remove();
   }
+}
+
+// Bande du haut : le dessin à gauche ; le verdict principal et l'encadré des masses volumiques à droite.
+function bandeHaute(contenu) {
+  const visuel = contenu.querySelector(".justif-visuel");
+  if (!visuel) return;
+  const droite = document.createElement("div");
+  const verdict = contenu.querySelector(".justif-texte > .verdict");
+  if (verdict) droite.appendChild(verdict);
+  visuel.querySelectorAll(".carte-identite").forEach((t) => droite.appendChild(t));
+  const bande = document.createElement("div");
+  bande.className = "pdf-bande";
+  bande.append(visuel, droite);
+  contenu.prepend(bande);
+}
+
+// Une seule page A4 si le contenu y tient tel quel, ou réduit de 14 % au plus (texte ≥ 9 pt) ; sinon recto verso.
+const MARGES_MM = [10, 10, 12, 10];
+const LARGEUR_PX = 718; // largeur utile d'un A4 (190 mm) dans la mise en page de la fiche
+const HAUTEUR_PX = Math.floor(LARGEUR_PX * (297 - MARGES_MM[0] - MARGES_MM[2]) / (210 - MARGES_MM[1] - MARGES_MM[3])) - 6;
+export const REDUCTION_MINI = 0.86;
+export function choisirMiseEnPage(hauteur) {
+  if (hauteur <= HAUTEUR_PX) return { pages: 1, echelle: 1 };
+  const echelle = HAUTEUR_PX / hauteur;
+  return echelle >= REDUCTION_MINI ? { pages: 1, echelle } : { pages: 2, echelle: 1 };
+}
+
+function miseEnPage(page, hote) {
+  const choix = choisirMiseEnPage(page.scrollHeight);
+  if (choix.echelle === 1) return { source: page, pages: choix.pages };
+  // Page réduite : mise en page plus large puis ramenée à la largeur du A4 (le texte se réorganise au lieu d'être tassé).
+  page.style.width = `${LARGEUR_PX / choix.echelle}px`;
+  page.classList.add("reduite");
+  page.style.transform = `scale(${choix.echelle})`;
+  const cadre = document.createElement("div");
+  cadre.className = "pdf-cadre";
+  cadre.style.height = `${Math.ceil(page.scrollHeight * choix.echelle)}px`;
+  cadre.appendChild(page);
+  hote.appendChild(cadre);
+  return { source: cadre, pages: 1 };
 }
 
 export function lexique(glossaire, niveau, termes) {
