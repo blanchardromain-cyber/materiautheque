@@ -107,7 +107,7 @@ Chaque itération suit la boucle : spécifier → construire → vérifier techn
 
 ## I4a.3 — 2026-10-07 : fiche PDF sur une seule page quand c'est lisible
 
-- Règle (demande du professeur) : une seule page A4 si le contenu y tient tel quel ou réduit de 14 % au plus (texte courant ≥ 9 pt) ; sinon recto verso sans réduction. Décision à chaque enregistrement, car la longueur des réponses varie (, testée).
+- Règle (demande du professeur) : une seule page A4 si le contenu y tient tel quel ou réduit de 14 % au plus (texte courant ≥ 9 pt) ; sinon recto verso sans réduction. Décision à chaque enregistrement, car la longueur des réponses varie (`choisirMiseEnPage`, testée).
 - Mise en page propre au PDF : bande du haut (dessin, verdict, masses volumiques), titre redondant retiré, tableau resserré, matériaux écartés sur deux colonnes. Hauteur 4e : 1 602 px → environ 1 060 px (une page à 97 %).
 - Vérifié : 4e et 5e sur une page (relues page à page) ; réponses très longues → deux pages.
 
