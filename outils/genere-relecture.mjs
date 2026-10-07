@@ -1,0 +1,61 @@
+// Génère RELECTURE.md à partir des données : node outils/genere-relecture.mjs
+import { readFileSync, writeFileSync } from "node:fs";
+import { evaluer, classementReference, criteresDuNiveau, lireChamp, formaterValeur } from "../app/moteur.js";
+
+const racine = new URL("../", import.meta.url);
+const lire = (f) => JSON.parse(readFileSync(new URL(`data/${f}`, racine), "utf8"));
+const materiaux = lire("materiaux.json");
+const procedes = lire("procedes.json");
+const scenarios = lire("composants.json");
+const familles = Object.fromEntries(lire("familles.json").map((f) => [f.id, f]));
+const nomProcede = Object.fromEntries(procedes.map((p) => [p.id, p.nom.split(" (")[0]]));
+
+const cellule = (m, chemin, texte) => {
+  const t = texte ?? formaterValeur(lireChamp(m, chemin) ?? "—");
+  return (m.aValider || []).includes(chemin) ? `**${t}** ✱` : t;
+};
+
+const L = [];
+L.push("# Matériauthèque — fiche de relecture du référentiel (I0)", "");
+L.push("Fichier généré par `outils/genere-relecture.mjs` : ne pas modifier à la main, corriger `data/*.json` puis relancer.", "");
+L.push("**Ce qu'on vous demande** : vérifier les valeurs marquées **en gras ✱** (ordres de grandeur proposés, absents du document de cadrage), puis les verdicts du scénario. Notez vos corrections dans la colonne de droite ou en marge.", "");
+L.push("Notes de 1 (faible) à 5 (fort) ; coût de 1 (€) à 3 (€€€).", "");
+
+L.push("## 1. Matériaux", "");
+L.push("| Matériau (4e) | Famille | Masse vol. (g/cm³) | Rigidité | Chocs | Usure | Eau | Corrosion | Absorption eau (%) | Temp. max (°C) | Coût | Recyclage | Origine | Magnétique | Procédés | Correction |");
+L.push("|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|");
+for (const m of materiaux) {
+  const procs = m.procedes.length ? m.procedes.map((p) => nomProcede[p]).join(" ; ") : (m.noteProcedes || "—");
+  L.push(`| ${m.nom["4"]} | ${familles[m.famille].nom["4"]} | ${m.masseVolumiqueTexte || formaterValeur(m.masseVolumique)} | ` +
+    ["notes.rigidite", "notes.chocs", "notes.usure", "notes.eau", "notes.corrosion", "absorptionEau"].map((c) => cellule(m, c)).join(" | ") +
+    ` | ${m.tempMaxTexte} | ${cellule(m, "cout")} | ${cellule(m, "recyclage.note")} (${cellule(m, "recyclage.code", m.recyclage.code)}) | ${cellule(m, "origine")} | ${cellule(m, "magnetique", m.magnetique ? "oui" : "non")} | ${cellule(m, "procedes", procs)} |  |`);
+}
+L.push("");
+
+const libelle = { indispensable: "Indispensable", souhaitable: "Souhaitable", sans: "Sans importance (piège)" };
+const verdictTexte = { reference: "Choix de référence", acceptable: "Acceptable", elimine: "Éliminé" };
+for (const s of scenarios) {
+  L.push(`## 2. Scénario « ${s.piece} » (${s.systeme})`, "", `> ${s.avertissement}`, "");
+  for (const n of [4, 5, 3]) {
+    const ref = classementReference(s, n);
+    L.push(`### Niveau ${n}e`, "", "| Critère (carte élève) | Statut de référence | Règle | Poids |", "|---|---|---|---|");
+    for (const c of criteresDuNiveau(s, n))
+      L.push(`| ${c.carte[n]} | ${libelle[ref[c.id]]} | \`${c.regle.champ} ${c.regle.op} ${JSON.stringify(c.regle.valeur)}\` | ${s.poids?.[n]?.[c.id] ?? (ref[c.id] === "souhaitable" ? 1 : "")} |`);
+    L.push("", "| Matériau | Verdict calculé | Score | Raison (éliminé) ou ce que l'on perd | D'accord ? |", "|---|---|---|---|---|");
+    for (const r of evaluer(s, materiaux, n, ref, s.poids?.[n] || {})) {
+      const m = materiaux.find((x) => x.id === r.id);
+      const motifs = (r.elimine ? r.raisons : r.pertes).map((x) => x.texte).join(" ; ") || "—";
+      L.push(`| ${m.nom[n]} | ${verdictTexte[r.verdict]} | ${r.elimine ? "" : r.score} | ${motifs} |  |`);
+    }
+    L.push("");
+  }
+}
+
+L.push("## 3. Questions pour le relecteur", "");
+L.push("1. Les notes ✱ vous semblent-elles justes en ordre de grandeur pour des élèves de collège ?");
+L.push("2. Le seuil « léger = 2 g/cm³ au plus » est-il défendable devant une classe ?");
+L.push("3. En 4e, PE-HD et PP restent « acceptables » (souples mais légers et étanches) : faut-il rendre la rigidité indispensable dès la 4e ?");
+L.push("4. Faut-il un matériau supplémentaire (PET, PC, PS, PVC, EPDM…) pour les composants du tableau 4.2 ?");
+L.push("");
+writeFileSync(new URL("RELECTURE.md", racine), L.join("\n"), "utf8");
+console.log("RELECTURE.md écrit");
