@@ -1,9 +1,9 @@
 // Parcours « Je choisis un matériau » : 5 étapes, niveau 4e en I2.
 import { chargerDonnees } from "./donnees.js";
 import {
-  evaluer, verifierChoix, procedesCompatibles, criteresDuNiveau, materiauxVisibles, testerRegle, formaterValeur,
+  evaluer, verifierChoix, procedesCompatibles, criteresDuNiveau, materiauxVisibles, testerRegle, formaterValeur, usageRequis,
 } from "./moteur.js";
-import { fondPastille, turbineSVG, robinetCoupeSVG, consequence } from "./illustrations.js";
+import { fondPastille, turbineSVG, robinetCoupeSVG, consequence, schemaProcede } from "./illustrations.js";
 
 const CLE = "materiautheque-i2";
 const ETAPES = ["J'observe", "Je définis mes critères", "Je trie", "Je choisis le procédé", "Je justifie"];
@@ -11,14 +11,48 @@ const STATUTS = [["indispensable", "Indispensable"], ["souhaitable", "Souhaitabl
 const NIVEAUX_ACTIFS = [4];
 const GESTES = { ajout: "ajout de matière", enlevement: "enlèvement de matière", "mise-en-forme": "mise en forme", assemblage: "assemblage" };
 const minuscule = (t) => t.charAt(0).toLowerCase() + t.slice(1);
+const VOYELLE = /^[aeiouyhéèêàâîôûAEIOUYHÉÈÊ]/;
+const le = (n) => (VOYELLE.test(n) ? `l'${n}` : `le ${n}`);
+const du = (n) => (VOYELLE.test(n) ? `de l'${n}` : `du ${n}`);
+const au = (n) => (VOYELLE.test(n) ? `à l'${n}` : `au ${n}`);
 
 let D, S; // données, scénario
 let etat = nouvelEtat();
 let robinetOuvert = false;
 
 function nouvelEtat() {
-  return { niveau: 4, etape: 0, max: 0, contraintes: {}, contraintesVues: false, classement: {}, justif: {},
+  return { niveau: 4, etape: 0, max: 0, contraintes: {}, contraintesVues: false, ordre: null, classement: {}, justif: {},
     actifs: [], comparer: [], choix: null, essais: 0, serie: null, proto: null, texte: {} };
+}
+
+// Ordre des contraintes tiré au sort une fois par élève, gardé ensuite (les vraies ne doivent pas venir en tête).
+function ordreContraintes() {
+  const ids = S.contraintes.map((c) => c.id);
+  if (!etat.ordre || etat.ordre.length !== ids.length || !ids.every((id) => etat.ordre.includes(id))) {
+    const vraie = (id) => S.contraintes.find((c) => c.id === id).vraie;
+    let o;
+    do {
+      o = [...ids];
+      for (let i = o.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [o[i], o[j]] = [o[j], o[i]]; }
+    } while (o.slice(0, 3).filter(vraie).length > 2);
+    etat.ordre = o;
+    sauver();
+  }
+  return etat.ordre.map((id) => S.contraintes.find((c) => c.id === id));
+}
+
+function lexique(termes) {
+  const defs = termes.map((t) => D.glossaire.find((g) => g.terme === t && g.niveaux.includes(etat.niveau))).filter(Boolean);
+  return `<details class="lexique"><summary>Mots utiles</summary><dl>${defs.map((g) =>
+    `<div><dt>${esc(g.terme)}</dt><dd>${esc(g.definition)}</dd></div>`).join("")}</dl></details>`;
+}
+
+function changerChoix(id) {
+  etat.choix = etat.choix === id ? null : id;
+  etat.serie = null;
+  etat.proto = null;
+  etat.max = Math.min(etat.max, 3);
+  sauver();
 }
 
 const $ = (s, r = document) => r.querySelector(s);
@@ -83,7 +117,7 @@ function accueil() {
 
 // ---------- Étape 1 ----------
 function etape1() {
-  const items = S.contraintes.map((c) => {
+  const items = ordreContraintes().map((c) => {
     const coche = !!etat.contraintes[c.id];
     const juste = coche === c.vraie;
     const retour = etat.contraintesVues
@@ -98,6 +132,8 @@ function etape1() {
       <figure class="cadre">${robinetCoupeSVG().replace('class="robinet"', `class="robinet${robinetOuvert ? " en-marche" : ""}"`)}
         <figcaption><button type="button" class="bouton-discret" data-action="eau" aria-pressed="${robinetOuvert}">${robinetOuvert ? "Fermer le robinet" : "Ouvrir le robinet"}</button></figcaption>
       </figure>
+      <p class="aide">Quand l'eau coule, la turbine tourne et fait tourner l'aimant du générateur, fixé sur le même axe : c'est ce qui produit l'électricité du robinet.</p>
+      ${lexique(["aube", "générateur", "rotor", "bobine"])}
     </div>
     <div>
       <h3>Ce que subit la turbine</h3>
@@ -150,7 +186,7 @@ function etape2() {
 const classementActif = () => Object.fromEntries(criteres().map((c) =>
   [c.id, etat.actifs.includes(c.id) ? etat.classement[c.id] || "sans" : "sans"]));
 
-const PROPS_CARTE = [["masseVolumique", "Masse vol."], ["notes.rigidite", "Rigidité"], ["notes.usure", "Usure"], ["notes.eau", "Eau"], ["cout", "Coût"]];
+const PROPS_CARTE = [["masseVolumique", "Masse volumique"], ["notes.rigidite", "Rigidité"], ["notes.usure", "Résistance à l'usure"], ["notes.eau", "Résistance à l'eau"], ["cout", "Coût"]];
 
 function valeur(m, champ) {
   const v = champ.split(".").reduce((o, k) => o?.[k], m);
@@ -165,20 +201,21 @@ function carteMateriau(r) {
   const choisi = etat.choix === m.id;
   const compare = etat.comparer.includes(m.id);
   const nbSouhaitables = etat.actifs.filter((id) => etat.classement[id] === "souhaitable").length;
-  const bande = r.elimine ? `<p class="bande"><span>Non, parce qu'il ${esc(r.raisons[0].texte)}</span>${r.raisons.length > 1 ? `<small>+ ${r.raisons.length - 1} autre${r.raisons.length > 2 ? "s" : ""} raison${r.raisons.length > 2 ? "s" : ""}</small>` : ""}</p>` : "";
+  const bande = r.elimine ? `<div class="bande"><p>Non, parce qu'il :</p><ul>${r.raisons.map((x) => `<li>${esc(x.texte)}</li>`).join("")}</ul></div>` : "";
   const points = !r.elimine && nbSouhaitables
-    ? `<p class="points" aria-label="${r.score} critère(s) souhaitable(s) sur ${nbSouhaitables}">${"●".repeat(r.score)}${"○".repeat(nbSouhaitables - r.score)}</p>` : "";
+    ? `<p class="points" title="Critères souhaitables respectés" aria-label="${r.score} critère(s) souhaitable(s) respecté(s) sur ${nbSouhaitables}">${"●".repeat(r.score)}${"○".repeat(nbSouhaitables - r.score)}</p>` : "";
+  const courant = m.nom["5"] !== nomM(m) ? `<span class="echantillon-courant">${esc(minuscule(m.nom["5"]))}</span>` : "";
   return `<li class="echantillon ${r.elimine ? "elimine" : ""} ${choisi ? "choisi" : ""}" style="--famille:${f.couleur}">
     <div class="echantillon-tete">
       <span class="pastille" style="background:${fondPastille(m.peau3D)}"></span>
-      <div><p class="echantillon-nom">${esc(nomM(m))}</p><p class="echantillon-famille">${esc(m.sousFamille[etat.niveau] || f.nom[etat.niveau])}</p></div>
+      <div><p class="echantillon-nom">${esc(nomM(m))}</p>${courant}<p class="echantillon-famille">${esc(m.sousFamille[etat.niveau] || f.nom[etat.niveau])}</p></div>
     </div>
     <dl class="proprietes">${PROPS_CARTE.map(([c, t]) => `<div><dt>${t}</dt><dd>${valeur(m, c)}</dd></div>`).join("")}</dl>
     ${points}${bande}
     <div class="echantillon-actions">
       <label class="case petite"><input type="checkbox" data-comparer="${m.id}" ${compare ? "checked" : ""}
         ${!compare && etat.comparer.length >= 3 ? "disabled" : ""}><span>Comparer</span></label>
-      <button type="button" class="bouton-choix" data-choisir="${m.id}" aria-pressed="${choisi}">${choisi ? "Mon choix" : "Je choisis"}</button>
+      <button type="button" class="bouton-choix" data-choisir="${m.id}" aria-pressed="${choisi}">${choisi ? "✓ Mon choix · retirer" : "Je choisis"}</button>
     </div>
   </li>`;
 }
@@ -212,6 +249,8 @@ function etape3() {
         <span>${esc(c.carte[etat.niveau])}</span><small>${etat.classement[c.id]}</small></button></li>`).join("")}</ul>
       <p class="compteur" aria-live="polite"><strong>${restants}</strong> matériau${restants > 1 ? "x" : ""} sur ${res.length} encore en lice</p>
       ${restants === 0 ? `<p class="retour neutre">Plus aucun matériau ne passe. Un de tes critères indispensables l'est-il vraiment ? Relis ce que subit la turbine, puis reviens à l'étape 2 si besoin.</p>` : ""}
+      <p class="aide">● = un critère souhaitable respecté ; ○ = un critère souhaitable manqué.</p>
+      ${lexique(["masse volumique", "rigide", "usure", "critère indispensable", "critère souhaitable"])}
     </div>
     <div class="tri-grille">
       <ul class="echantillons">${ordre.map(carteMateriau).join("")}</ul>
@@ -219,13 +258,14 @@ function etape3() {
     </div>
     <div class="barre-choix">
       <p>${etat.choix ? `Mon choix : <strong>${esc(nomM(mat(etat.choix)))}</strong>` : "Choisis un matériau avec « Je choisis »."}</p>
+      ${etat.choix ? `<button type="button" class="bouton-discret" data-choisir="${etat.choix}">Retirer</button>` : ""}
       <button type="button" class="bouton" data-action="valider-choix" ${etat.choix ? "" : "disabled"}>Valider ce matériau</button>
     </div>
   </section>`;
 }
 
 function validerChoix() {
-  const v = verifierChoix(S, D.materiaux, etat.niveau, etat.choix);
+  const v = verifierChoix(S, D.materiaux, etat.niveau, etat.choix, D.procedes);
   etat.essais += 1;
   sauver();
   if (v.ok) return aller(4);
@@ -248,49 +288,77 @@ function validerChoix() {
 // ---------- Étape 4 ----------
 function etape4() {
   const m = mat(etat.choix);
-  const liste = procedesCompatibles(m, D.procedes, S, etat.niveau);
   const proc = (id) => D.procedes.find((p) => p.id === id);
-  const serieChoisie = liste.find((p) => p.id === etat.serie);
+  const liste = procedesCompatibles(m, D.procedes, S, etat.niveau).filter((p) => p.id !== "assemblage");
   const proto = mat(S.materiauPrototype);
   const protoListe = procedesCompatibles(proto, D.procedes, S, etat.niveau);
-  const labo = liste.filter((p) => proc(p.id).lieu.includes("labo"));
-  const protoChoisi = etat.proto && (labo.find((p) => p.id === etat.proto && p.compatible) || protoListe.find((p) => p.id === etat.proto && p.compatible));
-  const carte = (p, groupe) => {
-    const q = proc(p.id);
-    const coche = etat[groupe] === p.id;
-    return `<li><label class="procede ${coche ? (p.compatible || (groupe === "proto" && protoListe.find((x) => x.id === p.id)?.compatible) ? "ok" : "ko") : ""}">
-      <input type="radio" name="${groupe}" data-procede="${groupe}" value="${p.id}" ${coche ? "checked" : ""}>
-      <span class="procede-nom">${esc(q.nom)}</span>
-      <span class="badges">${q.lieu.map((l) => `<span class="badge">${l}</span>`).join("")}<span class="badge geste">${GESTES[q.geste]}</span></span>
-    </label></li>`;
-  };
-  let retourSerie = "";
-  if (serieChoisie) retourSerie = serieChoisie.compatible
-    ? `<p class="retour ok">Oui : ${esc(serieChoisie.raison)} ${serieChoisie.usage === "serie" ? "Il convient à une grande série." : "Mais il convient mal à une grande série : cherche un procédé industriel."}</p>`
-    : `<p class="retour ko">Non : ${esc(serieChoisie.raison)}</p>`;
-  const serieOk = serieChoisie?.compatible && serieChoisie.usage === "serie";
-  let retourProto = "";
+  const usage = usageRequis(etat.niveau);
+  const fabricable = liste.some((p) => p.compatible && p.usage === usage);
+
+  // Retour sur le procédé de série
+  const s = liste.find((p) => p.id === etat.serie);
+  const serieOk = !!s && s.compatible && s.usage === "serie";
+  const retourSerie = !s ? "" : serieOk
+    ? `<p class="retour ok"><strong>Oui.</strong> ${esc(s.raison)} Ce procédé convient à une grande série.</p>`
+    : s.compatible
+      ? `<p class="retour ko"><strong>Pas pour la série.</strong> On peut obtenir la turbine ${esc(du(nomM(m)))} ainsi, mais une pièce à la fois : ce procédé ne convient pas à une grande série. Cherche un procédé industriel.</p>`
+      : `<p class="retour ko"><strong>Non.</strong> ${esc(s.raison)}</p>`;
+
+  // Retour sur le prototype : directement dans le matériau choisi, ou dans le matériau de prototype du scénario
+  let protoOk = false, retourProto = "";
   if (etat.proto) {
-    const directe = labo.find((p) => p.id === etat.proto);
-    const viaProto = protoListe.find((p) => p.id === etat.proto);
-    retourProto = directe?.compatible
-      ? `<p class="retour ok">Oui : le prototype peut être fait directement en ${esc(nomM(m))}.</p>`
-      : viaProto?.compatible
-        ? `<p class="retour ok">Bonne idée, avec une adaptation : le ${esc(nomM(m))} ne se travaille pas ainsi au collège. Le prototype se fait en ${esc(nomM(proto))} (${esc(minuscule(proc(etat.proto).nom))}). Il sert à tester la forme des aubes, pas à durer dans l'eau.</p>`
-        : `<p class="retour ko">Non : ${esc(directe?.raison || viaProto?.raison || "")}</p>`;
+    const directe = liste.find((p) => p.id === etat.proto);
+    const via = protoListe.find((p) => p.id === etat.proto);
+    if (directe?.compatible) {
+      protoOk = true;
+      retourProto = `<p class="retour ok"><strong>Oui.</strong> Le prototype peut être fait directement en ${esc(nomM(m))}.</p>`;
+    } else if (via?.compatible) {
+      protoOk = true;
+      retourProto = `<p class="retour ok"><strong>Oui, avec une adaptation.</strong> Au collège, on ne peut pas travailler ${esc(le(nomM(m)))} ainsi : le prototype se fait en ${esc(nomM(proto))}. Il sert à tester la forme des aubes, pas à durer dans l'eau.</p>`;
+    } else {
+      retourProto = `<p class="retour ko"><strong>Non.</strong> ${esc(directe?.raison || via?.raison || "")}</p>`;
+    }
   }
+
+  const carte = (p) => {
+    const q = proc(p.id);
+    const labo = q.lieu.includes("labo");
+    const enSerie = etat.serie === p.id, enProto = etat.proto === p.id;
+    const photos = q.photos?.length
+      ? q.photos.map((ph) => `<figure><a href="${esc(ph.src)}" target="_blank" rel="noopener" title="Voir la photo en grand">
+          <img src="${esc(ph.src)}" alt="${esc(ph.legende)}" loading="lazy"></a><figcaption>${esc(ph.legende)}${ph.credit ? `<small>${esc(ph.credit)}</small>` : ""}</figcaption></figure>`).join("")
+      : `<figure>${schemaProcede(q.id, q.nom)}<figcaption>Schéma de principe</figcaption></figure>`;
+    return `<li class="fiche-procede ${enSerie || enProto ? "retenu" : ""}">
+      <div class="fiche-media ${q.photos?.length > 1 ? "deux" : ""}">${photos}</div>
+      <div class="fiche-corps">
+        <h3>${esc(q.nom)}</h3>
+        <p>${esc(q.principe)}</p>
+        <p class="badges">${q.lieu.map((l) => `<span class="badge">${l === "labo" ? "au collège" : "dans l'industrie"}</span>`).join("")}<span class="badge geste">${GESTES[q.geste]}</span></p>
+        <div class="fiche-actions">
+          <button type="button" class="bouton-choix" data-procede="serie" data-valeur="${p.id}" aria-pressed="${enSerie}">${enSerie ? "✓ Pour la série · retirer" : "Pour la série"}</button>
+          ${labo ? `<button type="button" class="bouton-choix" data-procede="proto" data-valeur="${p.id}" aria-pressed="${enProto}">${enProto ? "✓ Pour le prototype · retirer" : "Pour le prototype"}</button>` : ""}
+        </div>
+      </div>
+    </li>`;
+  };
+
+  const impasse = fabricable ? "" : `<div class="retour ko"><strong>Aucun procédé de grande série ne convient ${esc(au(nomM(m)))} pour des aubes fines.</strong> C'est un indice : retourne au tri et choisis un autre matériau.
+      <div class="actions"><button type="button" class="bouton" data-aller="3">Retourner au tri</button></div></div>`;
+
   return `<section>
     <h2 tabindex="-1">4. Je choisis le procédé</h2>
-    <p class="consigne">Un matériau ne va jamais sans son procédé. La turbine a des aubes fines, de forme complexe, et sera fabriquée en grande série.</p>
-    <div class="deux-colonnes">
-      <fieldset class="groupe-procedes"><legend>Fabrication en grande série du ${esc(nomM(m))}</legend>
-        <ul>${liste.filter((p) => p.id !== "assemblage").map((p) => carte(p, "serie")).join("")}</ul>${retourSerie}</fieldset>
-      <fieldset class="groupe-procedes"><legend>Prototype au labo du collège</legend>
-        <ul>${labo.filter((p) => p.id !== "assemblage").map((p) => carte(p, "proto")).join("")}</ul>${retourProto}</fieldset>
+    <p class="consigne">Un matériau ne va jamais sans son procédé. La turbine a des aubes fines, de forme complexe, et sera fabriquée <strong>en grande série</strong>. Choisis un procédé pour la série et un procédé du collège pour fabriquer un prototype.</p>
+    <div class="bilan-procedes">
+      <div><h3>Série : turbine ${esc(du(nomM(m)))}</h3>${retourSerie || `<p class="aide">Pas encore choisi.</p>`}</div>
+      <div><h3>Prototype au collège</h3>${retourProto || `<p class="aide">Pas encore choisi.</p>`}</div>
     </div>
+    ${impasse}
+    <ul class="galerie-procedes">${liste.map(carte).join("")}</ul>
     <div class="actions">
-      <button type="button" class="bouton" data-aller="5" ${serieOk && protoChoisi ? "" : "disabled"}>Justifier mon choix</button>
+      <button type="button" class="bouton" data-aller="5" ${serieOk && protoOk ? "" : "disabled"}>Justifier mon choix</button>
+      <button type="button" class="bouton-discret" data-aller="3">Revenir au tri</button>
     </div>
+    ${serieOk && protoOk ? "" : `<p class="aide">Il faut un procédé de série qui convient et un prototype possible au collège.</p>`}
   </section>`;
 }
 
@@ -304,12 +372,14 @@ function etape5() {
   const elimines = res.filter((r) => r.elimine);
   const ref = evaluer(S, D.materiaux, etat.niveau, S.reference[etat.niveau]).find((r) => r.id === m.id);
   const nomProc = (id) => D.procedes.find((p) => p.id === id).nom;
+  const protoDirect = procedesCompatibles(m, D.procedes, S, etat.niveau).find((p) => p.id === etat.proto)?.compatible;
+  const matProto = protoDirect ? m : mat(S.materiauPrototype);
   const zone = (cle, etiquette, aide) => `<label class="redaction"><span>${etiquette}</span>
     <textarea data-texte="${cle}" rows="3" placeholder="${esc(aide)}">${esc(etat.texte[cle])}</textarea></label>`;
   return `<section class="justification">
     <div class="justif-visuel">
       <figure class="cadre">${turbineSVG(m.peau3D, `Turbine en ${nomM(m)}`)}<figcaption>La turbine en <strong>${esc(nomM(m))}</strong></figcaption></figure>
-      ${ref.verdict === "acceptable" ? `<p class="retour neutre">Choix possible. Ce que l'on perd avec le ${esc(nomM(m))} : ${ref.pertes.map((p) => esc(p.texte)).join(" ; ")}.</p>` : ""}
+      ${ref.verdict === "acceptable" ? `<p class="retour neutre">Choix possible. Ce que l'on perd avec ${esc(le(nomM(m)))} : ${ref.pertes.map((p) => esc(p.texte)).join(" ; ")}.</p>` : ""}
     </div>
     <div class="justif-texte">
       <h2 tabindex="-1">5. Je justifie mon choix</h2>
@@ -324,10 +394,10 @@ function etape5() {
       ${elimines.length ? `<h3>Matériaux éliminés</h3><ul class="elimines">${elimines.map((r) =>
         `<li><strong>${esc(nomM(mat(r.id)))}</strong> : ${r.raisons.map((x) => esc(x.texte)).join(" ; ")}</li>`).join("")}</ul>` : ""}
       <h3>Mon argumentaire</h3>
-      <p class="fixe">Je choisis le <strong>${esc(nomM(m))}</strong>, un matériau de la famille des ${esc(f.nom[etat.niveau].toLowerCase())}, sous-famille : ${esc(m.sousFamille[etat.niveau].toLowerCase())}.</p>
+      <p class="fixe">Je choisis <strong>${esc(le(nomM(m)))}</strong>, un matériau de la famille des ${esc(f.nom[etat.niveau].toLowerCase())}, sous-famille : ${esc(m.sousFamille[etat.niveau].toLowerCase())}.</p>
       ${zone("parceQue", "Parce que la turbine doit…", "Cite au moins deux critères et relie-les à ce que subit la pièce.")}
       ${zone("elimination", "J'écarte… parce que…", "Explique au moins une élimination.")}
-      <p class="fixe">Fabrication : <strong>${esc(minuscule(nomProc(etat.serie)))}</strong> pour la série ; prototype au labo par <strong>${esc(minuscule(nomProc(etat.proto)))}</strong>.</p>
+      <p class="fixe">Fabrication : <strong>${esc(minuscule(nomProc(etat.serie)))}</strong> pour la série ; prototype au collège par <strong>${esc(minuscule(nomProc(etat.proto)))}</strong>, en ${esc(nomM(matProto))}.</p>
       ${zone("recyclage", "En fin de vie, ce matériau…", "Recyclable ou non ? Pense au code de recyclage.")}
       <div class="actions ecran-seul">
         <button type="button" class="bouton" data-action="imprimer">Imprimer ou enregistrer en PDF</button>
@@ -348,13 +418,19 @@ function brancher() {
   document.addEventListener("click", (e) => {
     const b = e.target.closest("button");
     if (!b) return;
-    if (b.dataset.aller) return aller(Number(b.dataset.aller));
+    if (b.dataset.aller !== undefined) return aller(Number(b.dataset.aller));
     if (b.dataset.activer) {
       const id = b.dataset.activer;
       etat.actifs = etat.actifs.includes(id) ? etat.actifs.filter((x) => x !== id) : [...etat.actifs, id];
       sauver(); return rendreGarderFocus(`[data-activer="${id}"]`);
     }
-    if (b.dataset.choisir) { etat.choix = b.dataset.choisir; sauver(); return rendreGarderFocus(`[data-choisir="${etat.choix}"]`); }
+    if (b.dataset.choisir) { const id = b.dataset.choisir; changerChoix(id); return rendreGarderFocus(`.echantillon [data-choisir="${id}"]`); }
+    if (b.dataset.procede) {
+      const g = b.dataset.procede, v = b.dataset.valeur;
+      etat[g] = etat[g] === v ? null : v;
+      etat.max = Math.min(etat.max, 4);
+      sauver(); return rendreGarderFocus(`[data-procede="${g}"][data-valeur="${v}"]`);
+    }
     const action = b.dataset.action;
     if (action === "eau") { robinetOuvert = !robinetOuvert; rendreGarderFocus('[data-action="eau"]'); }
     if (action === "verifier-contraintes") { etat.contraintesVues = true; sauver(); rendreGarderFocus('[data-action="verifier-contraintes"]'); }
@@ -380,7 +456,6 @@ function brancher() {
       etat.comparer = t.checked ? [...etat.comparer, id].slice(0, 3) : etat.comparer.filter((x) => x !== id);
       sauver(); rendreGarderFocus(`[data-comparer="${id}"]`);
     }
-    if (t.dataset.procede) { etat[t.dataset.procede] = t.value; sauver(); rendreGarderFocus(`[name="${t.dataset.procede}"][value="${t.value}"]`); }
   });
 
   document.addEventListener("input", (e) => {
@@ -401,8 +476,6 @@ function brancher() {
     e.preventDefault();
     classer(e.dataTransfer.getData("text/plain"), z.dataset.zone);
   });
-
-  $("#consequence").addEventListener("close", () => { aller(3); });
 }
 
 function classer(id, statut) {
