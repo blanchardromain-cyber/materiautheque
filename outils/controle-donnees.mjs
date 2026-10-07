@@ -2,6 +2,7 @@
 // Code de sortie 1 et liste des erreurs si une règle n'est pas respectée.
 import { readFileSync } from "node:fs";
 import { join, dirname } from "node:path";
+import { scenarioPiece } from "../app/moteur.js";
 import { fileURLToPath } from "node:url";
 
 const dossier = process.argv[2] || join(dirname(fileURLToPath(import.meta.url)), "..", "data");
@@ -23,7 +24,7 @@ const idsProcedes = new Set(procedes.map((p) => p.id));
 const idsMateriaux = new Set(materiaux.map((m) => m.id));
 const NIVEAUX = ["5", "4", "3"];
 
-if (materiaux.length !== 18) err(`18 matériaux attendus, ${materiaux.length} trouvés`);
+if (materiaux.length !== 19) err(`19 matériaux attendus, ${materiaux.length} trouvés`);
 if (idsMateriaux.size !== materiaux.length) err("identifiants de matériaux en double");
 if (procedes.length !== 10) err(`10 procédés attendus, ${procedes.length} trouvés`);
 if (idsProcedes.size !== procedes.length) err("identifiants de procédés en double");
@@ -62,18 +63,27 @@ for (const p of proprietes)
   if (champ(materiaux[0], p.champ) === undefined) err(`propriété ${p.id} : champ ${p.champ} absent des matériaux`);
 
 const OPS = [">=", "<=", "==", "contient"];
-const CONSEQUENCES = ["eau", "corrosion", "demarrage-lent", "deformation", "usure", "freinage-aimant"];
-for (const s of composants) {
+const CONSEQUENCES = ["eau", "corrosion", "demarrage-lent", "deformation", "usure", "freinage-aimant", "cuisson-lente", "fond", "brulure", "poignee-molle"];
+const essais = lire("essais.json");
+const idsEssais = new Set(essais.map((e) => e.id));
+for (const e of essais) {
+  if (!e.lectures?.length || e.lectures.at(-1).regle) err(`essai ${e.id} : la dernière lecture doit être sans règle`);
+  if (e.lectures.slice(0, -1).some((l) => !l.regle)) err(`essai ${e.id} : seule la dernière lecture peut être sans règle`);
+}
+const unites = composants.flatMap((sc) => sc.pieces ? sc.pieces.map((p) => scenarioPiece(sc, p.id)) : [sc]);
+for (const s of unites) {
   const q = `scénario ${s.id}`;
+  const NIVEAUX_S = (s.niveaux || [5, 4, 3]).map(String);
   const crit = new Map(s.criteres.map((c) => [c.id, c]));
   if (crit.size !== s.criteres.length) err(`${q} : critères en double`);
   for (const c of s.criteres) {
     if (!OPS.includes(c.regle.op)) err(`${q}/${c.id} : opérateur ${c.regle.op} inconnu`);
     if (materiaux.every((m) => champ(m, c.regle.champ) === undefined)) err(`${q}/${c.id} : champ ${c.regle.champ} inconnu`);
     if (c.consequence && !CONSEQUENCES.includes(c.consequence)) err(`${q}/${c.id} : conséquence ${c.consequence} inconnue`);
+    if (c.essai && !idsEssais.has(c.essai)) err(`${q}/${c.id} : essai ${c.essai} inconnu`);
     for (const n of c.niveaux) if (!c.carte[String(n)]) err(`${q}/${c.id} : carte ${n}e manquante`);
   }
-  for (const n of NIVEAUX) {
+  for (const n of NIVEAUX_S) {
     const ref = s.reference[n] || {};
     for (const [id, statut] of Object.entries(ref)) {
       if (!crit.has(id)) { err(`${q} : référence ${n}e cite ${id} inconnu`); continue; }
@@ -91,7 +101,7 @@ for (const s of composants) {
     for (const id of Object.keys(s.poids?.[n] || {}))
       if (ref[id] !== "souhaitable") err(`${q} : poids ${n}e sur ${id}, qui n'est pas souhaitable`);
   }
-  for (const v of Object.values(s.formeProcedes)) if (!idsProcedes.has(v)) err(`${q} : procédé ${v} inconnu`);
+  for (const v of Object.values(s.formeProcedes || {})) if (!idsProcedes.has(v)) err(`${q} : procédé ${v} inconnu`);
   if (!s.sansProcede?.nonParceQue || !s.sansProcede?.question) err(`${q} : textes sansProcede manquants`);
   if (s.contraintes.filter((c) => c.vraie).length < 2 || s.contraintes.every((c) => c.vraie)) err(`${q} : il faut des contraintes vraies et fausses`);
   if (s.materiauPrototype && !idsMateriaux.has(s.materiauPrototype)) err(`${q} : matériau de prototype inconnu`);
