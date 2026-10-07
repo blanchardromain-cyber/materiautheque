@@ -79,6 +79,19 @@ Chaque itération suit la boucle : spécifier → construire → vérifier techn
 
 **Vérifié** : 16 tests, contrôle des données, parcours ABS (impression 3D refusée pour la série avec la durée) puis POM, famille fausse puis juste, impression activée après l'identité, 375 px sans débordement, console sans erreur.
 
+## I4a — 2026-10-07 : niveau 5e « Je teste et je reconnais » (non publiée)
+
+**Spécifier** : `docs/superpowers/specs/2026-10-07-materiautheque-5e-design.md` (dépôt ClaudeConfig), validée par le professeur.
+
+**Construire**
+- Données : bakélite (19e matériau, valeurs à valider), bois 150 °C, cuivre embouti ; `essais.json` (6 essais, lectures en mots) ; scénario `casserole` à deux pièces.
+- Moteur : `scenarioPiece`, `lireEssai`, procédés d'usine permis en 5e quand le scénario le demande (`lieuProcedes`, `usageFabrication`).
+- Interface : module `app/cinquieme.js` séparé du parcours 4e ; fonctions partagées dans `app/commun.js` ; choix du niveau à l'accueil, un enregistrement par niveau.
+
+**Vérifier techniquement — fait** : 20 tests (oracle cuve/poignée, aucune impasse, lecture des essais dont « l'aluminium n'est pas attiré » et « le cuivre, lourd, n'est pas le plus rigide ») ; contrôle des données ; parcours 5e complet dans le navigateur (carte électricité à revoir, PP refusé avec animation, essais, éliminations seulement après essai, choix et validation par pièce, procédés d'usine, familles, impression) ; 4e inchangée ; 375 px sur les 5 étapes après correction d'un débordement du tableau ; console vide.
+
+**Vérifier pédagogiquement — à faire** : relecture des essais et des seuils (180 °C pour la cuve, 120 °C pour la poignée) ; test avec 3 élèves de 5e (adapter `PROTOCOLE-TEST-ELEVES.md`).
+
 ## Backlog (itérations suivantes)
 
 - Procédés présents au collège mais hors référentiel : cisaillage (cisaille guillotine), pliage de tôle (plieuse), poinçonnage (poinçonneuse) ; à ajouter en I6 si utile.
