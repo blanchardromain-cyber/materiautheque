@@ -105,6 +105,12 @@ Chaque itération suit la boucle : spécifier → construire → vérifier techn
 - Vérifié : PDF 4e (≈ 480 Ko, 2 pages) et 5e (≈ 370 Ko, 2 pages) générés et relus page à page ; premier essai vide (page capturée hors écran) puis dessin noir, tous deux corrigés.
 - Limite : le tout premier enregistrement sur un poste demande internet (chargement de la bibliothèque).
 
+## I4a.3 — 2026-10-07 : fiche PDF sur une seule page quand c'est lisible
+
+- Règle (demande du professeur) : une seule page A4 si le contenu y tient tel quel ou réduit de 14 % au plus (texte courant ≥ 9 pt) ; sinon recto verso sans réduction. Décision à chaque enregistrement, car la longueur des réponses varie (, testée).
+- Mise en page propre au PDF : bande du haut (dessin, verdict, masses volumiques), titre redondant retiré, tableau resserré, matériaux écartés sur deux colonnes. Hauteur 4e : 1 602 px → environ 1 060 px (une page à 97 %).
+- Vérifié : 4e et 5e sur une page (relues page à page) ; réponses très longues → deux pages.
+
 ## Backlog (itérations suivantes)
 
 - Procédés présents au collège mais hors référentiel : cisaillage (cisaille guillotine), pliage de tôle (plieuse), poinçonnage (poinçonneuse) ; à ajouter en I6 si utile.
