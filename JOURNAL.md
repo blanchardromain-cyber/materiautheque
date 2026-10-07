@@ -32,7 +32,31 @@ Chaque itération suit la boucle : spécifier → construire → vérifier techn
 
 **Mesurer / Ajuster** : à remplir après les deux portes ci-dessus.
 
+## I2.1 — 2026-10-07 (remédiations après relecture du professeur, non publiée)
+
+**Retours du professeur**
+1. Étape 1 : réponses dans l'ordre (les vraies en tête) → ordre tiré au sort une fois par élève, jamais plus de 2 vraies dans les 3 premières.
+2. Étape 1 : « rotor » inconnu → contrainte reformulée (« elle fait tourner un aimant placé dans le générateur »), explication du mot rotor, générateur dessiné en coupe (aimant N/S qui tourne avec la turbine, bobines), encadré « Mots utiles ».
+3. Étape 3 : un choix ne se retirait pas → « Je choisis » bascule (« ✓ Mon choix · retirer ») + bouton « Retirer » dans la barre.
+4. Étape 4 : photos des machines du collège (Charlyrobot, Ultimaker 2+, perceuse à colonne, thermoplieuse ; Bambu Lab A1 et xTool en images fabricant, à remplacer avant publication) ; schémas de principe pour les procédés sans photo ; principe de chaque procédé en une phrase.
+5. Étape 4 : impasse avec le PLA. **Cause** : le moteur validait un matériau sur ses seuls critères indispensables, sans vérifier qu'un procédé de série permet de le fabriquer ; même impasse pour le composite en 3e et pour tous les matériaux en 5e. **Corrections** : `verifierChoix` exige un procédé compatible pour l'usage du niveau (série en 4e/3e, labo en 5e), sinon animation « impossible à fabriquer » + retour au tri ; test « aucune impasse » sur les 3 niveaux ; PLA note eau 3 → 2 (vieillit dans l'eau, décision du professeur) ; l'étape 4 garde une sortie « Retourner au tri ».
+6. Étape 4 : impossible de désélectionner → boutons à bascule « Pour la série » / « Pour le prototype ».
+
+**Relecture complète du contenu (en plus)**
+- Articles : « le ABS », « du ABS », « le Inox » → « l'ABS », « de l'ABS », « l'Inox ».
+- Cartes 4e : sigle + nom courant (« POM / polyacétal », « Cu / cuivre ») ; libellés complets (« Masse volumique », « Résistance à l'eau ») ; légende des points ●○ ; toutes les raisons d'élimination affichées sur la bande.
+- Texte de conséquence « eau » d'un plastique : « s'est abîmée : a gonflé ou s'est dégradée » (le PLA ne gonfle pas).
+- Changer de matériau après validation referme les étapes 4 et 5 et efface les procédés choisis.
+- Le titre « Matériauthèque » ramène à l'accueil (aucun retour possible auparavant).
+- Étape 5 : le prototype mentionne son matériau réel (« en PLA »).
+
+**Défaut trouvé pendant la vérification** : la fermeture du dialogue de conséquence rappelait `aller(3)` sur l'événement `close`, qui est asynchrone ; il pouvait renvoyer à l'étape 3 un élève déjà passé à l'étape 4. Rappel supprimé.
+
+**Vérifié** : 13 tests du moteur, contrôle des données (photos comprises), parcours complet POM et erreur PLA dans le navigateur, bascules de l'étape 3 et 4, 375 px sur les 5 étapes, console sans erreur.
+
 ## Backlog (itérations suivantes)
+
+- Remplacer les images fabricant (Bambu Lab A1, xTool) par des photos du collège avant toute publication. Photos non utilisées : cisaille guillotine, plieuse, poinçonneuse (procédés hors référentiel ; à ajouter en I6 si utile).
 
 - I3 : scène 3D (model-viewer) turbine + robinet en coupe ; question ouverte : CAO du support P11 ou remodélisation.
 - I4 : niveaux 5e et 3e à l'écran (moteur et données prêts), glossaire au survol, graphique masse volumique × rigidité, police Luciole.
