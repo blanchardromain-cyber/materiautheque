@@ -1,10 +1,12 @@
 // Hors ligne : changer VERSION à chaque publication pour renouveler le cache.
-const VERSION = "materiautheque-2026-10-07a";
+const VERSION = "materiautheque-2026-10-07b";
 const COQUILLE = [
   "./", "index.html", "styles.css",
   "app/parcours.js", "app/moteur.js", "app/donnees.js", "app/illustrations.js",
   "data/familles.json", "data/proprietes.json", "data/materiaux.json",
   "data/procedes.json", "data/composants.json", "data/glossaire.json",
+  "img/procedes/impression-3d.jpg", "img/procedes/impression-3d-ultimaker.jpg", "img/procedes/decoupe-laser.jpg",
+  "img/procedes/usinage.jpg", "img/procedes/usinage-perceuse.jpg", "img/procedes/pliage-chaud.jpg",
 ];
 
 self.addEventListener("install", (e) => {
