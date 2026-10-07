@@ -28,7 +28,7 @@
     "libelle": { "4": "Résistance à l'eau", "3": "Résistance à l'eau" },
     "affichage": { "4": "jauge", "3": "jauge" } },
   { "id": "corrosion", "champ": "notes.corrosion", "categorie": "Chimique", "apparition": 3,
-    "libelle": { "3": "Résistance à la corrosion" },
+    "libelle": { "3": "Tenue dans l'eau (corrosion, pourriture)" },
     "affichage": { "3": "jauge" } },
   { "id": "absorptionEau", "champ": "absorptionEau", "categorie": "Chimique", "apparition": 3,
     "libelle": { "3": "Absorption d'eau" },
