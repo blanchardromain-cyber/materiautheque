@@ -139,3 +139,53 @@ export function consequence(type, materiau) {
 const taches = () => `<g class="taches">${[[-40, -30, 14], [35, -50, 10], [50, 30, 16], [-20, 55, 12], [0, -70, 8], [-60, 20, 9]]
   .map(([x, y, r], i) => `<circle cx="${x}" cy="${y}" r="${r}" style="animation-delay:${0.3 + i * 0.25}s" />`).join("")}</g>`;
 const aimant = () => `<g class="aimant" transform="translate(70 -70)"><rect x="-14" y="-24" width="28" height="24" fill="#c0392b"/><rect x="-14" y="0" width="28" height="24" fill="#2c5d9e"/><text y="-7" text-anchor="middle">N</text><text y="17" text-anchor="middle">S</text></g>`;
+
+// ---------- Niveau 5e : la casserole et le banc d'essai ----------
+
+// Casserole vue de côté sur sa plaque ; chaque pièce prend la couleur de son matériau.
+export function casseroleSVG({ cuve = "#C9CDD2", poignee = "#3B2A22", classe = "", allumee = false } = {}, titre = "Casserole sur une plaque") {
+  return `<svg class="casserole ${classe} ${allumee ? "allumee" : ""}" viewBox="0 0 320 200" role="img" aria-label="${titre}">
+    <title>${titre}</title>
+    <rect x="30" y="168" width="200" height="16" rx="4" class="plaque-cuisson" />
+    <g class="vagues"><path d="M80 160 q6 -8 0 -16 q-6 -8 0 -16" /><path d="M130 160 q6 -8 0 -16 q-6 -8 0 -16" /><path d="M180 160 q6 -8 0 -16 q-6 -8 0 -16" /></g>
+    <g class="cuve"><path d="M50 70 H210 L202 160 H58 Z" fill="${cuve}" stroke="#3b4652" stroke-width="3" stroke-linejoin="round" />
+      <path d="M58 92 H202" class="eau-niveau" /><g class="bulles"><circle cx="90" cy="120" r="4" /><circle cx="130" cy="135" r="5" /><circle cx="170" cy="115" r="4" /></g></g>
+    <g class="poignee"><rect x="210" y="76" width="96" height="16" rx="8" fill="${poignee}" stroke="#3b4652" stroke-width="3" /></g>
+    <g class="main-chaude"><text x="262" y="66" text-anchor="middle">Aïe !</text></g>
+  </svg>`;
+}
+
+const RECITS_5E = {
+  "cuisson-lente": { titre: "On allume la plaque…", texte: "La chaleur passe mal à travers la cuve : au bout de vingt minutes, l'eau n'est toujours pas chaude.", classe: "c-lente" },
+  fond: { titre: "Sur la plaque très chaude…", texte: "Le fond de la cuve ramollit et se déforme : la casserole est fichue.", classe: "c-fond" },
+  brulure: { titre: "Pendant la cuisson…", texte: "La chaleur remonte jusqu'à la poignée : impossible de la tenir sans se brûler.", classe: "c-brulure" },
+  "poignee-molle": { titre: "Près de la cuve chaude…", texte: "La poignée ramollit et plie : la casserole risque de tomber.", classe: "c-molle" },
+  fabrication: { titre: "À l'usine…", texte: "Aucun procédé ne permet de donner cette forme à ce matériau.", classe: "c-fabrication" },
+};
+
+export function consequenceCasserole(type, piece, materiau) {
+  const r = RECITS_5E[type] || RECITS_5E.fabrication;
+  const peaux = piece === "cuve" ? { cuve: materiau.peau3D.couleur } : { poignee: materiau.peau3D.couleur };
+  return { ...r, svg: casseroleSVG({ ...peaux, classe: r.classe, allumee: true }, `Casserole : ${r.texte}`) };
+}
+
+// Scènes du banc d'essai : l'issue (classe) pilote l'animation.
+export function essaiSVG(idEssai, materiau, classe, texte) {
+  const c = materiau.peau3D.couleur;
+  const scenes = {
+    aimant: `<rect x="40" y="70" width="44" height="30" rx="4" fill="${c}" class="echantillon-svg" />
+      <g transform="translate(176 60)"><path d="M0 0 h20 v30 a10 10 0 0 0 20 0 v-30 h20 v30 a30 30 0 0 1 -60 0 z" fill="#C0392B" /><rect x="0" y="0" width="20" height="10" fill="#E8ECF0"/><rect x="40" y="0" width="20" height="10" fill="#E8ECF0"/></g>`,
+    circuit: `<rect x="20" y="96" width="34" height="20" rx="3" fill="#4A5664" /><text x="37" y="110" text-anchor="middle" class="t-blanc">+ −</text>
+      <path d="M54 106 H90 M150 106 H190 V60 H54 V96" class="fil" /><rect x="90" y="96" width="60" height="20" rx="3" fill="${c}" />
+      <circle cx="190" cy="44" r="16" class="lampe" /><path d="M184 58 h12" class="fil" />`,
+    bougie: `<rect x="30" y="70" width="170" height="14" rx="4" fill="${c}" /><rect x="30" y="70" width="170" height="14" rx="4" class="chaleur-qui-monte" />
+      <path d="M44 120 q-8 -16 0 -30 q8 14 0 30 z" class="flamme" /><rect x="40" y="120" width="8" height="14" fill="#E9E3D2" />
+      <rect x="204" y="40" width="10" height="70" rx="5" class="thermo" /><rect x="206" y="80" width="6" height="28" rx="3" class="thermo-niveau" />`,
+    plaque: `<rect x="40" y="104" width="160" height="16" rx="4" class="plaque-cuisson" /><rect x="90" y="74" width="60" height="30" rx="4" fill="${c}" class="echantillon-svg" />`,
+    balance: `<rect x="70" y="96" width="100" height="30" rx="6" fill="#9AA5B1" /><rect x="96" y="70" width="48" height="8" fill="#4A5664" />
+      <rect x="108" y="46" width="24" height="24" fill="${c}" stroke="#3b4652" /><circle cx="120" cy="111" r="10" fill="#fff" /><path d="M120 111 L120 103" class="aiguille" />`,
+    flexion: `<rect x="20" y="40" width="16" height="70" fill="#4A5664" /><g class="baguette"><rect x="36" y="66" width="170" height="10" rx="3" fill="${c}" /></g>
+      <path d="M200 30 v24" class="fleche-force" /><path d="M194 48 l6 8 l6 -8" class="fleche-force" />`,
+  };
+  return `<svg class="essai-svg essai-${idEssai} issue-${classe}" viewBox="0 0 240 140" role="img" aria-label="${texte}"><title>${texte}</title>${scenes[idEssai] || ""}</svg>`;
+}
