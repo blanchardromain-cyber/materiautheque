@@ -13,7 +13,7 @@ Notes de 1 (faible) à 5 (fort) ; coût de 1 (€) à 3 (€€€).
 | Acier | Matériaux métalliques | 7,85 | 5 | **4** ✱ | **4** ✱ | 1 | **1** ✱ | **0** ✱ | > 300 | **1** ✱ | 5 (Acier (tri par aimant)) | minerai | oui | **Usinage ; Emboutissage, pliage de tôle ; Assemblage** ✱ |  |
 | Inox | Matériaux métalliques | 7,9 | 5 | **4** ✱ | **4** ✱ | 5 | **5** ✱ | **0** ✱ | > 300 | **3** ✱ | 5 (Acier inoxydable) | minerai | **non** ✱ | **Usinage ; Emboutissage, pliage de tôle ; Assemblage** ✱ |  |
 | Alu | Matériaux métalliques | 2,7 | 4 | **3** ✱ | **2** ✱ | 4 | **4** ✱ | **0** ✱ | > 200 | **2** ✱ | 5 (Aluminium) | minerai | non | **Usinage ; Fonderie / moulage métal ; Emboutissage, pliage de tôle ; Extrusion ; Assemblage** ✱ |  |
-| Cu | Matériaux métalliques | 8,96 | 3 | **3** ✱ | **2** ✱ | 4 | **4** ✱ | **0** ✱ | > 200 | **3** ✱ | 5 (Cuivre) | minerai | non | **Usinage ; Extrusion ; Assemblage** ✱ |  |
+| Cu | Matériaux métalliques | 8,96 | 3 | **3** ✱ | **2** ✱ | 4 | **4** ✱ | **0** ✱ | > 200 | **3** ✱ | 5 (Cuivre) | minerai | non | **Usinage ; Emboutissage, pliage de tôle ; Extrusion ; Assemblage** ✱ |  |
 | Laiton | Matériaux métalliques | 8,5 | 4 | **3** ✱ | **3** ✱ | 4 | **4** ✱ | **0** ✱ | > 200 | **3** ✱ | 5 (Laiton) | minerai | non | **Usinage ; Fonderie / moulage métal ; Assemblage** ✱ |  |
 | PLA | Matériaux organiques | 1,24 | 3 | **2** ✱ | **2** ✱ | **2** ✱ | **2** ✱ | **0,5** ✱ | ≈ 50 | **1** ✱ | 2 (**7 / PLA** ✱) | renouvelable | non | Impression 3D par dépôt de fil |  |
 | ABS | Matériaux organiques | 1,04 | 3 | **4** ✱ | **3** ✱ | 3 | **4** ✱ | **0,3** ✱ | 70 | **1** ✱ | 3 (**7 / ABS** ✱) | fossile | non | Impression 3D par dépôt de fil ; Thermoformage ; Moulage par injection |  |
@@ -23,11 +23,12 @@ Notes de 1 (faible) à 5 (fort) ; coût de 1 (€) à 3 (€€€).
 | PA | Matériaux organiques | 1,13 | 3 | **4** ✱ | **5** ✱ | 2 | **4** ✱ | 9,5 | 100 | **2** ✱ | 3 (**7 / PA** ✱) | fossile | non | Moulage par injection ; Usinage |  |
 | POM | Matériaux organiques | 1,39 | 4 | 3 | 5 | 4 | **5** ✱ | 0,8 | 100 | 2 | 3 (7 / POM) | fossile | non | Moulage par injection ; Usinage |  |
 | VMQ | Matériaux organiques | ≈ 1,1 | 1 | **5** ✱ | **2** ✱ | 5 | **5** ✱ | **0,1** ✱ | > 180 | **3** ✱ | 1 (**non recyclé en filière courante** ✱) | **mixte** ✱ | non | **Moulage par injection** ✱ |  |
-| Pin / hêtre | Matériaux organiques | ≈ 0,5 à 0,7 | 3 | **3** ✱ | **2** ✱ | 1 | **1** ✱ | — | — | **1** ✱ | 4 (Bois) | renouvelable | non | **Usinage ; Assemblage** ✱ |  |
+| Pin / hêtre | Matériaux organiques | ≈ 0,5 à 0,7 | 3 | **3** ✱ | **2** ✱ | 1 | **1** ✱ | — | ≈ 150 (noircit au-delà) | **1** ✱ | 4 (Bois) | renouvelable | non | **Usinage ; Assemblage** ✱ |  |
 | CP / MDF | Composites | ≈ 0,6 à 0,75 | 3 | **2** ✱ | **2** ✱ | 1 | **1** ✱ | — | — | **1** ✱ | 3 (Bois) | renouvelable | non | **Découpe laser ; Usinage ; Assemblage** ✱ |  |
 | Verre | Céramiques et minéraux | 2,5 | 5 | **1** ✱ | **5** ✱ | 5 | **5** ✱ | **0** ✱ | > 400 | **1** ✱ | 5 (Verre) | minerai | non | Soufflage et moulage du verre : hors des 10 procédés du référentiel. |  |
 | Porcelaine | Céramiques et minéraux | ≈ 2,4 | 5 | **1** ✱ | **5** ✱ | 5 | **5** ✱ | **0** ✱ | > 1000 | **2** ✱ | 1 (non recyclé en filière courante) | minerai | non | Moulage et cuisson des céramiques : hors des 10 procédés du référentiel. |  |
 | Fibre de verre / résine | Composites | ≈ 1,9 | 4 | **4** ✱ | **4** ✱ | 4 | **4** ✱ | **0,2** ✱ | ≈ 120 | **3** ✱ | 1 (non recyclé en filière courante) | mixte | non | **Usinage** ✱ |  |
+| PF | Matériaux organiques | ≈ 1,35 | **4** ✱ | **2** ✱ | **4** ✱ | **4** ✱ | **4** ✱ | **0,3** ✱ | ≈ 150 | **1** ✱ | **1** ✱ (non recyclable (thermodurcissable)) | fossile | non | **Moulage par injection** ✱ |  |
 
 ## 2. Scénario « Turbine du générateur » (Robinet automatique)
 
@@ -97,6 +98,7 @@ Notes de 1 (faible) à 5 (fort) ; coût de 1 (€) à 3 (€€€).
 | Matériau | Verdict calculé | Score | Raison (éliminé) ou ce que l'on perd | D'accord ? |
 |---|---|---|---|---|
 | POM-C | Choix de référence | 9 | — |  |
+| Phénoplaste (PF) | Acceptable | 8 | se recycle mal (1/5) |  |
 | PA 6 | Acceptable | 7 | absorbe 9,5 % d'eau et gonfle |  |
 | ABS | Acceptable | 6 | s'use vite (usure 3/5) |  |
 | PMMA | Acceptable | 6 | s'use vite (usure 3/5) |  |
@@ -114,6 +116,48 @@ Notes de 1 (faible) à 5 (fort) ; coût de 1 (€) à 3 (€€€).
 | Bois aggloméré | Éliminé |  | se dégrade dans l'eau (tenue 1/5) |  |
 | Verre sodocalcique | Éliminé |  | est trop lourd (2,5 g/cm³) : la turbine démarre mal |  |
 | Céramique technique | Éliminé |  | est trop lourd (2,4 g/cm³) : la turbine démarre mal |  |
+
+## 2. Scénario « Casserole — Cuve » (Cuisine)
+
+
+
+### Niveau 5e
+
+| Critère (carte élève) | Statut de référence | Règle | Poids |
+|---|---|---|---|
+| Laisser passer la chaleur vers les aliments | Indispensable | `therm == "conducteur"` |  |
+| Supporter la chaleur de la plaque | Indispensable | `tempMax >= 180` |  |
+| Conduire l'électricité | Sans importance (piège) | `elec == "conducteur"` |  |
+
+| Matériau | Verdict calculé | Score | Raison (éliminé) ou ce que l'on perd | D'accord ? |
+|---|---|---|---|---|
+| Acier inoxydable | Choix de référence | 0 | — |  |
+| Aluminium | Choix de référence | 0 | — |  |
+| Cuivre | Choix de référence | 0 | — |  |
+| Pin / hêtre | Éliminé |  | est isolant thermique : les aliments chauffent mal ; ne supporte pas la plaque (150 °C au plus) |  |
+| Polypropylène | Éliminé |  | est isolant thermique : les aliments chauffent mal ; ne supporte pas la plaque (100 °C au plus) |  |
+| Bakélite | Éliminé |  | est isolant thermique : les aliments chauffent mal ; ne supporte pas la plaque (150 °C au plus) |  |
+
+## 2. Scénario « Casserole — Poignée » (Cuisine)
+
+
+
+### Niveau 5e
+
+| Critère (carte élève) | Statut de référence | Règle | Poids |
+|---|---|---|---|
+| Bloquer la chaleur pour ne pas brûler la main | Indispensable | `therm == "isolant"` |  |
+| Résister à la chaleur près de la cuve | Indispensable | `tempMax >= 120` |  |
+| Conduire l'électricité | Sans importance (piège) | `elec == "conducteur"` |  |
+
+| Matériau | Verdict calculé | Score | Raison (éliminé) ou ce que l'on perd | D'accord ? |
+|---|---|---|---|---|
+| Pin / hêtre | Choix de référence | 0 | — |  |
+| Bakélite | Choix de référence | 0 | — |  |
+| Acier inoxydable | Éliminé |  | est conducteur de chaleur : la poignée devient brûlante |  |
+| Aluminium | Éliminé |  | est conducteur de chaleur : la poignée devient brûlante |  |
+| Cuivre | Éliminé |  | est conducteur de chaleur : la poignée devient brûlante |  |
+| Polypropylène | Éliminé |  | ramollit près de la cuve (100 °C au plus) |  |
 
 ## 3. Questions pour le relecteur
 
