@@ -26,7 +26,7 @@
   { "id": "extrusion", "nom": "Extrusion (profilés)", "geste": "mise-en-forme", "lieu": ["industrie"],
     "serie": ["grande"], "formes": ["profile"],
     "regleForme": "Profilé de section constante → extrusion." },
-  { "id": "assemblage", "nom": "Assemblage fixe (collage, soudage, rivetage) ou démontable (vissage, clipsage)", "geste": "assemblage", "lieu": ["labo", "industrie"],
+  { "id": "assemblage", "nom": "Assemblage (fixe : collage, soudage, rivetage ; démontable : vissage, clipsage)", "geste": "assemblage", "lieu": ["labo", "industrie"],
     "serie": ["unitaire", "petite", "grande"], "formes": [],
     "regleForme": "L'assemblage relie des pièces déjà formées : il ne donne pas sa forme à une pièce." }
 ]
