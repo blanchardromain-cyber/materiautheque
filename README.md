@@ -18,6 +18,19 @@ puis ouvrir <http://localhost:8820>. Une fois chargée, elle fonctionne hors con
 
 Paramètre : `?composant=turbine-p11` (seul scénario pour l'instant).
 
+## Méthode : quand l'élève sait-il s'il a juste ?
+
+Trois rendez-vous, sans jamais donner la réponse avant que l'élève l'ait cherchée.
+
+| Moment | Ce qui est vérifié | Retour à l'élève |
+|---|---|---|
+| Étape 1 « Vérifier mes réponses » | Ce que subit la pièce | « Bien vu » / « À revoir » + explication, contrainte par contrainte |
+| Étape 2 « Vérifier mes critères » | Les critères vitaux (eau, légèreté) sont indispensables ; les pièges (électricité, 200 °C) sont sans importance. Les autres cartes sont libres. | « À revoir » + une question qui renvoie à l'étape 1. Pas de tri tant que ce n'est pas juste. |
+| Étape 3 « Valider ce matériau » | Le matériau respecte **tous** les critères indispensables de l'élève, et un procédé de série permet de le fabriquer | Animation de la conséquence (rouille, démarrage lent…) ou « ce matériau n'est plus en lice », puis retour au tri |
+| Étape 5 (verdict) | Comparaison avec le cahier des charges de référence | « Meilleur compromis » ou « Choix acceptable : il …, un autre matériau en lice fait mieux sur … » (sans nommer ce matériau) |
+
+**Matériaux possibles pour la turbine (4e)** : le **POM** est le meilleur compromis (léger, résistant à l'eau et à l'usure, rigide, injectable). **ABS, PMMA, PE-HD et PP** sont des choix acceptables : ils respectent les critères indispensables mais perdent sur l'usure (et la rigidité pour PE-HD et PP). Plusieurs élèves peuvent donc rendre des matériaux différents ; la note porte sur la justification du compromis (grille 7.3), pas sur le seul nom du matériau. La correction collective peut faire émerger le POM à partir des choix acceptables.
+
 ## Ajouter ou corriger un matériau
 
 Tout le contenu est dans `data/` ; on n'a pas à toucher au code.
