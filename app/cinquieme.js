@@ -4,7 +4,7 @@ import {
   materiauxVisibles, scenarioPiece, lireEssai, criteresDuNiveau,
 } from "./moteur.js";
 import { fondPastille, casseroleSVG, consequenceCasserole, essaiSVG, schemaProcede } from "./illustrations.js";
-import { $, esc, le, ordreAuSort, lexique } from "./commun.js";
+import { $, esc, le, ordreAuSort, lexique, identiteHTML, identiteComplete, texteIdentite, formaterIdent } from "./commun.js";
 
 const NIVEAU = 5;
 const TITRES = ["J'observe", "Je définis mes critères", "Je teste et je trie", "Comment est-elle fabriquée ?", "Je justifie"];
@@ -227,13 +227,13 @@ export function creerCinquieme(ctx) {
   // ---------- Étape 5 ----------
   const pretAImprimer = () => {
     const c = e5(), i = ctx.etat().ident;
-    return PIECES.every(([p]) => c.familleRep[p]) && i.prenom?.trim() && i.nom?.trim() && i.classe?.trim();
+    return PIECES.every(([p]) => c.familleRep[p]) && identiteComplete(i);
   };
   function majImpression() {
     const b = $('[data-c5="imprimer"]');
     if (b) b.disabled = !pretAImprimer();
-    const i = ctx.etat().ident, t = $(".entete-impression");
-    if (t) t.textContent = `${i.prenom || ""} ${i.nom || ""} · ${i.classe || ""} · ${new Date().toLocaleDateString("fr-FR")}`;
+    const t = $(".entete-impression");
+    if (t) t.textContent = texteIdentite(ctx.etat().ident);
   }
 
   function etape5() {
@@ -266,14 +266,10 @@ export function creerCinquieme(ctx) {
         <figcaption>Cuve en <strong>${esc(nom(mat(c.choix.cuve)))}</strong>, poignée en <strong>${esc(nom(mat(c.choix.poignee)))}</strong></figcaption></figure></div>
       <div class="justif-texte">
         <h2 tabindex="-1">5. Je justifie mes choix</h2>
-        <p class="impression-seule entete-impression">${esc(i.prenom)} ${esc(i.nom)} · ${esc(i.classe)} · ${new Date().toLocaleDateString("fr-FR")}</p>
+        <p class="impression-seule entete-impression">${esc(texteIdentite(i))}</p>
         ${PIECES.map(phrase).join("")}
         ${tableau}
-        <fieldset class="identite ecran-seul"><legend>Pour imprimer ta fiche</legend>
-          ${[["prenom", "Prénom"], ["nom", "Nom"], ["classe", "Classe"]].map(([k, t]) =>
-            `<label>${t}<input type="text" data-c5-ident="${k}" value="${esc(i[k])}" autocomplete="off" maxlength="40"></label>`).join("")}
-          <p class="aide">Ces informations restent sur cet ordinateur et s'effacent avec « Recommencer ».</p>
-        </fieldset>
+        ${identiteHTML(i, "data-c5-ident")}
         <div class="actions ecran-seul">
           <button type="button" class="bouton" data-c5="imprimer" ${pretAImprimer() ? "" : "disabled"}>Imprimer ou enregistrer en PDF</button>
           <button type="button" class="bouton-discret" data-c5="recommencer">Recommencer</button>
@@ -331,13 +327,17 @@ export function creerCinquieme(ctx) {
         c.actifs[c.piece] = c.actifs[c.piece].filter((x) => x !== d.c5Classer); limiter(2);
         sauver(); ctx.rendreGarderFocus(`[data-c5-classer="${d.c5Classer}"][value="${t.value}"]`);
       }
+      if (d.c5Ident === "binome") { const e = ctx.etat(); e.ident = { ...e.ident, binome: t.checked }; sauver(); ctx.rendreGarderFocus('[data-c5-ident="binome"]'); }
       if (d.c5Famille) { c.familleRep[d.c5Famille] = t.value || null; sauver(); ctx.rendreGarderFocus(`[data-c5-famille="${d.c5Famille}"]`); }
     });
     document.addEventListener("input", (ev) => {
       if (ctx.etat().niveau !== NIVEAU) return;
       const t = ev.target, d = t.dataset, c = e5();
       if (d.c5Texte) { c.texte[d.c5Texte] = t.value; sauver(); }
-      if (d.c5Ident) { const e = ctx.etat(); e.ident = { ...e.ident, [d.c5Ident]: t.value }; sauver(); majImpression(); }
+      if (d.c5Ident && t.type === "text") {
+        t.value = formaterIdent(d.c5Ident, t.value);
+        const e = ctx.etat(); e.ident = { ...e.ident, [d.c5Ident]: t.value }; sauver(); majImpression();
+      }
     });
   }
 
