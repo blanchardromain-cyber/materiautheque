@@ -92,6 +92,10 @@ Chaque itération suit la boucle : spécifier → construire → vérifier techn
 
 **Vérifier pédagogiquement — à faire** : relecture des essais et des seuils (180 °C pour la cuve, 120 °C pour la poignée) ; test avec 3 élèves de 5e (adapter `PROTOCOLE-TEST-ELEVES.md`).
 
+## I4a.1 — 2026-10-07 : travail en binôme (non publiée)
+
+- Étape « Je justifie » (4e et 5e) : case « Nous travaillons en binôme » qui ajoute prénom et nom de l'élève 2 ; nom en majuscules et prénom avec majuscule initiale (prénoms composés compris), à la frappe comme à l'impression ; impression possible seulement si l'identification est complète. Bloc partagé dans , testé ().
+
 ## Backlog (itérations suivantes)
 
 - Procédés présents au collège mais hors référentiel : cisaillage (cisaille guillotine), pliage de tôle (plieuse), poinçonnage (poinçonneuse) ; à ajouter en I6 si utile.
