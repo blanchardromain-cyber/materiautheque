@@ -15,7 +15,7 @@ Notes de 1 (faible) à 5 (fort) ; coût de 1 (€) à 3 (€€€).
 | Alu | Matériaux métalliques | 2,7 | 4 | **3** ✱ | **2** ✱ | 4 | **4** ✱ | **0** ✱ | > 200 | **2** ✱ | 5 (Aluminium) | minerai | non | **Usinage ; Fonderie / moulage métal ; Emboutissage, pliage de tôle ; Extrusion ; Assemblage** ✱ |  |
 | Cu | Matériaux métalliques | 8,96 | 3 | **3** ✱ | **2** ✱ | 4 | **4** ✱ | **0** ✱ | > 200 | **3** ✱ | 5 (Cuivre) | minerai | non | **Usinage ; Extrusion ; Assemblage** ✱ |  |
 | Laiton | Matériaux métalliques | 8,5 | 4 | **3** ✱ | **3** ✱ | 4 | **4** ✱ | **0** ✱ | > 200 | **3** ✱ | 5 (Laiton) | minerai | non | **Usinage ; Fonderie / moulage métal ; Assemblage** ✱ |  |
-| PLA | Matériaux organiques | 1,24 | 3 | **2** ✱ | **2** ✱ | 3 | **3** ✱ | **0,5** ✱ | ≈ 50 | **1** ✱ | 2 (**7 / PLA** ✱) | renouvelable | non | Impression 3D par dépôt de fil |  |
+| PLA | Matériaux organiques | 1,24 | 3 | **2** ✱ | **2** ✱ | **2** ✱ | **2** ✱ | **0,5** ✱ | ≈ 50 | **1** ✱ | 2 (**7 / PLA** ✱) | renouvelable | non | Impression 3D par dépôt de fil |  |
 | ABS | Matériaux organiques | 1,04 | 3 | **4** ✱ | **3** ✱ | 3 | **4** ✱ | **0,3** ✱ | 70 | **1** ✱ | 3 (**7 / ABS** ✱) | fossile | non | Impression 3D par dépôt de fil ; Thermoformage ; Moulage par injection |  |
 | PE-HD | Matériaux organiques | 0,95 | 2 | **4** ✱ | **3** ✱ | 5 | **5** ✱ | **0** ✱ | 90 | **1** ✱ | 5 (2 / PE-HD) | fossile | non | **Moulage par injection ; Extrusion** ✱ |  |
 | PP | Matériaux organiques | 0,91 | 2 | **3** ✱ | **3** ✱ | 5 | **5** ✱ | **0** ✱ | 100 | **1** ✱ | 4 (5 / PP) | fossile | non | Moulage par injection |  |
@@ -51,7 +51,6 @@ Notes de 1 (faible) à 5 (fort) ; coût de 1 (€) à 3 (€€€).
 | POM | Choix de référence | 4 | — |  |
 | ABS | Acceptable | 3 | s'use vite (usure 3/5) |  |
 | PMMA | Acceptable | 3 | s'use vite (usure 3/5) |  |
-| PLA | Acceptable | 2 | s'use vite (usure 2/5) ; ne se moule pas par injection : pas d'aubes fines en grande série |  |
 | PE-HD | Acceptable | 2 | est trop souple (rigidité 2/5) : les aubes se tordent ; s'use vite (usure 3/5) |  |
 | PP | Acceptable | 2 | est trop souple (rigidité 2/5) : les aubes se tordent ; s'use vite (usure 3/5) |  |
 | Acier | Éliminé |  | s'abîme dans l'eau (résistance à l'eau 1/5) ; est trop lourd (7,85 g/cm³) : la turbine démarre mal |  |
@@ -59,6 +58,7 @@ Notes de 1 (faible) à 5 (fort) ; coût de 1 (€) à 3 (€€€).
 | Alu | Éliminé |  | est trop lourd (2,7 g/cm³) : la turbine démarre mal |  |
 | Cu | Éliminé |  | est trop lourd (8,96 g/cm³) : la turbine démarre mal |  |
 | Laiton | Éliminé |  | est trop lourd (8,5 g/cm³) : la turbine démarre mal |  |
+| PLA | Éliminé |  | s'abîme dans l'eau (résistance à l'eau 2/5) |  |
 | PA | Éliminé |  | s'abîme dans l'eau (résistance à l'eau 2/5) |  |
 
 ### Niveau 5e
@@ -101,12 +101,12 @@ Notes de 1 (faible) à 5 (fort) ; coût de 1 (€) à 3 (€€€).
 | ABS | Acceptable | 6 | s'use vite (usure 3/5) |  |
 | PMMA | Acceptable | 6 | s'use vite (usure 3/5) |  |
 | Composite verre-époxy | Acceptable | 5 | ne se moule pas par injection : pas d'aubes fines en grande série ; coûte cher (€€€) ; se recycle mal (1/5) |  |
-| PLA (biosourcé) | Acceptable | 3 | s'use vite (usure 2/5) ; ne se moule pas par injection : pas d'aubes fines en grande série ; se recycle mal (2/5) |  |
-| Acier S235 | Éliminé |  | se dégrade dans l'eau (tenue 1/5) ; est trop lourd (7,85 g/cm³) : la turbine démarre mal ; est attiré par l'aimant et freine le rotor |  |
+| Acier S235 | Éliminé |  | se dégrade dans l'eau (tenue 1/5) ; est trop lourd (7,85 g/cm³) : la turbine démarre mal ; est attiré par l'aimant et le freine |  |
 | Inox X5CrNi18-10 (304) | Éliminé |  | est trop lourd (7,9 g/cm³) : la turbine démarre mal |  |
 | Aluminium EN AW-6060 | Éliminé |  | est trop lourd (2,7 g/cm³) : la turbine démarre mal |  |
 | Cuivre Cu-ETP | Éliminé |  | est trop lourd (8,96 g/cm³) : la turbine démarre mal |  |
 | Laiton CuZn39Pb3 | Éliminé |  | est trop lourd (8,5 g/cm³) : la turbine démarre mal |  |
+| PLA (biosourcé) | Éliminé |  | se dégrade dans l'eau (tenue 2/5) |  |
 | PE-HD | Éliminé |  | est trop souple (rigidité 2/5) : les aubes se tordent |  |
 | PP | Éliminé |  | est trop souple (rigidité 2/5) : les aubes se tordent |  |
 | Silicone | Éliminé |  | est trop souple (rigidité 1/5) : les aubes se tordent |  |
