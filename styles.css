@@ -252,9 +252,6 @@ dialog::backdrop { background: rgba(16, 22, 29, .7); }
 .c-fabrication .turbine-rotor circle { fill: none; stroke-dasharray: 5 5; }
 
 /* Étape 4 */
-.bilan-procedes { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
-.bilan-procedes > div { background: var(--surface); border: 1px solid var(--trait); border-radius: var(--r); padding: 4px 16px 12px; }
-.bilan-procedes h3 { margin-top: .8em; }
 .galerie-procedes { list-style: none; margin: 20px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
 .fiche-procede { display: flex; flex-direction: column; background: var(--surface); border: 1px solid var(--trait); border-radius: var(--r); overflow: hidden; box-shadow: var(--ombre); }
 .fiche-procede.retenu { outline: 3px solid var(--encre); outline-offset: 2px; }
@@ -265,8 +262,29 @@ dialog::backdrop { background: rgba(16, 22, 29, .7); }
 .fiche-corps h3 { margin: .8em 0 .3em; }
 .fiche-corps p { margin: 0 0 8px; }
 .fiche-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; padding-top: 8px; }
-.badges { display: flex; gap: 6px; flex-wrap: wrap; }
-.badge { font-family: var(--mono); font-size: .72rem; padding: 1px 8px; border-radius: 999px; background: var(--surface-2); }
+.puces { display: flex; gap: 6px; flex-wrap: wrap; margin: 4px 0 8px; }
+.puce { font: 700 .85rem/1.2 var(--texte); padding: 5px 12px; border-radius: 999px; border: 2px solid transparent; }
+.puce-college { background: var(--marquage); color: var(--marquage-encre); }
+.puce-industrie { background: #4F6E8F; color: #fff; }
+.puce-geste { background: transparent; border-color: var(--encre-2); color: var(--encre); }
+.question-procede { display: flex; align-items: center; gap: 12px; font-size: 1.35rem; margin: 32px 0 12px; }
+.question-procede span { display: grid; place-items: center; flex: none; width: 40px; height: 40px; border-radius: 50%;
+  background: var(--encre); color: var(--paillasse); font-family: var(--titre); font-size: 1.4rem; }
+.fiche-procede.retenu.ok { outline-color: var(--ok); }
+.fiche-procede.retenu.ko { outline-color: var(--ko); }
+.fiche-corps .retour { margin-top: 10px; }
+.barre-procedes { flex-wrap: wrap; gap: 8px 20px; }
+.barre-procedes p { display: flex; flex-wrap: wrap; gap: 4px 20px; }
+.barre-procedes strong.ok { color: var(--ok); }
+.barre-procedes strong.ko { color: var(--ko); }
+.etape-procedes { padding-bottom: 40px; }
+.phrase-famille select { font: inherit; min-height: 40px; padding: 4px 8px; margin: 2px 0; border: 2px solid var(--encre-2); border-radius: 8px; background: var(--surface); color: var(--encre); max-width: 100%; }
+.identite { border: 1px solid var(--trait); border-radius: var(--r); background: var(--surface); padding: 8px 16px 12px; margin-top: 20px;
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.identite legend { font-weight: 700; padding: 0 6px; }
+.identite label { display: grid; gap: 4px; font-weight: 700; font-size: .9rem; }
+.identite input { min-height: 44px; padding: 6px 10px; border: 1px solid var(--trait); border-radius: 8px; background: var(--surface-2); font-weight: 400; }
+.identite .aide { grid-column: 1 / -1; margin: 0; }
 .schema .s-trait { stroke: var(--encre-2); stroke-width: 2; fill: none; }
 .schema .s-outil { fill: #9AA5B1; stroke: #4A5664; stroke-width: 2; }
 .schema .s-matiere { fill: #F2C230; stroke: #8A6A0A; stroke-width: 2; }
@@ -328,7 +346,10 @@ dialog::backdrop { background: rgba(16, 22, 29, .7); }
   main { padding: 20px 16px 120px; }
   .accueil, .deux-colonnes, .tri, .justification, .consequence { grid-template-columns: 1fr; }
   .accueil-visuel { order: -1; max-width: 220px; }
-  .zones, .bilan-procedes { grid-template-columns: 1fr; }
+  .zones, .identite { grid-template-columns: 1fr; }
+  .barre-procedes { padding: 8px 12px; gap: 6px 12px; }
+  .barre-procedes p { font-size: .85rem; gap: 2px 12px; }
+  .barre-procedes .bouton-discret { display: none; }
   .galerie-procedes { grid-template-columns: 1fr; }
   .tri-criteres, .justif-visuel { position: static; }
   .justif-visuel .turbine { max-width: 220px; }
