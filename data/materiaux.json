@@ -64,12 +64,13 @@
     "famille": "organique", "sousFamille": { "4": "Synthétique (plastique)", "3": "Thermoplastique biosourcé" },
     "masseVolumique": 1.24, "tempMax": 50, "tempMaxTexte": "≈ 50", "absorptionEau": 0.5,
     "elec": "isolant", "therm": "isolant", "magnetique": false,
-    "notes": { "rigidite": 3, "chocs": 2, "usure": 2, "eau": 3, "corrosion": 3 },
+    "notes": { "rigidite": 3, "chocs": 2, "usure": 2, "eau": 2, "corrosion": 2 },
     "cout": 1, "recyclage": { "note": 2, "code": "7 / PLA" }, "origine": "renouvelable",
     "procedes": ["impression-3d"],
     "peau3D": { "couleur": "#E8E4D8", "metal": 0, "rugosite": 0.6 },
     "exemples": ["pièces imprimées au collège", "gobelets compostables"],
-    "aValider": ["notes.chocs", "notes.usure", "notes.corrosion", "cout", "absorptionEau", "recyclage.code"]
+    "aValider": ["notes.eau", "notes.chocs", "notes.usure", "notes.corrosion", "cout", "absorptionEau", "recyclage.code"],
+    "noteEau": "Le tableau 3.4 du cadrage donnait 3 ; ramené à 2 car le PLA vieillit dans l'eau et ramollit vers 50-60 °C (tableau 4.1, décision du 2026-10-07)."
   },
   {
     "id": "abs", "nom": { "5": "Acrylonitrile butadiène styrène", "4": "ABS", "3": "ABS" },
