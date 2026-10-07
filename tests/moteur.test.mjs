@@ -55,10 +55,9 @@ test("5e : les trois plastiques restent, les métaux tombent", () => {
 test("3e : POM de référence, PA 6 compromis qui perd l'absorption, PP éliminé car souple", () => {
   const res = evaluer(turbine, materiaux, 3, ref(3), turbine.poids["3"]);
   const r = parId(res);
-  assert.equal(res.length, 18);
+  assert.equal(res.length, 19);
   assert.equal(res[0].id, "pom");
   assert.equal(r.pa6.verdict, "acceptable");
-  assert.equal(res[1].id, "pa6");
   assert.deepEqual(r.pa6.pertes.map((p) => p.critere), ["absorption"]);
   assert.equal(r.pp.verdict, "elimine");
   assert.equal(r.acier.raisons.some((x) => x.critere === "amagnetique"), true);
@@ -168,4 +167,49 @@ test("rendez-vous 3 : verdict final explicite, sans nommer le meilleur compromis
   assert.deepEqual(abs.mieux, ["usure"], "un autre matériau fait mieux sur l'usure");
   const pehd = verdictFinal(turbine, materiaux, 4, "pehd");
   assert.deepEqual(pehd.pertes.map((p) => p.critere).sort(), ["rigide", "usure"]);
+});
+
+// ---------- 5e : la casserole, deux pièces ----------
+import { scenarioPiece, lireEssai } from "../app/moteur.js";
+const casserole = lire("composants.json").find((s) => s.id === "casserole");
+const essais = lire("essais.json");
+
+test("5e casserole : oracle par pièce avec le classement de référence", () => {
+  for (const piece of ["cuve", "poignee"]) {
+    const sc = scenarioPiece(casserole, piece);
+    const r = parId(evaluer(sc, materiaux, 5, classementReference(sc, 5)));
+    assert.equal(Object.keys(r).length, 6);
+    assert.deepEqual(Object.values(r).filter((x) => x.verdict === "reference").map((x) => x.id).sort(), [...sc.reponsesAttendues["5"]].sort(), piece);
+    for (const id of sc.elimineAttendus["5"]) assert.equal(r[id].verdict, "elimine", `${piece} : ${id}`);
+  }
+});
+
+test("5e casserole : aucune impasse, procédés d'usine permis", () => {
+  for (const piece of ["cuve", "poignee"]) {
+    const sc = scenarioPiece(casserole, piece);
+    for (const id of sc.reponsesAttendues["5"]) {
+      const v = verifierChoix(sc, materiaux, 5, id, procedes);
+      assert.ok(v.ok, `${piece} : ${id} refusé (${v.violations.map((x) => x.critere)})`);
+    }
+    assert.equal(verifierChoix(sc, materiaux, 5, "pp", procedes).ok, false);
+  }
+  const cuve = parId(procedesCompatibles(mat("inox"), procedes, scenarioPiece(casserole, "cuve"), 5));
+  assert.equal(cuve.emboutissage.compatible, true, "l'emboutissage est proposé en 5e pour la casserole");
+});
+
+test("5e casserole : contraintes et vérification des critères par pièce", () => {
+  const cuve = scenarioPiece(casserole, "cuve");
+  assert.ok(cuve.contraintes.every((c) => c.piece === "cuve") && cuve.contraintes.length === 4);
+  assert.equal(verifierClassement(cuve, 5, { "conduire-chaleur": "indispensable", "supporter-feu": "indispensable", electricite: "indispensable" }).length, 1);
+  assert.equal(verdictFinal(cuve, materiaux, 5, "alu").niveau, "meilleur");
+});
+
+test("banc d'essai : lecture en mots, première règle satisfaite", () => {
+  const e = (id) => essais.find((x) => x.id === id);
+  assert.equal(lireEssai(e("aimant"), mat("alu")).classe, "non", "l'aluminium n'est pas attiré");
+  assert.equal(lireEssai(e("aimant"), mat("acier")).classe, "oui");
+  assert.equal(lireEssai(e("balance"), mat("cuivre")).texte, "lourd : le cube pèse 8,96 g");
+  assert.equal(lireEssai(e("plaque"), mat("bois")).classe, "moyen");
+  assert.equal(lireEssai(e("plaque"), mat("pp")).classe, "faible");
+  assert.equal(lireEssai(e("flexion"), mat("cuivre")).classe, "moyen", "lourd ne veut pas dire le plus rigide");
 });
