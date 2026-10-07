@@ -458,3 +458,4 @@ dialog::backdrop { background: rgba(16, 22, 29, .7); }
   .banc, .encart-college { grid-template-columns: 1fr; }
 }
 .justif-texte, .justif-visuel, .tri-grille, .tri5 { min-width: 0; }
+.identite .binome { grid-column: 1 / -1; display: flex; align-items: center; gap: 10px; background: transparent; border: 0; padding: 4px 0; }
