@@ -1,6 +1,6 @@
 // Contrôle du référentiel : node outils/controle-donnees.mjs [dossier-data]
 // Code de sortie 1 et liste des erreurs si une règle n'est pas respectée.
-import { readFileSync } from "node:fs";
+import { readFileSync, existsSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -29,6 +29,8 @@ if (procedes.length !== 10) err(`10 procédés attendus, ${procedes.length} trou
 if (idsProcedes.size !== procedes.length) err("identifiants de procédés en double");
 
 for (const p of procedes) {
+  if (!p.principe) err(`${p.id} : principe manquant`);
+  for (const ph of p.photos || []) if (!existsSync(join(dossier, "..", ph.src))) err(`${p.id} : photo ${ph.src} introuvable`);
   if (!p.lieu.every((l) => ["labo", "industrie"].includes(l))) err(`${p.id} : lieu inconnu`);
   if (!p.serie.every((s) => ["unitaire", "petite", "grande"].includes(s))) err(`${p.id} : série inconnue`);
 }
@@ -84,6 +86,8 @@ for (const s of composants) {
       if (ref[id] !== "souhaitable") err(`${q} : poids ${n}e sur ${id}, qui n'est pas souhaitable`);
   }
   for (const v of Object.values(s.formeProcedes)) if (!idsProcedes.has(v)) err(`${q} : procédé ${v} inconnu`);
+  if (!s.sansProcede?.nonParceQue || !s.sansProcede?.question) err(`${q} : textes sansProcede manquants`);
+  if (s.contraintes.filter((c) => c.vraie).length < 2 || s.contraintes.every((c) => c.vraie)) err(`${q} : il faut des contraintes vraies et fausses`);
   if (s.materiauPrototype && !idsMateriaux.has(s.materiauPrototype)) err(`${q} : matériau de prototype inconnu`);
 }
 
