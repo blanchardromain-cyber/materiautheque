@@ -39,7 +39,7 @@ export function turbineSVG({ couleur = "#F2F0EA", metal = 0, classe = "" } = {},
 export function robinetCoupeSVG() {
   return `<svg class="robinet" viewBox="0 0 400 300" role="img" aria-labelledby="robinet-titre robinet-desc">
     <title id="robinet-titre">Robinet automatique en coupe</title>
-    <desc id="robinet-desc">L'eau monte par le tuyau, traverse la turbine qui entraîne le générateur, passe l'électrovanne et sort par le bec, sous le capteur.</desc>
+    <desc id="robinet-desc">Quand des mains s'approchent du capteur, l'électrovanne s'ouvre : l'eau monte par le tuyau, traverse la turbine qui fait tourner l'aimant du générateur, puis sort par le bec. Quand les mains s'éloignent, l'eau s'arrête aussitôt.</desc>
     <rect x="0" y="0" width="34" height="300" class="mur" />
     <path d="M 70 300 L 70 120 Q 70 70 120 70 L 300 70 Q 340 70 340 110 L 340 130" class="tuyau-ext" />
     <path d="M 70 300 L 70 120 Q 70 70 120 70 L 300 70 Q 340 70 340 110 L 340 130" class="tuyau-int" />
@@ -59,6 +59,12 @@ export function robinetCoupeSVG() {
     </g></g>
     <rect x="200" y="54" width="44" height="32" rx="4" class="boitier" />
     <rect x="300" y="140" width="34" height="18" rx="4" class="capteur" />
+    <g class="ondes"><path d="M310 164 q8 8 16 0" /><path d="M304 170 q14 14 28 0" /><path d="M298 176 q20 20 40 0" /></g>
+    <g class="mains" aria-hidden="true">
+      <rect x="320" y="246" width="36" height="30" rx="9" /><rect x="320" y="226" width="7" height="26" rx="3.5" />
+      <rect x="329" y="222" width="7" height="30" rx="3.5" /><rect x="338" y="223" width="7" height="29" rx="3.5" />
+      <rect x="347" y="228" width="7" height="24" rx="3.5" /><rect x="306" y="252" width="18" height="8" rx="4" transform="rotate(-35 315 256)" />
+    </g>
     <g class="etiquettes">
       <text x="166" y="272" text-anchor="middle" class="etiquette-forte">générateur</text>
       <text x="222" y="44" text-anchor="middle">électrovanne</text>
@@ -90,10 +96,27 @@ const RECITS = {
 
 // Schémas de principe des procédés (repli quand il n'y a pas de photo).
 const SCHEMAS = {
-  "impression-3d": `<rect x="40" y="128" width="160" height="10" class="s-outil"/><rect x="90" y="112" width="60" height="8" class="s-matiere"/><rect x="94" y="104" width="52" height="8" class="s-matiere"/><rect x="98" y="96" width="44" height="8" class="s-matiere"/><path d="M120 40 v40" class="s-fil"/><path d="M108 70 h24 l-8 18 h-8 z" class="s-chaud"/><path d="M60 30 h120" class="s-trait"/>`,
-  "decoupe-laser": `<rect x="30" y="110" width="180" height="14" class="s-matiere"/><rect x="100" y="30" width="40" height="24" class="s-outil"/><path d="M120 54 V110" class="s-laser"/><path d="M60 110 v14 M150 110 v14" class="s-coupe"/>`,
-  usinage: `<rect x="50" y="96" width="140" height="40" class="s-matiere"/><path d="M50 96 h50 v14 h40 v-14" class="s-coupe"/><rect x="112" y="30" width="16" height="44" class="s-outil"/><path d="M114 74 h12 l-2 24 h-8 z" class="s-outil"/><path d="M146 88 l10 -8 M150 96 l14 -4 M96 86 l-10 -8" class="s-trait"/>`,
-  "pliage-chaud": `<path d="M30 112 H120 L170 62" class="s-plaque"/><circle cx="120" cy="120" r="5" class="s-chaud"/><path d="M60 130 H180" class="s-trait"/>`,
+  // Imprimante 3D à plateau mobile (type Bambu Lab A1) : bobine, bras, tête, pièce en couches
+  "impression-3d": `<rect x="24" y="134" width="192" height="12" rx="3" class="s-bati"/><rect x="34" y="26" width="12" height="108" class="s-outil"/>
+    <rect x="34" y="52" width="160" height="9" rx="2" class="s-outil"/><rect x="70" y="124" width="124" height="7" rx="2" class="s-outil"/>
+    <rect x="104" y="112" width="44" height="6" class="s-matiere"/><rect x="108" y="106" width="36" height="6" class="s-matiere"/><rect x="112" y="100" width="28" height="6" class="s-matiere"/>
+    <rect x="114" y="61" width="24" height="26" rx="3" class="s-bati"/><path d="M121 87 h10 l-5 9 z" class="s-chaud"/>
+    <circle cx="66" cy="20" r="13" class="s-bobine"/><circle cx="66" cy="20" r="4" class="s-bati"/><path d="M78 24 C 100 30, 118 40, 126 61" class="s-fil"/>`,
+  // Découpeuse laser fermée (type xTool) : caisson, capot teinté, tête, faisceau sur la plaque
+  "decoupe-laser": `<rect x="22" y="80" width="196" height="58" rx="8" class="s-caisson"/><path d="M22 86 L40 46 H200 L218 86 Z" class="s-capot"/>
+    <rect x="58" y="66" width="128" height="6" class="s-outil"/><rect x="106" y="58" width="26" height="18" rx="3" class="s-bati"/>
+    <path d="M119 76 V100" class="s-laser"/><rect x="50" y="100" width="140" height="8" class="s-matiere"/>
+    <circle cx="200" cy="116" r="7" class="s-arret"/><path d="M40 124 H150" class="s-trait"/>`,
+  // Fraiseuse à commande numérique sous capot arrondi (type Charlyrobot) : broche, fraise, plaque, poignée
+  usinage: `<rect x="30" y="112" width="180" height="36" rx="6" class="s-caisson"/><rect x="34" y="106" width="172" height="8" rx="4" class="s-poignee"/>
+    <path d="M36 106 V44 Q36 20 70 20 H170 Q204 20 204 44 V106" class="s-capot-arche"/>
+    <rect x="62" y="34" width="22" height="70" class="s-outil"/><rect x="84" y="40" width="20" height="26" rx="3" class="s-bati"/><path d="M90 66 h8 v14 h-8 z" class="s-outil"/><path d="M92 80 h4 l-2 8 z" class="s-bati"/>
+    <rect x="70" y="92" width="110" height="10" class="s-matiere-r"/><path d="M104 88 l8 -6 M110 92 l10 -2" class="s-trait"/>
+    <circle cx="160" cy="132" r="6" class="s-marche"/><circle cx="182" cy="132" r="7" class="s-arret"/>`,
+  // Thermoplieuse : bâti, fil chauffant, plaque pliée le long du fil
+  "pliage-chaud": `<rect x="30" y="112" width="180" height="16" rx="3" class="s-caisson"/><rect x="30" y="128" width="16" height="16" class="s-bati"/><rect x="194" y="128" width="16" height="16" class="s-bati"/>
+    <path d="M40 108 H200" class="s-chaud-l"/><path d="M40 104 H120 L162 62" class="s-plaque"/>
+    <path d="M150 50 a22 22 0 0 1 22 22" class="s-trait"/><path d="M168 66 l4 8 l6 -6" class="s-trait"/>`,
   thermoformage: `<rect x="80" y="96" width="80" height="34" rx="12" class="s-outil"/><path d="M40 92 H74 C76 88 78 92 80 96 Q120 70 160 96 C162 92 164 88 166 92 H200" class="s-plaque"/><path d="M100 140 v12 M120 140 v12 M140 140 v12" class="s-trait"/><path d="M60 40 h120" class="s-chaud-l"/>`,
   injection: `<rect x="20" y="70" width="110" height="30" class="s-outil"/><path d="M30 85 h90" class="s-vis"/><rect x="130" y="50" width="34" height="70" class="s-outil"/><rect x="168" y="50" width="34" height="70" class="s-outil"/><path d="M152 74 h24 v22 h-24 z" class="s-matiere"/><path d="M60 50 l10 20 h-20 z" class="s-matiere"/>`,
   fonderie: `<rect x="110" y="90" width="100" height="50" class="s-outil"/><path d="M140 90 v-6 h40 v6" class="s-outil"/><path d="M40 40 l50 0 l-6 24 l-38 0 z" class="s-outil"/><path d="M88 56 Q130 60 158 88" class="s-chaud-l"/><rect x="138" y="104" width="44" height="22" class="s-chaud"/>`,
