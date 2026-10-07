@@ -96,6 +96,15 @@ Chaque itération suit la boucle : spécifier → construire → vérifier techn
 
 - Étape « Je justifie » (4e et 5e) : case « Nous travaillons en binôme » qui ajoute prénom et nom de l'élève 2 ; nom en majuscules et prénom avec majuscule initiale (prénoms composés compris), à la frappe comme à l'impression ; impression possible seulement si l'identification est complète. Bloc partagé dans , testé ().
 
+## I4a.2 — 2026-10-07 : fiche en PDF sans impression (non publiée)
+
+- « Enregistrer ma fiche en PDF » (4e et 5e) remplace l'impression : le PDF est fabriqué dans la page (html2pdf.js 0.10.1, chargé depuis cdnjs au premier clic, puis gardé en cache hors ligne) et téléchargé directement, nommé `Materiautheque-4e-NOM-Prenom[_NOM2-Prenom2].pdf`.
+- En-tête du PDF sur le modèle des fiches P11 (bandeau « TECHNOLOGIE · Cycle 4 · Classe de 4ᵉ | P11 — L'eau, ressource essentielle », titre de l'activité, élèves, classe, date) ; en-tête propre à chaque scénario (`entete` dans `composants.json`).
+- Le PDF recopie l'écran « Je justifie » : saisies converties en texte, boutons retirés, dessins SVG convertis en images avec leurs couleurs (sinon vides puis noirs à la capture).
+- Étape 5 (4e) : encadré « Masses volumiques » (matériau choisi et laiton) pour le mini-tableur énergie grise ; l'aide du tableur y renvoie.
+- Vérifié : PDF 4e (≈ 480 Ko, 2 pages) et 5e (≈ 370 Ko, 2 pages) générés et relus page à page ; premier essai vide (page capturée hors écran) puis dessin noir, tous deux corrigés.
+- Limite : le tout premier enregistrement sur un poste demande internet (chargement de la bibliothèque).
+
 ## Backlog (itérations suivantes)
 
 - Procédés présents au collège mais hors référentiel : cisaillage (cisaille guillotine), pliage de tôle (plieuse), poinçonnage (poinçonneuse) ; à ajouter en I6 si utile.
