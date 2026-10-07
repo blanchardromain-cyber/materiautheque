@@ -133,5 +133,111 @@
     "materiauPrototype": "pla",
     "reponsesAttendues": { "5": ["pom", "abs", "pp"], "4": ["pom"], "3": ["pom", "pa6"] },
     "elimineAttendus": { "5": ["acier", "alu", "laiton"], "4": ["acier", "alu", "laiton", "pa6", "pla"], "3": ["acier", "alu", "laiton", "pla"] }
+  },
+  {
+    "id": "casserole",
+    "niveaux": [5],
+    "systeme": "Cuisine",
+    "piece": "Casserole",
+    "sequence": "Cycle 4 · 5e — Les familles de matériaux",
+    "presentation": "Une casserole a deux pièces aux besoins opposés : la cuve doit laisser passer la chaleur vers les aliments, la poignée doit la bloquer pour ne pas brûler la main. Quel matériau pour chacune ?",
+    "materiauxVisibles": { "5": ["inox", "alu", "cuivre", "bois", "pp", "bakelite"] },
+    "lieuProcedes": "tous",
+    "usageFabrication": "tout",
+    "prototype": "Au collège, on peut imprimer en 3D une poignée de prototype en PLA pour tester sa prise en main. Elle ne supporterait pas la chaleur d'une vraie cuisson : c'est un essai de forme, pas la pièce finale.",
+    "contraintes": [
+      { "id": "plaque", "piece": "cuve", "texte": "La cuve est posée sur une plaque très chaude.", "vraie": true,
+        "explication": "Vrai : le fond de la cuve dépasse souvent 180 °C." },
+      { "id": "transmettre", "piece": "cuve", "texte": "La cuve doit transmettre la chaleur aux aliments.", "vraie": true,
+        "explication": "Vrai : c'est son rôle, faire chauffer ce qu'elle contient." },
+      { "id": "flotter", "piece": "cuve", "texte": "La cuve doit flotter sur l'eau.", "vraie": false,
+        "explication": "Faux : on met l'eau dans la cuve, pas la cuve sur l'eau." },
+      { "id": "courant", "piece": "cuve", "texte": "Un courant électrique traverse la casserole.", "vraie": false,
+        "explication": "Faux : même sur une plaque électrique, aucun courant ne passe dans la casserole." },
+      { "id": "main", "piece": "poignee", "texte": "La poignée est tenue à la main pendant la cuisson.", "vraie": true,
+        "explication": "Vrai : elle ne doit donc pas devenir brûlante." },
+      { "id": "proche", "piece": "poignee", "texte": "La poignée est fixée tout près de la cuve chaude.", "vraie": true,
+        "explication": "Vrai : elle reçoit un peu de chaleur, sans être sur la flamme." },
+      { "id": "transmettre-poignee", "piece": "poignee", "texte": "La poignée doit transmettre la chaleur.", "vraie": false,
+        "explication": "Faux : au contraire, elle doit garder la chaleur loin de la main." },
+      { "id": "marteau", "piece": "poignee", "texte": "La poignée reçoit des coups de marteau.", "vraie": false,
+        "explication": "Faux : on la saisit, on ne tape pas dessus." }
+    ],
+    "pieces": [
+      {
+        "id": "cuve",
+        "piece": "Cuve",
+        "forme": "coque",
+        "procedeUsine": ["emboutissage"],
+        "criteres": [
+          { "id": "conduire-chaleur", "niveaux": [5], "essai": "bougie",
+            "carte": { "5": "Laisser passer la chaleur vers les aliments" },
+            "pourquoi": "La cuve doit chauffer ce qu'elle contient.",
+            "regle": { "champ": "therm", "op": "==", "valeur": "conducteur" },
+            "nonParceQue": "est isolant thermique : les aliments chauffent mal",
+            "consequence": "cuisson-lente",
+            "questionRetour": "Relis : « la cuve doit transmettre la chaleur aux aliments ». Que montre l'essai de la chaleur pour ce matériau ?",
+            "questionClassement": "Relis l'étape 1 : que doit faire la cuve avec la chaleur de la plaque ? Une cuve qui la bloque peut-elle convenir ?" },
+          { "id": "supporter-feu", "niveaux": [5], "essai": "plaque",
+            "carte": { "5": "Supporter la chaleur de la plaque" },
+            "pourquoi": "Le fond de la cuve dépasse 180 °C.",
+            "regle": { "champ": "tempMax", "op": ">=", "valeur": 180 },
+            "nonParceQue": "ne supporte pas la plaque ({v} °C au plus)",
+            "consequence": "fond",
+            "questionRetour": "Relis : « la cuve est posée sur une plaque très chaude ». Que montre l'essai de la plaque chauffante ?",
+            "questionClassement": "Relis l'étape 1 : sur quoi la cuve est-elle posée ? Une cuve qui ramollit peut-elle convenir ?" },
+          { "id": "electricite", "niveaux": [5], "essai": "circuit",
+            "carte": { "5": "Conduire l'électricité" },
+            "pourquoi": "Piège : aucun courant ne traverse la casserole.",
+            "regle": { "champ": "elec", "op": "==", "valeur": "conducteur" },
+            "nonParceQue": "est isolant électrique",
+            "questionClassement": "Relis l'étape 1 : un courant électrique traverse-t-il la casserole ? Ce critère concerne-t-il la cuve ?" }
+        ],
+        "reference": { "5": { "conduire-chaleur": "indispensable", "supporter-feu": "indispensable", "electricite": "sans" } },
+        "reponsesAttendues": { "5": ["inox", "alu", "cuivre"] },
+        "elimineAttendus": { "5": ["bois", "pp", "bakelite"] },
+        "sansProcede": {
+          "nonParceQue": "ne peut pas être mis en forme de cuve",
+          "question": "Quel procédé donne une forme creuse et fine comme une cuve ? Ce matériau peut-il être mis en forme ainsi ?"
+        }
+      },
+      {
+        "id": "poignee",
+        "piece": "Poignée",
+        "forme": "volume-simple",
+        "procedeUsine": ["injection", "usinage"],
+        "criteres": [
+          { "id": "isoler-chaleur", "niveaux": [5], "essai": "bougie",
+            "carte": { "5": "Bloquer la chaleur pour ne pas brûler la main" },
+            "pourquoi": "On tient la poignée pendant la cuisson.",
+            "regle": { "champ": "therm", "op": "==", "valeur": "isolant" },
+            "nonParceQue": "est conducteur de chaleur : la poignée devient brûlante",
+            "consequence": "brulure",
+            "questionRetour": "Relis : « la poignée est tenue à la main ». Que montre l'essai de la chaleur pour ce matériau ?",
+            "questionClassement": "Relis l'étape 1 : qui tient la poignée ? Une poignée brûlante peut-elle convenir ?" },
+          { "id": "chaleur-proche", "niveaux": [5], "essai": "plaque",
+            "carte": { "5": "Résister à la chaleur près de la cuve" },
+            "pourquoi": "La poignée est fixée tout près de la cuve chaude.",
+            "regle": { "champ": "tempMax", "op": ">=", "valeur": 120 },
+            "nonParceQue": "ramollit près de la cuve ({v} °C au plus)",
+            "consequence": "poignee-molle",
+            "questionRetour": "Relis : « la poignée est fixée tout près de la cuve chaude ». Que montre l'essai de la plaque chauffante ?",
+            "questionClassement": "Relis l'étape 1 : où est fixée la poignée ? Une poignée qui ramollit peut-elle convenir ?" },
+          { "id": "electricite", "niveaux": [5], "essai": "circuit",
+            "carte": { "5": "Conduire l'électricité" },
+            "pourquoi": "Piège : aucun courant ne traverse la casserole.",
+            "regle": { "champ": "elec", "op": "==", "valeur": "conducteur" },
+            "nonParceQue": "est isolant électrique",
+            "questionClassement": "Relis l'étape 1 : un courant électrique traverse-t-il la casserole ? Ce critère concerne-t-il la poignée ?" }
+        ],
+        "reference": { "5": { "isoler-chaleur": "indispensable", "chaleur-proche": "indispensable", "electricite": "sans" } },
+        "reponsesAttendues": { "5": ["bois", "bakelite"] },
+        "elimineAttendus": { "5": ["inox", "alu", "cuivre", "pp"] },
+        "sansProcede": {
+          "nonParceQue": "ne peut pas être mis en forme de poignée",
+          "question": "Quel procédé donne une poignée pleine ? Ce matériau peut-il être mis en forme ainsi ?"
+        }
+      }
+    ]
   }
 ]
