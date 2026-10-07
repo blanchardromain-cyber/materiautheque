@@ -54,9 +54,19 @@ Chaque itération suit la boucle : spécifier → construire → vérifier techn
 
 **Vérifié** : 13 tests du moteur, contrôle des données (photos comprises), parcours complet POM et erreur PLA dans le navigateur, bascules de l'étape 3 et 4, 375 px sur les 5 étapes, console sans erreur.
 
+## I2.2 — 2026-10-07 (deuxième relecture du professeur, non publiée)
+
+**Retours**
+1. Étape 1 : le robinet se déclenche par la présence des mains (bouton « Approcher les mains du capteur »), ondes du capteur, arrêt immédiat quand on retire les mains.
+2. Étape 3 : comparaison « figée » sur PLA, acier, laiton. **Cause** : au-delà de 3, les autres cases étaient grisées sans explication, et la sélection est gardée d'une séance à l'autre. **Correction** : la 4e case retire la plus ancienne ; bouton « Vider la comparaison ».
+3. Étape 4 : plus de photos (choix du professeur, par cohérence) ; machines du collège dessinées (imprimante 3D Bambu Lab A1, découpeuse laser xTool, fraiseuse Charlyrobot, thermoplieuse), nom de la machine sous le dessin. Images supprimées du dépôt.
+4. Étape 5 : méthode clarifiée, « 3 rendez-vous » (décision du professeur) — voir README, section « Méthode ». **Cause du bilan contradictoire** : un élève pouvait mettre « conduire l'électricité » en indispensable, voir tous les plastiques éliminés, choisir quand même le PE-HD (accepté car conforme à la référence) ; le bilan mélangeait ses critères et ceux de référence. **Corrections** : vérification des critères à l'étape 2 (`verifierClassement`) ; la validation exige le respect de tous les critères de l'élève (`verifierCoherence`) ; verdict explicite à l'étape 5 (`verdictFinal`) ; bilan « matériaux écartés par mes critères indispensables », sans le matériau choisi.
+
+**Vérifié** : 16 tests, contrôle des données (questions obligatoires pour les critères vitaux et pièges), le cas de la capture rejoué (4 cartes à revoir, puis PE-HD → « choix acceptable », absent des écartés), animation laiton, comparaison au-delà de 3, mains, dessins des machines.
+
 ## Backlog (itérations suivantes)
 
-- Remplacer les images fabricant (Bambu Lab A1, xTool) par des photos du collège avant toute publication. Photos non utilisées : cisaille guillotine, plieuse, poinçonneuse (procédés hors référentiel ; à ajouter en I6 si utile).
+- Procédés présents au collège mais hors référentiel : cisaillage (cisaille guillotine), pliage de tôle (plieuse), poinçonnage (poinçonneuse) ; à ajouter en I6 si utile.
 
 - I3 : scène 3D (model-viewer) turbine + robinet en coupe ; question ouverte : CAO du support P11 ou remodélisation.
 - I4 : niveaux 5e et 3e à l'écran (moteur et données prêts), glossaire au survol, graphique masse volumique × rigidité, police Luciole.
