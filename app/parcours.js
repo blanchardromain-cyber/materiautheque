@@ -24,7 +24,8 @@ let robinetOuvert = false;
 
 function nouvelEtat() {
   return { niveau: 4, etape: 0, max: 0, contraintes: {}, contraintesVues: false, ordre: null, classement: {}, criteresVus: false, justif: {},
-    actifs: [], comparer: [], choix: null, essais: 0, serie: null, proto: null, texte: {} };
+    actifs: [], comparer: [], choix: null, essais: 0, serie: null, proto: null, texte: {},
+    familleRep: null, sousFamilleRep: null, ident: {} };
 }
 
 // Ordre des contraintes tiré au sort une fois par élève, gardé ensuite (les vraies ne doivent pas venir en tête).
@@ -219,7 +220,7 @@ function carteMateriau(r) {
   return `<li class="echantillon ${r.elimine ? "elimine" : ""} ${choisi ? "choisi" : ""}" style="--famille:${f.couleur}">
     <div class="echantillon-tete">
       <span class="pastille" style="background:${fondPastille(m.peau3D)}"></span>
-      <div><p class="echantillon-nom">${esc(nomM(m))}</p>${courant}<p class="echantillon-famille">${esc(m.sousFamille[etat.niveau] || f.nom[etat.niveau])}</p></div>
+      <div><p class="echantillon-nom">${esc(nomM(m))}</p>${courant}</div>
     </div>
     <dl class="proprietes">${PROPS_CARTE.map(([c, t]) => `<div><dt>${t}</dt><dd>${valeur(m, c)}</dd></div>`).join("")}</dl>
     ${points}${bande}
@@ -314,79 +315,119 @@ function validerChoix() {
 }
 
 // ---------- Étape 4 ----------
+// Durée de fabrication de toute la série, en mots d'élève.
+function dureeTexte(secondes) {
+  const h = secondes / 3600, j = h / 24;
+  if (h < 48) return `environ ${Math.max(1, Math.round(h))} heure${Math.round(h) > 1 ? "s" : ""}`;
+  if (j < 60) return `environ ${Math.round(j)} jours sans arrêt`;
+  return `environ ${Math.round(j / 30)} mois sans arrêt`;
+}
+
+const PICTO_GESTE = { ajout: "＋", enlevement: "－", "mise-en-forme": "↻", assemblage: "⧉" };
+
+function puces(q) {
+  const lieux = q.lieu.map((l) => l === "labo"
+    ? `<span class="puce puce-college">au collège</span>`
+    : `<span class="puce puce-industrie">dans l'industrie</span>`).join("");
+  return `<p class="puces">${lieux}<span class="puce puce-geste">${PICTO_GESTE[q.geste]} ${GESTES[q.geste]}</span></p>`;
+}
+
 function etape4() {
   const m = mat(etat.choix);
   const proc = (id) => D.procedes.find((p) => p.id === id);
+  const N = S.quantiteSerie || 10000;
+  const nombre = N.toLocaleString("fr-FR");
   const liste = procedesCompatibles(m, D.procedes, S, etat.niveau).filter((p) => p.id !== "assemblage");
   const proto = mat(S.materiauPrototype);
   const protoListe = procedesCompatibles(proto, D.procedes, S, etat.niveau);
-  const usage = usageRequis(etat.niveau);
-  const fabricable = liste.some((p) => p.compatible && p.usage === usage);
+  const fabricable = liste.some((p) => p.compatible && p.usage === usageRequis(etat.niveau));
 
-  // Retour sur le procédé de série
-  const s = liste.find((p) => p.id === etat.serie);
-  const serieOk = !!s && s.compatible && s.usage === "serie";
-  const retourSerie = !s ? "" : serieOk
-    ? `<p class="retour ok"><strong>Oui.</strong> ${esc(s.raison)} Ce procédé convient à une grande série.</p>`
-    : s.compatible
-      ? `<p class="retour ko"><strong>Pas pour la série.</strong> On peut obtenir la turbine ${esc(du(nomM(m)))} ainsi, mais une pièce à la fois : ce procédé ne convient pas à une grande série. Cherche un procédé industriel.</p>`
-      : `<p class="retour ko"><strong>Non.</strong> ${esc(s.raison)}</p>`;
-
-  // Retour sur le prototype : directement dans le matériau choisi, ou dans le matériau de prototype du scénario
-  let protoOk = false, retourProto = "";
-  if (etat.proto) {
-    const directe = liste.find((p) => p.id === etat.proto);
-    const via = protoListe.find((p) => p.id === etat.proto);
-    if (directe?.compatible) {
-      protoOk = true;
-      retourProto = `<p class="retour ok"><strong>Oui.</strong> Le prototype peut être fait directement en ${esc(nomM(m))}.</p>`;
-    } else if (via?.compatible) {
-      protoOk = true;
-      retourProto = `<p class="retour ok"><strong>Oui, avec une adaptation.</strong> Au collège, on ne peut pas travailler ${esc(le(nomM(m)))} ainsi : le prototype se fait en ${esc(nomM(proto))}. Il sert à tester la forme des aubes, pas à durer dans l'eau.</p>`;
-    } else {
-      retourProto = `<p class="retour ko"><strong>Non.</strong> ${esc(directe?.raison || via?.raison || "")}</p>`;
-    }
-  }
-
-  const carte = (p) => {
+  // Question 1 : la série
+  const retourSerie = (p) => {
     const q = proc(p.id);
-    const labo = q.lieu.includes("labo");
-    const enSerie = etat.serie === p.id, enProto = etat.proto === p.id;
-    return `<li class="fiche-procede ${enSerie || enProto ? "retenu" : ""}">
-      <figure class="fiche-media">${schemaProcede(q.id, q.nom)}<figcaption>${esc(q.machineCollege || "Schéma de principe")}</figcaption></figure>
+    const duree = q.tempsPiece ? ` Environ ${q.tempsPiece < 120 ? `${q.tempsPiece} secondes` : `${Math.round(q.tempsPiece / 60)} minutes`} par pièce : ${nombre} turbines en ${dureeTexte(q.tempsPiece * N)}.` : "";
+    if (p.compatible && p.usage === "serie") return { ok: true, html: `<strong>Oui.</strong> ${esc(p.raison)}${esc(duree)}` };
+    if (p.compatible) return { ok: false, html: `<strong>Pas pour ${nombre} pièces.</strong> On peut obtenir une turbine en ${esc(nomM(m))} ainsi, mais une pièce à la fois.${esc(duree)} ${q.lieu.includes("industrie") ? "Dans l'industrie, ce procédé sert surtout aux prototypes et aux petites séries." : ""}` };
+    return { ok: false, html: `<strong>Non.</strong> ${esc(p.raison)}` };
+  };
+  const s = liste.find((p) => p.id === etat.serie);
+  const serieOk = !!s && retourSerie(s).ok;
+
+  // Question 2 : le prototype au collège, dans le matériau choisi ou dans le matériau de prototype du scénario
+  const retourProto = (id) => {
+    const directe = liste.find((p) => p.id === id);
+    const via = protoListe.find((p) => p.id === id);
+    if (directe?.compatible) return { ok: true, html: `<strong>Oui.</strong> La turbine d'essai peut être faite directement en ${esc(nomM(m))}.` };
+    if (via?.compatible) return { ok: true, html: `<strong>Oui, avec une adaptation.</strong> Au collège, on ne peut pas travailler ${esc(le(nomM(m)))} ainsi : la turbine d'essai se fait en ${esc(nomM(proto))}. Elle sert à tester la forme des aubes, pas à durer dans l'eau.` };
+    return { ok: false, html: `<strong>Non.</strong> ${esc(directe?.raison || via?.raison || "")}` };
+  };
+  const protoOk = !!etat.proto && retourProto(etat.proto).ok;
+
+  const fiche = (p, groupe) => {
+    const q = proc(p.id);
+    const choisi = etat[groupe] === p.id;
+    const r = choisi ? (groupe === "serie" ? retourSerie(p) : retourProto(p.id)) : null;
+    const libelle = groupe === "serie" ? `Pour les ${nombre} turbines` : "Pour la turbine d'essai";
+    return `<li class="fiche-procede ${choisi ? (r.ok ? "retenu ok" : "retenu ko") : ""}">
+      <figure class="fiche-media">${schemaProcede(q.id, q.nom)}${q.machineCollege && groupe === "proto" ? `<figcaption>${esc(majuscule(q.machineCollege))}</figcaption>` : ""}</figure>
       <div class="fiche-corps">
         <h3>${esc(q.nom)}</h3>
         <p>${esc(q.principe)}</p>
-        <p class="badges">${q.lieu.map((l) => `<span class="badge">${l === "labo" ? "au collège" : "dans l'industrie"}</span>`).join("")}<span class="badge geste">${GESTES[q.geste]}</span></p>
+        ${puces(q)}
         <div class="fiche-actions">
-          <button type="button" class="bouton-choix" data-procede="serie" data-valeur="${p.id}" aria-pressed="${enSerie}">${enSerie ? "✓ Pour la série · retirer" : "Pour la série"}</button>
-          ${labo ? `<button type="button" class="bouton-choix" data-procede="proto" data-valeur="${p.id}" aria-pressed="${enProto}">${enProto ? "✓ Pour le prototype · retirer" : "Pour le prototype"}</button>` : ""}
+          <button type="button" class="bouton-choix" data-procede="${groupe}" data-valeur="${p.id}" aria-pressed="${choisi}">${choisi ? `✓ ${libelle} · retirer` : libelle}</button>
         </div>
+        ${r ? `<p class="retour ${r.ok ? "ok" : "ko"}" role="status">${r.html}</p>` : ""}
       </div>
     </li>`;
   };
 
+  const machines = liste.filter((p) => proc(p.id).machineCollege);
   const impasse = fabricable ? "" : `<div class="retour ko"><strong>Aucun procédé de grande série ne convient ${esc(au(nomM(m)))} pour des aubes fines.</strong> C'est un indice : retourne au tri et choisis un autre matériau.
       <div class="actions"><button type="button" class="bouton" data-aller="3">Retourner au tri</button></div></div>`;
+  const etat1 = !etat.serie ? "à choisir" : serieOk ? `✓ ${minuscule(proc(etat.serie).nom)}` : "✗ à revoir";
+  const etat2 = !etat.proto ? "à choisir" : protoOk ? `✓ ${proc(etat.proto).machineCollege}` : "✗ à revoir";
 
-  return `<section>
+  return `<section class="etape-procedes">
     <h2 tabindex="-1">4. Je choisis le procédé</h2>
-    <p class="consigne">Un matériau ne va jamais sans son procédé. La turbine a des aubes fines, de forme complexe, et sera fabriquée <strong>en grande série</strong>. Choisis un procédé pour la série et un procédé du collège pour fabriquer un prototype.</p>
-    <div class="bilan-procedes">
-      <div><h3>Série : turbine ${esc(du(nomM(m)))}</h3>${retourSerie || `<p class="aide">Pas encore choisi.</p>`}</div>
-      <div><h3>Prototype au collège</h3>${retourProto || `<p class="aide">Pas encore choisi.</p>`}</div>
-    </div>
+    <p class="consigne">Un matériau ne va jamais sans son procédé. La turbine a des aubes fines, de forme complexe. Réponds à deux questions : comment en fabriquer <strong>${nombre}</strong> pour les vendre, et comment en fabriquer <strong>une seule</strong> au collège pour l'essayer.</p>
     ${impasse}
-    <ul class="galerie-procedes">${liste.map(carte).join("")}</ul>
-    <div class="actions">
-      <button type="button" class="bouton" data-aller="5" ${serieOk && protoOk ? "" : "disabled"}>Justifier mon choix</button>
+    <h3 class="question-procede"><span>1</span> Fabriquer ${nombre} turbines en ${esc(nomM(m))} : quel procédé ?</h3>
+    <ul class="galerie-procedes">${liste.map((p) => fiche(p, "serie")).join("")}</ul>
+    <h3 class="question-procede"><span>2</span> Fabriquer une turbine d'essai au collège : quelle machine ?</h3>
+    <ul class="galerie-procedes">${machines.map((p) => fiche(p, "proto")).join("")}</ul>
+    <div class="barre-choix barre-procedes">
+      <p><span>Série : <strong class="${serieOk ? "ok" : etat.serie ? "ko" : ""}">${esc(etat1)}</strong></span>
+         <span>Essai au collège : <strong class="${protoOk ? "ok" : etat.proto ? "ko" : ""}">${esc(etat2)}</strong></span></p>
       <button type="button" class="bouton-discret" data-aller="3">Revenir au tri</button>
+      <button type="button" class="bouton" data-aller="5" ${serieOk && protoOk ? "" : "disabled"}>Justifier mon choix</button>
     </div>
-    ${serieOk && protoOk ? "" : `<p class="aide">Il faut un procédé de série qui convient et un prototype possible au collège.</p>`}
   </section>`;
 }
 
 // ---------- Étape 5 ----------
+// Identification de la famille par l'élève (grille 7.3 : « nomme le matériau et sa famille »)
+function retourFamille(m, f) {
+  if (!etat.familleRep || !etat.sousFamilleRep) return "";
+  const bonneFamille = etat.familleRep === f.id;
+  const bonneSous = etat.sousFamilleRep === m.sousFamille[etat.niveau];
+  if (bonneFamille && bonneSous) return `<p class="retour ok"><strong>Exact.</strong></p>`;
+  if (!bonneFamille) return `<p class="retour ko"><strong>À revoir.</strong> Pense aux objets faits dans ce matériau : ${esc(m.exemples.join(", "))}. Est-ce un métal, un bois, un plastique, un verre, un mélange de matériaux ?</p>`;
+  return `<p class="retour ko"><strong>Bonne famille, sous-famille à revoir.</strong> Ce matériau existe-t-il tel quel dans la nature, ou est-il fabriqué ?</p>`;
+}
+
+const pretAImprimer = () => !!(etat.familleRep && etat.sousFamilleRep
+  && etat.ident.prenom?.trim() && etat.ident.nom?.trim() && etat.ident.classe?.trim());
+
+function majImpression() {
+  const b = $('[data-action="imprimer"]');
+  if (b) b.disabled = !pretAImprimer();
+  const a = $("#aide-impression");
+  if (a) a.textContent = pretAImprimer() ? "" : "Pour imprimer : choisis la famille et la sous-famille, puis écris ton prénom, ton nom et ta classe.";
+  const e = $(".entete-impression");
+  if (e) e.textContent = `${etat.ident.prenom || ""} ${etat.ident.nom || ""} · ${etat.ident.classe || ""} · ${new Date().toLocaleDateString("fr-FR")}`;
+}
+
 function etape5() {
   const m = mat(etat.choix), f = famille(m);
   const mesCriteres = criteres().filter((c) => ["indispensable", "souhaitable"].includes(etat.classement[c.id]));
@@ -414,7 +455,7 @@ function etape5() {
     <div class="justif-texte">
       <h2 tabindex="-1">5. Je justifie mon choix</h2>
       ${verdict}
-      <p class="impression-seule">Nom : ............................................ Classe : ........ Date : ............</p>
+      <p class="impression-seule entete-impression">${esc(etat.ident.prenom)} ${esc(etat.ident.nom)} · ${esc(etat.ident.classe)} · ${new Date().toLocaleDateString("fr-FR")}</p>
       <div class="tableau-defile"><table class="tableau-choix"><caption>Mon tableau de choix</caption>
         <thead><tr><th scope="col">Critère</th>${candidats.map((c) => `<th scope="col">${esc(nomM(c))}</th>`).join("")}</tr></thead>
         <tbody>${mesCriteres.map((c) => `<tr><th scope="row">${esc(c.carte[etat.niveau])}<small>${etat.classement[c.id]}</small></th>${candidats.map((x) => {
@@ -425,15 +466,28 @@ function etape5() {
       ${elimines.length ? `<h3>Matériaux écartés par mes critères indispensables</h3><ul class="elimines">${elimines.map((r) =>
         `<li><strong>${esc(nomM(mat(r.id)))}</strong> : ${r.raisons.map((x) => esc(x.texte)).join(" ; ")}</li>`).join("")}</ul>` : ""}
       <h3>Mon argumentaire</h3>
-      <p class="fixe">Je choisis <strong>${esc(le(nomM(m)))}</strong>, un matériau de la famille des ${esc(f.nom[etat.niveau].toLowerCase())}, sous-famille : ${esc(m.sousFamille[etat.niveau].toLowerCase())}.</p>
+      <div class="fixe phrase-famille">Je choisis <strong>${esc(le(nomM(m)))}</strong>, un matériau de la famille des
+        <select data-reponse="famille" aria-label="Famille du matériau"><option value="">— choisis —</option>${D.familles.map((x) =>
+          `<option value="${x.id}" ${etat.familleRep === x.id ? "selected" : ""}>${esc(x.nom[etat.niveau].toLowerCase())}</option>`).join("")}</select>,
+        sous-famille : <select data-reponse="sousFamille" aria-label="Sous-famille du matériau" ${etat.familleRep ? "" : "disabled"}><option value="">— choisis —</option>${
+          (D.familles.find((x) => x.id === etat.familleRep)?.sousFamilles[etat.niveau] || []).map((sf) =>
+          `<option ${etat.sousFamilleRep === sf ? "selected" : ""}>${esc(sf)}</option>`).join("")}</select>.
+        ${retourFamille(m, f)}</div>
       ${zone("parceQue", "Parce que la turbine doit…", "Cite au moins deux critères et relie-les à ce que subit la pièce.")}
       ${zone("elimination", "J'écarte… parce que…", "Explique au moins une élimination.")}
       <p class="fixe">Fabrication : <strong>${esc(minuscule(nomProc(etat.serie)))}</strong> pour la série ; prototype au collège par <strong>${esc(minuscule(nomProc(etat.proto)))}</strong>, en ${esc(nomM(matProto))}.</p>
       ${zone("recyclage", "En fin de vie, ce matériau…", "Recyclable ou non ? Pense au code de recyclage.")}
+      <fieldset class="identite ecran-seul"><legend>Pour imprimer ta fiche</legend>
+        <label>Prénom<input type="text" data-ident="prenom" value="${esc(etat.ident.prenom)}" autocomplete="off" maxlength="40"></label>
+        <label>Nom<input type="text" data-ident="nom" value="${esc(etat.ident.nom)}" autocomplete="off" maxlength="40"></label>
+        <label>Classe<input type="text" data-ident="classe" value="${esc(etat.ident.classe)}" autocomplete="off" maxlength="10" placeholder="4e B"></label>
+        <p class="aide">Ces informations restent sur cet ordinateur et s'effacent avec « Recommencer ».</p>
+      </fieldset>
       <div class="actions ecran-seul">
-        <button type="button" class="bouton" data-action="imprimer">Imprimer ou enregistrer en PDF</button>
+        <button type="button" class="bouton" data-action="imprimer" ${pretAImprimer() ? "" : "disabled"}>Imprimer ou enregistrer en PDF</button>
         <button type="button" class="bouton-discret" data-action="recommencer">Recommencer</button>
       </div>
+      <p class="aide ecran-seul" id="aide-impression">${pretAImprimer() ? "" : "Pour imprimer : choisis la famille et la sous-famille, puis écris ton prénom, ton nom et ta classe."}</p>
     </div>
   </section>`;
 }
@@ -484,6 +538,11 @@ function brancher() {
       if (avait) rendreGarderFocus(`[data-contrainte="${t.dataset.contrainte}"]`);
     }
     if (t.dataset.classer) classer(t.dataset.classer, t.value);
+    if (t.dataset.reponse) {
+      if (t.dataset.reponse === "famille") { etat.familleRep = t.value || null; etat.sousFamilleRep = null; }
+      else etat.sousFamilleRep = t.value || null;
+      sauver(); rendreGarderFocus(`[data-reponse="${t.dataset.reponse}"]`);
+    }
     if (t.dataset.comparer) {
       const id = t.dataset.comparer;
       etat.comparer = t.checked ? [...etat.comparer, id].slice(-3) : etat.comparer.filter((x) => x !== id);
@@ -495,6 +554,7 @@ function brancher() {
     const t = e.target;
     if (t.dataset.justif) { etat.justif[t.dataset.justif] = t.value; sauver(); }
     if (t.dataset.texte) { etat.texte[t.dataset.texte] = t.value; sauver(); }
+    if (t.dataset.ident) { etat.ident = { ...etat.ident, [t.dataset.ident]: t.value }; sauver(); majImpression(); }
   });
 
   // Glisser-déposer (souris) : complément des boutons, qui restent la voie principale.
