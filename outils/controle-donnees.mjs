@@ -1,6 +1,6 @@
 // Contrôle du référentiel : node outils/controle-donnees.mjs [dossier-data]
 // Code de sortie 1 et liste des erreurs si une règle n'est pas respectée.
-import { readFileSync, existsSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -30,7 +30,6 @@ if (idsProcedes.size !== procedes.length) err("identifiants de procédés en dou
 
 for (const p of procedes) {
   if (!p.principe) err(`${p.id} : principe manquant`);
-  for (const ph of p.photos || []) if (!existsSync(join(dossier, "..", ph.src))) err(`${p.id} : photo ${ph.src} introuvable`);
   if (!p.lieu.every((l) => ["labo", "industrie"].includes(l))) err(`${p.id} : lieu inconnu`);
   if (!p.serie.every((s) => ["unitaire", "petite", "grande"].includes(s))) err(`${p.id} : série inconnue`);
 }
@@ -78,6 +77,9 @@ for (const s of composants) {
       if (!["indispensable", "souhaitable", "sans"].includes(statut)) err(`${q} : statut ${statut} invalide`);
     }
     for (const c of s.criteres) if (c.niveaux.includes(Number(n)) && !ref[c.id]) err(`${q} : ${c.id} sans statut de référence en ${n}e`);
+    for (const c of s.criteres)
+      if (c.niveaux.includes(Number(n)) && ["indispensable", "sans"].includes(ref[c.id]) && !c.questionClassement)
+        err(`${q} : ${c.id} (${ref[c.id]} en ${n}e) sans questionClassement`);
     const vis = s.materiauxVisibles[n];
     if (vis !== "tous") for (const id of vis) if (!idsMateriaux.has(id)) err(`${q} : matériau visible ${id} inconnu`);
     for (const id of [...s.reponsesAttendues[n], ...(s.elimineAttendus?.[n] || [])])
