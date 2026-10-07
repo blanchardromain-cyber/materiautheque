@@ -18,6 +18,16 @@ puis ouvrir <http://localhost:8820>. Une fois chargée, elle fonctionne hors con
 
 Paramètre : `?composant=turbine-p11` (seul scénario pour l'instant).
 
+## Les niveaux
+
+| Niveau | Pièce | Ce qui change |
+|---|---|---|
+| 5e · débutant | Casserole : cuve et poignée (onglets) | Banc d'essai : 6 essais animés (aimant, circuit, chaleur, plaque chauffante, balance, flexion) qui révèlent les propriétés en mots ; un critère n'écarte qu'un échantillon testé. Étape 4 : « Comment est-elle fabriquée ? » (procédé d'usine) + encart prototype au collège. |
+| 4e · confirmé | Turbine du robinet automatique | Critères indispensables et souhaitables, 12 matériaux, procédés en série et prototype au collège. |
+| 3e · approfondi | à venir | Pondération, carte d'Ashby, cycle de vie. |
+
+Le niveau se choisit à l'accueil ou par l'adresse : `?niveau=5`. Chaque niveau garde son propre travail en cours.
+
 ## Méthode : quand l'élève sait-il s'il a juste ?
 
 Trois rendez-vous, sans jamais donner la réponse avant que l'élève l'ait cherchée.
