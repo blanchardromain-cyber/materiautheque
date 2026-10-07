@@ -88,15 +88,40 @@ test("classement de l'élève : critère « sans importance » ignoré, aucun in
 });
 
 test("verifierChoix contre la référence, quel que soit le classement de l'élève", () => {
-  const laiton = verifierChoix(turbine, materiaux, 4, "laiton");
+  const laiton = verifierChoix(turbine, materiaux, 4, "laiton", procedes);
   assert.equal(laiton.ok, false);
   const leger = laiton.violations.find((v) => v.critere === "leger");
   assert.equal(leger.consequence, "demarrage-lent");
   assert.ok(leger.question.length > 10);
-  assert.equal(verifierChoix(turbine, materiaux, 4, "pom").ok, true);
-  assert.equal(verifierChoix(turbine, materiaux, 4, "abs").ok, true, "acceptable = pas d'erreur");
-  assert.equal(verifierChoix(turbine, materiaux, 4, "pa6").violations[0].consequence, "eau");
-  assert.equal(verifierChoix(turbine, materiaux, 3, "acier").violations.some((v) => v.consequence === "freinage-aimant"), true);
+  assert.equal(verifierChoix(turbine, materiaux, 4, "pom", procedes).ok, true);
+  assert.equal(verifierChoix(turbine, materiaux, 4, "abs", procedes).ok, true, "acceptable = pas d'erreur");
+  assert.equal(verifierChoix(turbine, materiaux, 4, "pa6", procedes).violations[0].consequence, "eau");
+  assert.equal(verifierChoix(turbine, materiaux, 3, "acier", procedes).violations.some((v) => v.consequence === "freinage-aimant"), true);
+});
+
+test("PLA : éliminé dès le tri parce qu'il vieillit dans l'eau (4e et 3e)", () => {
+  assert.equal(parId(evaluer(turbine, materiaux, 4, ref(4))).pla.verdict, "elimine");
+  assert.equal(parId(evaluer(turbine, materiaux, 4, ref(4))).pla.raisons[0].critere, "eau");
+  assert.equal(parId(evaluer(turbine, materiaux, 3, ref(3), turbine.poids["3"])).pla.verdict, "elimine");
+});
+
+test("verifierChoix refuse un matériau sans procédé de grande série (composite en 3e)", () => {
+  const v = verifierChoix(turbine, materiaux, 3, "composite-verre", procedes);
+  assert.equal(v.ok, false);
+  const p = v.violations.find((x) => x.critere === "procede");
+  assert.equal(p.consequence, "fabrication");
+  assert.ok(p.question.length > 10);
+});
+
+test("aucune impasse : tout matériau validé a un procédé compatible pour l'usage exigé, à chaque niveau", () => {
+  for (const n of [5, 4, 3]) {
+    const usage = n === 5 ? "prototype" : "serie";
+    for (const m of materiaux) {
+      if (!verifierChoix(turbine, materiaux, n, m.id, procedes).ok) continue;
+      const ok = procedesCompatibles(m, procedes, turbine, n).some((p) => p.compatible && p.usage === usage);
+      assert.ok(ok, `${n}e : ${m.id} validé mais aucun procédé « ${usage} »`);
+    }
+  }
 });
 
 test("procedesCompatibles : POM injecté en série, pas imprimable ; PLA imprimé en prototype", () => {
