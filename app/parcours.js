@@ -7,7 +7,7 @@ import {
 import { fondPastille, turbineSVG, robinetCoupeSVG, consequence, schemaProcede, casseroleSVG } from "./illustrations.js";
 import {
   $, esc, minuscule, majuscule, le, du, au, ordreAuSort, lexique as lexiqueCommun,
-  identiteHTML, identiteComplete, texteIdentite, formaterIdent,
+  identiteHTML, identiteComplete, texteIdentite, formaterIdent, enregistrerPDF, copieStatique, nomFichierPDF,
 } from "./commun.js";
 import { creerCinquieme } from "./cinquieme.js";
 
@@ -423,8 +423,22 @@ function retourFamille(m, f) {
   return `<p class="retour ko"><strong>Bonne famille, sous-famille à revoir.</strong> Ce matériau existe-t-il tel quel dans la nature, ou est-il fabriqué ?</p>`;
 }
 
+async function enregistrer(bouton) {
+  const texte = bouton.textContent;
+  bouton.disabled = true;
+  bouton.textContent = "Préparation du PDF…";
+  try {
+    await enregistrerPDF({ entete: S.entete, ident: etat.ident, contenu: copieStatique($(".justification")), fichier: nomFichierPDF(etat.niveau, etat.ident) });
+  } catch (err) {
+    alert(`Le PDF n'a pas pu être créé (${err.message}). Vérifie la connexion internet lors du premier enregistrement.`);
+  } finally {
+    bouton.textContent = texte;
+    bouton.disabled = !pretAImprimer();
+  }
+}
+
 const pretAImprimer = () => !!(etat.familleRep && etat.sousFamilleRep && identiteComplete(etat.ident));
-const AIDE_IMPRESSION = "Pour imprimer : choisis la famille et la sous-famille, puis écris le prénom, le nom (et ceux de l'élève 2 en binôme) et la classe.";
+const AIDE_IMPRESSION = "Pour enregistrer : choisis la famille et la sous-famille, puis écris le prénom, le nom (et ceux de l'élève 2 en binôme) et la classe.";
 
 function majImpression() {
   const b = $('[data-action="imprimer"]');
@@ -458,6 +472,9 @@ function etape5() {
   return `<section class="justification">
     <div class="justif-visuel">
       <figure class="cadre">${turbineSVG(m.peau3D, `Turbine en ${nomM(m)}`)}<figcaption>La turbine en <strong>${esc(nomM(m))}</strong></figcaption></figure>
+      <table class="carte-identite"><caption>Masses volumiques <small>(pour le mini-tableur « énergie grise »)</small></caption>
+        <tbody>${[m, mat("laiton")].filter((x, k, t) => t.indexOf(x) === k).map((x) =>
+          `<tr><th scope="row">${esc(nomM(x))}${x === m ? " <small>mon choix</small>" : ""}</th><td>${esc(x.masseVolumiqueTexte || formaterValeur(x.masseVolumique))} g/cm³</td></tr>`).join("")}</tbody></table>
     </div>
     <div class="justif-texte">
       <h2 tabindex="-1">5. Je justifie mon choix</h2>
@@ -486,7 +503,7 @@ function etape5() {
       ${zone("recyclage", "En fin de vie, ce matériau…", "Recyclable ou non ? Pense au code de recyclage.")}
       ${identiteHTML(etat.ident, "data-ident")}
       <div class="actions ecran-seul">
-        <button type="button" class="bouton" data-action="imprimer" ${pretAImprimer() ? "" : "disabled"}>Imprimer ou enregistrer en PDF</button>
+        <button type="button" class="bouton" data-action="imprimer" ${pretAImprimer() ? "" : "disabled"}>Enregistrer ma fiche en PDF</button>
         <button type="button" class="bouton-discret" data-action="recommencer">Recommencer</button>
       </div>
       <p class="aide ecran-seul" id="aide-impression">${pretAImprimer() ? "" : AIDE_IMPRESSION}</p>
@@ -528,7 +545,7 @@ function brancher() {
     if (action === "verifier-contraintes") { etat.contraintesVues = true; sauver(); rendreGarderFocus('[data-action="verifier-contraintes"]'); }
     if (action === "valider-choix") validerChoix();
     if (action === "fermer-consequence") $("#consequence").close();
-    if (action === "imprimer") window.print();
+    if (action === "imprimer") enregistrer(b);
     if (action === "recommencer" && confirm("Effacer ton travail et recommencer ?")) { etat = nouvelEtat(etat.niveau); sauver(); aller(0); }
   });
 
