@@ -78,6 +78,37 @@ export function verifierChoix(scenario, materiaux, niveau, idMateriau, procedes)
   return { ok: violations.length === 0, violations };
 }
 
+// Rendez-vous 1 (fin d'étape 2) : les critères indispensables de référence doivent être indispensables,
+// les pièges (« sans » en référence) sans importance ; les souhaitables de référence restent libres.
+export function verifierClassement(scenario, niveau, classement) {
+  const ref = classementReference(scenario, niveau);
+  return criteresDuNiveau(scenario, niveau)
+    .filter((c) => ref[c.id] !== "souhaitable" && classement[c.id] !== ref[c.id])
+    .map((c) => ({ critere: c.id, question: c.questionClassement || c.questionRetour || "" }));
+}
+
+// Rendez-vous 2 (validation, étape 3) : le choix doit respecter TOUS les critères indispensables de l'élève.
+export function verifierCoherence(scenario, materiaux, niveau, classement, idMateriau) {
+  const m = materiaux.find((x) => x.id === idMateriau);
+  return criteresDuNiveau(scenario, niveau)
+    .filter((c) => classement[c.id] === "indispensable")
+    .map((c) => ({ c, ...testerRegle(m, c.regle) }))
+    .filter((t) => !t.ok)
+    .map(({ c, v }) => ({ ...motif(c, v), consequence: c.consequence || null, question: c.questionRetour || "" }));
+}
+
+// Rendez-vous 3 (étape 5) : verdict selon la référence, sans nommer le meilleur compromis.
+export function verdictFinal(scenario, materiaux, niveau, idMateriau) {
+  const res = evaluer(scenario, materiaux, niveau, classementReference(scenario, niveau), scenario.poids?.[String(niveau)] || {});
+  const r = res.find((x) => x.id === idMateriau);
+  const meilleur = res[0];
+  const niveauVerdict = r.verdict === "reference" ? "meilleur" : r.verdict;
+  const perdus = new Set(r.pertes.map((p) => p.critere));
+  const tenusParMeilleur = new Set(meilleur.pertes.map((p) => p.critere));
+  const mieux = [...perdus].filter((id) => !tenusParMeilleur.has(id));
+  return { niveau: niveauVerdict, pertes: r.pertes, mieux, raisons: r.raisons };
+}
+
 export function procedesCompatibles(materiau, procedes, scenario, niveau) {
   const nom = materiau.nom[String(niveau)];
   return procedes
