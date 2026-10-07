@@ -1,6 +1,6 @@
 // Contrôle du référentiel : node outils/controle-donnees.mjs [dossier-data]
 // Code de sortie 1 et liste des erreurs si une règle n'est pas respectée.
-import { readFileSync } from "node:fs";
+import { readFileSync, existsSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { scenarioPiece } from "../app/moteur.js";
 import { fileURLToPath } from "node:url";
@@ -57,6 +57,22 @@ for (const m of materiaux) {
   for (const p of m.procedes) if (!idsProcedes.has(p)) err(`${q} : procédé ${p} inconnu`);
   if (m.procedes.length === 0 && !m.noteProcedes) err(`${q} : aucun procédé et pas de noteProcedes`);
   for (const a of m.aValider || []) if (champ(m, a) === undefined) err(`${q} : aValider « ${a} » ne désigne aucun champ`);
+}
+
+for (const m of materiaux) if (!(m.energieGrise > 0)) err(`matériau ${m.id} : energieGrise manquante`);
+
+// Le mini-tableur « énergie grise » de P11 recopie ces valeurs : elles doivent rester identiques.
+const tableur = join(dossier, "..", "..", "techno-p11-eau", "energie-grise.html");
+if (existsSync(tableur)) {
+  const html = readFileSync(tableur, "utf8");
+  for (const [, id, rho, eg] of html.matchAll(/(\w+):\{nom:"[^"]+", rho:([\d.]+), eg:(\d+)\}/g)) {
+    const m = materiaux.find((x) => x.id === id);
+    if (!m) err(`tableur énergie grise : matériau ${id} inconnu`);
+    else if (m.masseVolumique !== Number(rho) || m.energieGrise !== Number(eg)) err(`tableur énergie grise : ${id} diffère du référentiel`);
+  }
+  const laiton = html.match(/LAITON = \{rho:([\d.]+), eg:(\d+)\}/);
+  const ml = materiaux.find((x) => x.id === "laiton");
+  if (!laiton || ml.masseVolumique !== Number(laiton[1]) || ml.energieGrise !== Number(laiton[2])) err("tableur énergie grise : laiton diffère du référentiel");
 }
 
 for (const p of proprietes)
