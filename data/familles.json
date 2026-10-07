@@ -1,0 +1,38 @@
+[
+  {
+    "id": "metal",
+    "couleur": "#4F6E8F",
+    "nom": { "5": "Métaux", "4": "Matériaux métalliques", "3": "Matériaux métalliques" },
+    "sousFamilles": {
+      "4": ["Ferreux", "Non ferreux"],
+      "3": ["Métaux purs", "Alliages", "Aciers non alliés", "Aciers inoxydables"]
+    }
+  },
+  {
+    "id": "organique",
+    "couleur": "#3C8A57",
+    "nom": { "5": "Bois et plastiques", "4": "Matériaux organiques", "3": "Matériaux organiques" },
+    "sousFamilles": {
+      "4": ["Naturels (bois, carton, liège)", "Synthétiques (plastiques)"],
+      "3": ["Thermoplastiques", "Thermodurcissables", "Élastomères", "Biosourcés"]
+    }
+  },
+  {
+    "id": "ceramique",
+    "couleur": "#B0582F",
+    "nom": { "5": "Verre et terre cuite", "4": "Céramiques et minéraux", "3": "Céramiques et minéraux" },
+    "sousFamilles": {
+      "4": ["Verres", "Céramiques", "Pierres et bétons"],
+      "3": ["Céramiques techniques (alumine)"]
+    }
+  },
+  {
+    "id": "composite",
+    "couleur": "#7656A8",
+    "nom": { "5": "Composites", "4": "Composites", "3": "Composites" },
+    "sousFamilles": {
+      "4": ["Renfort + matrice"],
+      "3": ["Fibre de verre", "Fibre de carbone", "Bois agglomérés"]
+    }
+  }
+]
