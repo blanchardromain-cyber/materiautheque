@@ -14,8 +14,8 @@
         "explication": "Vrai : c'est l'eau qui la fait tourner, même avec un faible débit." },
       { "id": "forme", "texte": "Elle a des aubes fines, de forme complexe.", "vraie": true,
         "explication": "Vrai : les aubes sont minces et courbées pour bien prendre l'eau." },
-      { "id": "aimant", "texte": "Elle entraîne un rotor aimanté.", "vraie": true,
-        "explication": "Vrai : l'aimant tourne devant les bobines du générateur." },
+      { "id": "aimant", "texte": "Elle fait tourner un aimant placé dans le générateur.", "vraie": true,
+        "explication": "Vrai : la turbine et l'aimant sont fixés sur le même axe. Cet aimant qui tourne s'appelle le rotor : en passant devant les bobines de fil de cuivre, il produit l'électricité." },
       { "id": "potable", "texte": "Elle touche l'eau que l'on va boire.", "vraie": true,
         "explication": "Vrai : le matériau doit convenir au contact de l'eau potable (ce point n'est pas trié dans ce scénario)." },
       { "id": "chaleur", "texte": "Elle est chauffée à plus de 200 °C.", "vraie": false,
@@ -80,9 +80,9 @@
         "nonParceQue": "coûte cher (€€€)" },
       { "id": "amagnetique", "niveaux": [3],
         "carte": { "3": "Ne pas perturber l'aimant du générateur" },
-        "pourquoi": "Le rotor aimanté tourne tout près de la turbine.",
+        "pourquoi": "L'aimant du générateur (le rotor) tourne tout près de la turbine.",
         "regle": { "champ": "magnetique", "op": "==", "valeur": false },
-        "nonParceQue": "est attiré par l'aimant et freine le rotor",
+        "nonParceQue": "est attiré par l'aimant et le freine",
         "consequence": "freinage-aimant",
         "questionRetour": "Qu'arrive-t-il à un aimant posé près de ce matériau ?" },
       { "id": "recyclable", "niveaux": [3],
@@ -118,8 +118,12 @@
       "3": "tous"
     },
     "formeProcedes": { "serie": "injection", "prototype": "impression-3d" },
+    "sansProcede": {
+      "nonParceQue": "ne peut pas être fabriqué avec des aubes fines en grande série",
+      "question": "Quel procédé de grande série donnerait des aubes fines dans ce matériau ? Regarde quels procédés conviennent à chaque matériau, puis reviens au tri."
+    },
     "materiauPrototype": "pla",
     "reponsesAttendues": { "5": ["pom", "abs", "pp"], "4": ["pom"], "3": ["pom", "pa6"] },
-    "elimineAttendus": { "5": ["acier", "alu", "laiton"], "4": ["acier", "alu", "laiton", "pa6"], "3": ["acier", "alu", "laiton"] }
+    "elimineAttendus": { "5": ["acier", "alu", "laiton"], "4": ["acier", "alu", "laiton", "pa6", "pla"], "3": ["acier", "alu", "laiton", "pla"] }
   }
 ]
