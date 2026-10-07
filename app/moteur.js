@@ -58,7 +58,23 @@ export function evaluer(scenario, materiaux, niveau, classement, poids = {}) {
 }
 
 // Usage de fabrication exigé à l'étape 4 : procédés du labo en 5e, grande série ensuite.
-export const usageRequis = (niveau) => (Number(niveau) === 5 ? "prototype" : "serie");
+// Un scénario peut l'imposer (« tout » : n'importe quel procédé compatible, ex. la casserole en 5e).
+export const usageRequis = (niveau, scenario) =>
+  scenario?.usageFabrication || (Number(niveau) === 5 ? "prototype" : "serie");
+
+// Une pièce d'un scénario à plusieurs pièces, vue comme un scénario autonome.
+export function scenarioPiece(scenario, idPiece) {
+  const piece = scenario.pieces.find((p) => p.id === idPiece);
+  const { pieces, ...commun } = scenario;
+  return { ...commun, ...piece, contraintes: (scenario.contraintes || []).filter((c) => c.piece === idPiece) };
+}
+
+// Banc d'essai : la première lecture dont la règle est satisfaite (la dernière n'a pas de règle).
+export function lireEssai(essai, materiau) {
+  const l = essai.lectures.find((x) => !x.regle || testerRegle(materiau, x.regle).ok);
+  const v = essai.champValeur ? formaterValeur(lireChamp(materiau, essai.champValeur)) : "";
+  return { classe: l.classe, texte: l.texte.replace("{v}", v) };
+}
 
 // Contrôle du choix final contre le classement de RÉFÉRENCE du scénario,
 // puis « le matériau ne va jamais sans son procédé » : il faut un procédé compatible pour l'usage exigé.
@@ -70,8 +86,9 @@ export function verifierChoix(scenario, materiaux, niveau, idMateriau, procedes)
     .map((c) => ({ c, ...testerRegle(m, c.regle) }))
     .filter((t) => !t.ok)
     .map(({ c, v }) => ({ ...motif(c, v), consequence: c.consequence || null, question: c.questionRetour || "" }));
+  const usage = usageRequis(niveau, scenario);
   const fabricable = procedesCompatibles(m, procedes, scenario, niveau)
-    .some((p) => p.compatible && p.usage === usageRequis(niveau));
+    .some((p) => p.compatible && (usage === "tout" || p.usage === usage));
   if (!fabricable)
     violations.push({ critere: "procede", texte: scenario.sansProcede.nonParceQue,
       consequence: "fabrication", question: scenario.sansProcede.question });
@@ -112,7 +129,7 @@ export function verdictFinal(scenario, materiaux, niveau, idMateriau) {
 export function procedesCompatibles(materiau, procedes, scenario, niveau) {
   const nom = materiau.nom[String(niveau)];
   return procedes
-    .filter((p) => Number(niveau) !== 5 || p.lieu.includes("labo"))
+    .filter((p) => Number(niveau) !== 5 || scenario.lieuProcedes === "tous" || p.lieu.includes("labo"))
     .map((p) => {
       if (!materiau.procedes.includes(p.id))
         return { id: p.id, compatible: false, usage: null, raison: `Le matériau « ${nom} » ne s'obtient pas par ce procédé.` };
