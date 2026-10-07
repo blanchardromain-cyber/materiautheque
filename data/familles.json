@@ -13,7 +13,7 @@
     "couleur": "#3C8A57",
     "nom": { "5": "Bois et plastiques", "4": "Matériaux organiques", "3": "Matériaux organiques" },
     "sousFamilles": {
-      "4": ["Naturels (bois, carton, liège)", "Synthétiques (plastiques)"],
+      "4": ["Naturels (bois, carton, liège)", "Synthétiques (plastiques, caoutchoucs)"],
       "3": ["Thermoplastiques", "Thermodurcissables", "Élastomères", "Biosourcés"]
     }
   },
