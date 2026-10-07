@@ -6,6 +6,8 @@ Application web autonome pour **choisir un matériau en le justifiant par un cah
 
 ## Ouvrir l'application
 
+En ligne : **https://blanchardromain-cyber.github.io/materiautheque/** (`?niveau=4` pour la turbine, `?niveau=5` pour la casserole). Publiée par GitHub Pages depuis la branche `main` du dépôt `blanchardromain-cyber/materiautheque` ; changer `VERSION` dans `sw.js` à chaque mise en ligne.
+
 Elle s'ouvre **par une adresse web**, pas par double-clic sur `index.html` (les modules JavaScript et la lecture des données sont bloqués en `file://`).
 
 En local, depuis ce dossier :
