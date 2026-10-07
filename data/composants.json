@@ -6,6 +6,7 @@
     "sequence": "P11 — Comment préserver une ressource essentielle : l'eau ?",
     "presentation": "Dans le robinet automatique, l'eau qui coule fait tourner une petite turbine. Elle entraîne un générateur qui recharge la pile du capteur. Quel matériau choisir pour cette turbine ?",
     "forme": "complexe",
+    "quantiteSerie": 10000,
     "avertissement": "Le matériau réel de la turbine du robinet du labo n'est pas documenté : le POM est un choix argumenté, pas une donnée du fabricant.",
     "contraintes": [
       { "id": "immersion", "texte": "Elle baigne en permanence dans l'eau.", "vraie": true,
