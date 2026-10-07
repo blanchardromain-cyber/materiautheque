@@ -20,9 +20,9 @@
   { "id": "plaque", "nom": "La plaque chauffante", "question": "Supporte-t-il une forte chaleur ?",
     "protocole": "On pose l'échantillon sur une plaque réglée à 120 °C, puis à 200 °C.",
     "lectures": [
-      { "regle": { "champ": "tempMax", "op": ">=", "valeur": 180 }, "texte": "supporte la plaque à 200 °C sans changer", "classe": "fort" },
-      { "regle": { "champ": "tempMax", "op": ">=", "valeur": 120 }, "texte": "supporte 120 °C, mais pas 200 °C", "classe": "moyen" },
-      { "texte": "ramollit avant 120 °C", "classe": "faible" }
+      { "regle": { "champ": "tempMax", "op": ">=", "valeur": 180 }, "texte": "supporte 200 °C : il ne change pas sur la plaque", "classe": "fort" },
+      { "regle": { "champ": "tempMax", "op": ">=", "valeur": 120 }, "texte": "supporte 120 °C : mais il noircit à 200 °C", "classe": "moyen" },
+      { "texte": "ramollit avant 120 °C : il se déforme", "classe": "faible" }
     ] },
   { "id": "balance", "nom": "La balance", "question": "Est-il léger ou lourd ?",
     "protocole": "On pèse un cube de 1 cm de côté de chaque matériau.",
