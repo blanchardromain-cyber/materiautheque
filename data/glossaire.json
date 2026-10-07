@@ -11,6 +11,9 @@
   { "terme": "injection", "niveaux": [4, 3], "definition": "Procédé industriel : le plastique fondu est poussé dans un moule, puis refroidi. Idéal pour de grandes séries de pièces complexes." },
   { "terme": "prototype", "niveaux": [4, 3], "definition": "Premier exemplaire fabriqué pour tester une pièce avant de la produire en série." },
   { "terme": "aube", "niveaux": [5, 4, 3], "definition": "Pale de la turbine, poussée par l'eau." },
+  { "terme": "générateur", "niveaux": [5, 4, 3], "definition": "Petit appareil qui transforme un mouvement de rotation en électricité, comme la dynamo d'un vélo." },
+  { "terme": "rotor", "niveaux": [5, 4, 3], "definition": "Partie qui tourne dans le générateur : ici, un aimant fixé sur le même axe que la turbine." },
+  { "terme": "bobine", "niveaux": [5, 4, 3], "definition": "Fil de cuivre enroulé. Quand un aimant tourne devant, un courant électrique apparaît dans le fil." },
   { "terme": "critère indispensable", "niveaux": [4, 3], "definition": "Exigence que le matériau doit absolument respecter : sinon, il est éliminé." },
   { "terme": "critère souhaitable", "niveaux": [4, 3], "definition": "Exigence qui départage les matériaux restants, sans éliminer." },
   { "terme": "biosourcé", "niveaux": [3], "definition": "Fabriqué à partir de matière végétale (maïs, canne à sucre…) plutôt que de pétrole." }
