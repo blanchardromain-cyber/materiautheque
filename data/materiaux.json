@@ -42,7 +42,7 @@
     "elec": "conducteur", "therm": "conducteur", "magnetique": false,
     "notes": { "rigidite": 3, "chocs": 3, "usure": 2, "eau": 4, "corrosion": 4 },
     "cout": 3, "recyclage": { "note": 5, "code": "Cuivre" }, "origine": "minerai",
-    "procedes": ["usinage", "extrusion", "assemblage"],
+    "procedes": ["usinage", "emboutissage", "extrusion", "assemblage"],
     "peau3D": { "couleur": "#B87333", "metal": 1, "rugosite": 0.3 },
     "exemples": ["fils électriques", "tuyaux de plomberie"],
     "aValider": ["notes.chocs", "notes.usure", "notes.corrosion", "cout", "procedes", "absorptionEau"]
@@ -159,14 +159,14 @@
   {
     "id": "bois", "nom": { "5": "Pin / hêtre", "4": "Pin / hêtre", "3": "Bois massif" },
     "famille": "organique", "sousFamille": { "4": "Naturels (bois, carton, liège)", "3": "Bois massif" },
-    "masseVolumique": 0.6, "masseVolumiqueTexte": "≈ 0,5 à 0,7", "tempMax": null, "tempMaxTexte": "—", "absorptionEau": null,
+    "masseVolumique": 0.6, "masseVolumiqueTexte": "≈ 0,5 à 0,7", "tempMax": 150, "tempMaxTexte": "≈ 150 (noircit au-delà)", "absorptionEau": null,
     "elec": "isolant", "therm": "isolant", "magnetique": false,
     "notes": { "rigidite": 3, "chocs": 3, "usure": 2, "eau": 1, "corrosion": 1 },
     "cout": 1, "recyclage": { "note": 4, "code": "Bois" }, "origine": "renouvelable",
     "procedes": ["usinage", "assemblage"],
     "peau3D": { "couleur": "#C8A06A", "metal": 0, "rugosite": 0.85 },
     "exemples": ["meubles", "charpentes", "manches d'outils"],
-    "aValider": ["notes.chocs", "notes.usure", "notes.corrosion", "cout", "procedes"]
+    "aValider": ["tempMax", "notes.chocs", "notes.usure", "notes.corrosion", "cout", "procedes"]
   },
   {
     "id": "cp-mdf", "nom": { "5": "Contreplaqué / MDF", "4": "CP / MDF", "3": "Bois aggloméré" },
@@ -218,5 +218,18 @@
     "exemples": ["coques de bateau", "cannes à pêche", "circuits imprimés"],
     "aValider": ["notes.chocs", "notes.usure", "notes.corrosion", "cout", "absorptionEau", "procedes"],
     "noteProcedes": "Moulage au contact et stratification : hors des 10 procédés du référentiel."
+  },
+  {
+    "id": "bakelite", "nom": { "5": "Bakélite", "4": "PF", "3": "Phénoplaste (PF)" },
+    "famille": "organique", "sousFamille": { "4": "Synthétiques (plastiques, caoutchoucs)", "3": "Thermodurcissable" },
+    "masseVolumique": 1.35, "masseVolumiqueTexte": "≈ 1,35", "tempMax": 150, "tempMaxTexte": "≈ 150", "absorptionEau": 0.3,
+    "elec": "isolant", "therm": "isolant", "magnetique": false,
+    "notes": { "rigidite": 4, "chocs": 2, "usure": 4, "eau": 4, "corrosion": 4 },
+    "cout": 1, "recyclage": { "note": 1, "code": "non recyclable (thermodurcissable)" }, "origine": "fossile",
+    "procedes": ["injection"],
+    "peau3D": { "couleur": "#3B2A22", "metal": 0, "rugosite": 0.35 },
+    "exemples": ["poignées de casserole", "boutons de cuisinière", "anciennes prises électriques"],
+    "aValider": ["masseVolumique", "tempMax", "absorptionEau", "notes.rigidite", "notes.chocs", "notes.usure", "notes.eau", "notes.corrosion", "cout", "recyclage.note", "procedes"],
+    "noteProcedes": "Moulé par compression ou par injection de résine thermodurcissable."
   }
 ]
