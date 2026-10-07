@@ -4,7 +4,7 @@ import {
   materiauxVisibles, scenarioPiece, lireEssai, criteresDuNiveau,
 } from "./moteur.js";
 import { fondPastille, casseroleSVG, consequenceCasserole, essaiSVG, schemaProcede } from "./illustrations.js";
-import { $, esc, le, ordreAuSort, lexique, identiteHTML, identiteComplete, texteIdentite, formaterIdent } from "./commun.js";
+import { $, esc, le, ordreAuSort, lexique, identiteHTML, identiteComplete, texteIdentite, formaterIdent, enregistrerPDF, copieStatique, nomFichierPDF } from "./commun.js";
 
 const NIVEAU = 5;
 const TITRES = ["J'observe", "Je définis mes critères", "Je teste et je trie", "Comment est-elle fabriquée ?", "Je justifie"];
@@ -229,6 +229,16 @@ export function creerCinquieme(ctx) {
     const c = e5(), i = ctx.etat().ident;
     return PIECES.every(([p]) => c.familleRep[p]) && identiteComplete(i);
   };
+  async function enregistrer(bouton) {
+    const texte = bouton.textContent;
+    bouton.disabled = true; bouton.textContent = "Préparation du PDF…";
+    try {
+      const e = ctx.etat();
+      await enregistrerPDF({ entete: S().entete, ident: e.ident, contenu: copieStatique($(".justification")), fichier: nomFichierPDF(NIVEAU, e.ident) });
+    } catch (err) {
+      alert(`Le PDF n'a pas pu être créé (${err.message}). Vérifie la connexion internet lors du premier enregistrement.`);
+    } finally { bouton.textContent = texte; bouton.disabled = !pretAImprimer(); }
+  }
   function majImpression() {
     const b = $('[data-c5="imprimer"]');
     if (b) b.disabled = !pretAImprimer();
@@ -271,7 +281,7 @@ export function creerCinquieme(ctx) {
         ${tableau}
         ${identiteHTML(i, "data-c5-ident")}
         <div class="actions ecran-seul">
-          <button type="button" class="bouton" data-c5="imprimer" ${pretAImprimer() ? "" : "disabled"}>Imprimer ou enregistrer en PDF</button>
+          <button type="button" class="bouton" data-c5="imprimer" ${pretAImprimer() ? "" : "disabled"}>Enregistrer ma fiche en PDF</button>
           <button type="button" class="bouton-discret" data-c5="recommencer">Recommencer</button>
         </div>
       </div>
@@ -311,7 +321,7 @@ export function creerCinquieme(ctx) {
       if (a === "verifier-criteres") { c.criteresVus = true; sauver(); ctx.rendreGarderFocus('[data-c5="verifier-criteres"]'); }
       if (a === "valider") valider();
       if (a === "fermer") $("#consequence").close();
-      if (a === "imprimer") window.print();
+      if (a === "imprimer") enregistrer(b);
       if (a === "recommencer" && confirm("Effacer ton travail et recommencer ?")) { ctx.nouvelEtat(); sauver(); ctx.aller(0); }
     });
     document.addEventListener("change", (ev) => {
