@@ -459,3 +459,35 @@ dialog::backdrop { background: rgba(16, 22, 29, .7); }
 }
 .justif-texte, .justif-visuel, .tri-grille, .tri5 { min-width: 0; }
 .identite .binome { grid-column: 1 / -1; display: flex; align-items: center; gap: 10px; background: transparent; border: 0; padding: 4px 0; }
+
+/* ---------- Carte d'identité (étape 5, 4e) ---------- */
+.carte-identite { margin-top: 12px; }
+.carte-identite caption small { display: block; font-weight: 400; font-size: .8rem; color: var(--encre-2); }
+.carte-identite th small { margin-left: 6px; font-weight: 400; text-transform: none; display: inline; }
+
+.pdf-hote { position: fixed; left: -10000px; top: 0; width: 718px; }
+/* ---------- Fiche PDF : toujours claire, mise en page des fiches papier ---------- */
+.pdf-page {
+  width: auto; padding: 0;
+  --paillasse: #fff; --surface: #fff; --surface-2: #F2F4F6; --encre: #18222E; --encre-2: #475360; --trait: #C5CED7;
+  --ok: #23703F; --ko: #A8231B; --ombre: none;
+  background: #fff; color: #18222E; font: 14px/1.45 var(--texte);
+}
+.pdf-entete { border-bottom: 2px solid #1F3864; margin-bottom: 14px; padding-bottom: 8px; }
+.pdf-bandeau { margin: 0; font-family: Arial, sans-serif; font-size: 13px; color: #18222E; }
+.pdf-sep { color: #8A97A6; margin: 0 6px; }
+.pdf-sequence { color: #2E75B6; font-weight: 700; }
+.pdf-entete h1 { font-family: Arial, sans-serif; font-weight: 700; font-size: 22px; color: #1F3864; text-align: center; margin: 10px 0 2px; letter-spacing: 0; }
+.pdf-sous { text-align: center; margin: 0 0 6px; font-style: italic; color: #475360; }
+.pdf-ident { margin: 6px 0 0; padding: 6px 10px; background: #EAF1FA; border-radius: 6px; font-weight: 700; }
+.pdf-page .justification { display: block; }
+.pdf-page .justif-visuel { position: static; display: flex; gap: 16px; align-items: flex-start; }
+.pdf-page .justif-visuel .cadre { width: 230px; flex: none; padding: 8px; }
+.pdf-page .justif-visuel .turbine, .pdf-page .casserole { max-width: 210px; }
+.pdf-page .carte-identite { margin-top: 0; }
+.pdf-page h2 { font-size: 20px; margin-top: 12px; }
+.pdf-page .tableau-defile { overflow: visible; }
+.pdf-page table { font-size: 12px; }
+.pdf-page .tableau-essais th, .pdf-page .tableau-essais td { white-space: normal; }
+.pdf-saisie { margin: 4px 0 10px; padding: 6px 10px; border-left: 3px solid #2E75B6; background: #F7F9FB; white-space: pre-wrap; }
+.pdf-choix { text-decoration: underline; }
