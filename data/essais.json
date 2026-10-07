@@ -1,0 +1,42 @@
+[
+  { "id": "aimant", "nom": "L'aimant", "question": "Est-il attiré par l'aimant ?",
+    "protocole": "On approche un aimant de l'échantillon.",
+    "lectures": [
+      { "regle": { "champ": "magnetique", "op": "==", "valeur": true }, "texte": "attiré par l'aimant", "classe": "oui" },
+      { "texte": "pas attiré par l'aimant", "classe": "non" }
+    ] },
+  { "id": "circuit", "nom": "Le circuit", "question": "Laisse-t-il passer le courant ?",
+    "protocole": "On place l'échantillon dans un circuit avec une pile et une lampe.",
+    "lectures": [
+      { "regle": { "champ": "elec", "op": "==", "valeur": "conducteur" }, "texte": "conducteur d'électricité : la lampe s'allume", "classe": "oui" },
+      { "texte": "isolant électrique : la lampe reste éteinte", "classe": "non" }
+    ] },
+  { "id": "bougie", "nom": "La chaleur", "question": "La chaleur traverse-t-elle l'échantillon ?",
+    "protocole": "On chauffe un bout de la baguette ; on tient l'autre bout avec une pince munie d'un thermomètre.",
+    "lectures": [
+      { "regle": { "champ": "therm", "op": "==", "valeur": "conducteur" }, "texte": "conducteur de chaleur : l'autre bout chauffe vite", "classe": "oui" },
+      { "texte": "isolant thermique : l'autre bout reste froid", "classe": "non" }
+    ] },
+  { "id": "plaque", "nom": "La plaque chauffante", "question": "Supporte-t-il une forte chaleur ?",
+    "protocole": "On pose l'échantillon sur une plaque réglée à 120 °C, puis à 200 °C.",
+    "lectures": [
+      { "regle": { "champ": "tempMax", "op": ">=", "valeur": 180 }, "texte": "supporte la plaque à 200 °C sans changer", "classe": "fort" },
+      { "regle": { "champ": "tempMax", "op": ">=", "valeur": 120 }, "texte": "supporte 120 °C, mais pas 200 °C", "classe": "moyen" },
+      { "texte": "ramollit avant 120 °C", "classe": "faible" }
+    ] },
+  { "id": "balance", "nom": "La balance", "question": "Est-il léger ou lourd ?",
+    "protocole": "On pèse un cube de 1 cm de côté de chaque matériau.",
+    "champValeur": "masseVolumique", "unite": "g",
+    "lectures": [
+      { "regle": { "champ": "masseVolumique", "op": "<=", "valeur": 1.5 }, "texte": "léger : le cube pèse {v} g", "classe": "leger" },
+      { "regle": { "champ": "masseVolumique", "op": "<=", "valeur": 4 }, "texte": "moyen : le cube pèse {v} g", "classe": "moyen" },
+      { "texte": "lourd : le cube pèse {v} g", "classe": "lourd" }
+    ] },
+  { "id": "flexion", "nom": "La flexion", "question": "Est-il souple ou rigide ?",
+    "protocole": "On appuie au bout d'une baguette tenue par l'autre bout.",
+    "lectures": [
+      { "regle": { "champ": "notes.rigidite", "op": ">=", "valeur": 4 }, "texte": "rigide : il ne plie presque pas", "classe": "rigide" },
+      { "regle": { "champ": "notes.rigidite", "op": ">=", "valeur": 3 }, "texte": "assez rigide : il plie un peu", "classe": "moyen" },
+      { "texte": "souple : il plie facilement", "classe": "souple" }
+    ] }
+]
