@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import {
   testerRegle, evaluer, verifierChoix, procedesCompatibles, classementReference, formaterValeur,
+  verifierClassement, verifierCoherence, verdictFinal,
 } from "../app/moteur.js";
 
 const lire = (f) => JSON.parse(readFileSync(new URL(`../data/${f}`, import.meta.url), "utf8"));
@@ -137,4 +138,34 @@ test("procedesCompatibles : POM injecté en série, pas imprimable ; PLA imprim�
   assert.equal(pla["impression-3d"].usage, "prototype");
   const cinq = procedesCompatibles(mat("abs"), procedes, turbine, 5);
   assert.ok(cinq.every((p) => procedes.find((q) => q.id === p.id).lieu.includes("labo")), "5e : procédés du labo seulement");
+});
+
+test("rendez-vous 1 : verifierClassement exige les critères vitaux et écarte les pièges, sans imposer les souhaitables", () => {
+  assert.deepEqual(verifierClassement(turbine, 4, ref(4)), []);
+  const libre = { ...ref(4), usure: "indispensable", cout: "sans", rigide: "sans" };
+  assert.deepEqual(verifierClassement(turbine, 4, libre), [], "les souhaitables de référence sont libres");
+  const capture = { ...ref(4), elec: "indispensable", eau: "souhaitable" };
+  const r = verifierClassement(turbine, 4, capture);
+  assert.deepEqual(r.map((x) => x.critere).sort(), ["eau", "elec"]);
+  for (const x of r) assert.ok(x.question.length > 10 && !/indispensable|sans importance/i.test(x.question), "question sans la réponse");
+  assert.equal(verifierClassement(turbine, 4, {}).length, 4, "cartes non rangées = à revoir");
+});
+
+test("rendez-vous 2 : verifierCoherence refuse un matériau éliminé par les critères de l'élève", () => {
+  const cl = { ...ref(4), usure: "indispensable" };
+  const v = verifierCoherence(turbine, materiaux, 4, cl, "abs");
+  assert.equal(v.length, 1);
+  assert.equal(v[0].critere, "usure");
+  assert.deepEqual(verifierCoherence(turbine, materiaux, 4, cl, "pom"), []);
+  assert.equal(verifierCoherence(turbine, materiaux, 4, ref(4), "laiton")[0].consequence, "demarrage-lent");
+});
+
+test("rendez-vous 3 : verdict final explicite, sans nommer le meilleur compromis", () => {
+  assert.equal(verdictFinal(turbine, materiaux, 4, "pom").niveau, "meilleur");
+  const abs = verdictFinal(turbine, materiaux, 4, "abs");
+  assert.equal(abs.niveau, "acceptable");
+  assert.deepEqual(abs.pertes.map((p) => p.critere), ["usure"]);
+  assert.deepEqual(abs.mieux, ["usure"], "un autre matériau fait mieux sur l'usure");
+  const pehd = verdictFinal(turbine, materiaux, 4, "pehd");
+  assert.deepEqual(pehd.pertes.map((p) => p.critere).sort(), ["rigide", "usure"]);
 });
