@@ -57,8 +57,12 @@ export function evaluer(scenario, materiaux, niveau, classement, poids = {}) {
   return [...survivants, ...elimines].map(({ rang, ...r }) => r);
 }
 
-// Contrôle du choix final contre le classement de RÉFÉRENCE du scénario.
-export function verifierChoix(scenario, materiaux, niveau, idMateriau) {
+// Usage de fabrication exigé à l'étape 4 : procédés du labo en 5e, grande série ensuite.
+export const usageRequis = (niveau) => (Number(niveau) === 5 ? "prototype" : "serie");
+
+// Contrôle du choix final contre le classement de RÉFÉRENCE du scénario,
+// puis « le matériau ne va jamais sans son procédé » : il faut un procédé compatible pour l'usage exigé.
+export function verifierChoix(scenario, materiaux, niveau, idMateriau, procedes) {
   const m = materiaux.find((x) => x.id === idMateriau);
   const ref = classementReference(scenario, niveau);
   const violations = criteresDuNiveau(scenario, niveau)
@@ -66,6 +70,11 @@ export function verifierChoix(scenario, materiaux, niveau, idMateriau) {
     .map((c) => ({ c, ...testerRegle(m, c.regle) }))
     .filter((t) => !t.ok)
     .map(({ c, v }) => ({ ...motif(c, v), consequence: c.consequence || null, question: c.questionRetour || "" }));
+  const fabricable = procedesCompatibles(m, procedes, scenario, niveau)
+    .some((p) => p.compatible && p.usage === usageRequis(niveau));
+  if (!fabricable)
+    violations.push({ critere: "procede", texte: scenario.sansProcede.nonParceQue,
+      consequence: "fabrication", question: scenario.sansProcede.question });
   return { ok: violations.length === 0, violations };
 }
 
