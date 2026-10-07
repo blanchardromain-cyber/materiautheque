@@ -370,3 +370,91 @@ dialog::backdrop { background: rgba(16, 22, 29, .7); }
   .cadre, .fixe, table, .redaction textarea { box-shadow: none; border-color: #999; background: #fff; }
   .redaction textarea { min-height: 3cm; }
 }
+
+/* ---------- Niveau 5e ---------- */
+.onglets { display: flex; gap: 8px; margin: 12px 0 16px; flex-wrap: wrap; }
+.onglet { min-height: 44px; padding: 8px 18px; border-radius: 999px; border: 2px solid var(--encre); background: var(--surface); font-weight: 700; cursor: pointer; }
+.onglet[aria-pressed="true"] { background: var(--encre); color: var(--paillasse); }
+.cartes-5e { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+
+.casserole { width: 100%; height: auto; }
+.casserole .plaque-cuisson, .essai-svg .plaque-cuisson { fill: #4A5664; transition: fill .6s; }
+.casserole.allumee .plaque-cuisson, .essai-plaque .plaque-cuisson { fill: #C0392B; }
+.casserole .vagues path { fill: none; stroke: #E4572E; stroke-width: 3; opacity: 0; }
+.casserole.allumee .vagues path { animation: monte 1.4s ease-in infinite; }
+.casserole.allumee .vagues path:nth-child(2) { animation-delay: .4s; }
+.casserole.allumee .vagues path:nth-child(3) { animation-delay: .8s; }
+@keyframes monte { 0% { opacity: 0; transform: translateY(0); } 40% { opacity: 1; } 100% { opacity: 0; transform: translateY(-30px); } }
+.casserole .eau-niveau { stroke: var(--eau); stroke-width: 3; }
+.casserole .bulles circle { fill: none; stroke: var(--eau); stroke-width: 2; opacity: 0; }
+.casserole.allumee .bulles circle { animation: bulle 1.6s ease-in infinite; }
+.casserole.allumee .bulles circle:nth-child(2) { animation-delay: .5s; }
+.casserole.allumee .bulles circle:nth-child(3) { animation-delay: 1s; }
+@keyframes bulle { 0% { opacity: 0; transform: translateY(0); } 30% { opacity: 1; } 100% { opacity: 0; transform: translateY(-26px); } }
+.casserole .main-chaude { opacity: 0; }
+.casserole .main-chaude text { font: 800 18px var(--texte); fill: #C0392B; }
+.casserole .cuve, .casserole .poignee { transform-box: fill-box; }
+.c-lente .bulles { display: none; }
+.c-fond .cuve { transform-origin: bottom; animation: fond 2.5s ease-in forwards; }
+@keyframes fond { to { transform: scaleY(.7) skewX(-6deg); filter: brightness(.7); } }
+.c-brulure .poignee rect { animation: rougit 2s ease-in forwards; }
+@keyframes rougit { to { fill: #E4572E; } }
+.c-brulure .main-chaude { animation: apparait .4s 1.6s forwards; }
+@keyframes apparait { to { opacity: 1; } }
+.c-molle .poignee { transform-origin: left center; animation: plie 2.5s ease-in forwards; }
+@keyframes plie { to { transform: rotate(28deg); } }
+.c-fabrication .cuve path, .c-fabrication .poignee rect { stroke-dasharray: 6 5; fill-opacity: .3; }
+
+.banc { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 20px; align-items: start; margin-bottom: 12px; }
+.banc-scene { background: var(--surface); border: 1px solid var(--trait); border-radius: var(--r); padding: 12px; min-height: 200px; }
+.scene-essai { margin: 0; }
+.scene-essai figcaption { margin-top: 8px; }
+.scene-vide { display: grid; place-items: center; min-height: 170px; margin: 0; }
+.essai-svg { width: 100%; max-height: 220px; }
+.essai-svg .fil { fill: none; stroke: #4A5664; stroke-width: 3; }
+.essai-svg .t-blanc { fill: #fff; font: 700 11px var(--texte); }
+.essai-aimant.issue-oui .echantillon-svg { animation: attire .9s ease-in forwards; }
+@keyframes attire { to { transform: translateX(84px); } }
+.essai-circuit .lampe { fill: #DDE2E7; stroke: #4A5664; stroke-width: 2; }
+.essai-circuit.issue-oui .lampe { fill: #F2C230; filter: drop-shadow(0 0 8px #F2C230); animation: allume .6s ease-in; }
+@keyframes allume { from { fill: #DDE2E7; filter: none; } }
+.essai-bougie .flamme { fill: #E4572E; transform-box: fill-box; transform-origin: bottom; animation: vacille .5s ease-in-out infinite alternate; }
+@keyframes vacille { to { transform: scaleY(.85) scaleX(1.1); } }
+.essai-bougie .chaleur-qui-monte { fill: #E4572E; opacity: 0; transform-box: fill-box; transform-origin: left; }
+.essai-bougie.issue-oui .chaleur-qui-monte { animation: chaleur 2s ease-in forwards; }
+@keyframes chaleur { from { opacity: .7; transform: scaleX(0); } to { opacity: .6; transform: scaleX(1); } }
+.essai-bougie .thermo { fill: #fff; stroke: #4A5664; stroke-width: 2; }
+.essai-bougie .thermo-niveau { fill: #2F7FC1; transform-box: fill-box; transform-origin: bottom; transform: scaleY(.25); }
+.essai-bougie.issue-oui .thermo-niveau { fill: #C0392B; animation: grimpe 2s 1s ease-in forwards; }
+@keyframes grimpe { to { transform: scaleY(1); } }
+.essai-plaque .echantillon-svg { transform-box: fill-box; transform-origin: bottom; }
+.essai-plaque.issue-faible .echantillon-svg { animation: fond 2s ease-in forwards; }
+.essai-plaque.issue-moyen .echantillon-svg { animation: noircit 2s ease-in forwards; }
+@keyframes noircit { to { filter: brightness(.45); } }
+.essai-balance .aiguille { stroke: #C0392B; stroke-width: 3; stroke-linecap: round; transform-box: view-box; transform-origin: 120px 111px; transition: transform 1s ease-out; }
+.essai-balance.issue-leger .aiguille { transform: rotate(25deg); }
+.essai-balance.issue-moyen .aiguille { transform: rotate(70deg); }
+.essai-balance.issue-lourd .aiguille { transform: rotate(125deg); }
+.essai-flexion .baguette { transform-box: view-box; transform-origin: 36px 71px; animation: flechit 1.2s ease-out forwards; }
+.essai-flexion.issue-rigide .baguette { --angle: 2deg; }
+.essai-flexion.issue-moyen .baguette { --angle: 9deg; }
+.essai-flexion.issue-souple .baguette { --angle: 24deg; }
+@keyframes flechit { to { transform: rotate(var(--angle)); } }
+.essai-flexion .fleche-force { fill: none; stroke: #C0392B; stroke-width: 3; }
+
+.tableau-essais th, .tableau-essais td { white-space: nowrap; font-family: var(--texte); font-size: .9rem; }
+.tableau-essais td.fait { font-weight: 700; }
+.tableau-essais tr.elimine > th, .tableau-essais tr.elimine > td.fait { opacity: .5; }
+.tableau-essais tr.choisi > th { box-shadow: inset 4px 0 0 var(--encre); }
+.bouton-essai { min-width: 44px; min-height: 40px; border-radius: 8px; border: 2px dashed var(--encre-2); background: var(--surface-2); font: 800 1.1rem var(--texte); cursor: pointer; }
+.bouton-essai:hover { background: var(--marquage); border-style: solid; }
+.bande-courte { display: inline-block; white-space: normal; max-width: 260px; padding: 4px 8px; background: var(--marquage); color: var(--marquage-encre); font-weight: 700; font-size: .82rem; border-left: 6px solid var(--marquage-encre); }
+.pastille.petite { width: 22px; height: 22px; display: inline-block; vertical-align: middle; margin-right: 8px; }
+.fiche-procede.petite .schema { height: 150px; }
+.fiche-procede.petite h4 { margin: .6em 0 .2em; }
+.encart-college { display: grid; grid-template-columns: 160px 1fr; gap: 16px; align-items: center; background: var(--surface); border: 2px solid var(--marquage); border-radius: var(--r); padding: 12px 16px; margin-top: 24px; }
+.encart-college .schema { width: 100%; height: auto; }
+@media (max-width: 900px) {
+  .banc, .encart-college { grid-template-columns: 1fr; }
+}
+.justif-texte, .justif-visuel, .tri-grille, .tri5 { min-width: 0; }
