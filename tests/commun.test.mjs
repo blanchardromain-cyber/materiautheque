@@ -25,3 +25,13 @@ test("identification complète, seul ou en binôme", () => {
 test("une saisie ancienne non formatée est mise en forme à l'impression", () => {
   assert.match(texteIdentite({ prenom: "léa", nom: "Martin", classe: "5e A" }), /^Léa MARTIN · 5e A/);
 });
+
+import { choisirMiseEnPage, REDUCTION_MINI } from "../app/commun.js";
+test("mise en page PDF : une page si possible sans descendre sous 9 pt, sinon recto verso", () => {
+  assert.deepEqual(choisirMiseEnPage(900), { pages: 1, echelle: 1 });
+  const juste = choisirMiseEnPage(1100);
+  assert.equal(juste.pages, 1);
+  assert.ok(juste.echelle >= REDUCTION_MINI && juste.echelle < 1);
+  assert.deepEqual(choisirMiseEnPage(1600), { pages: 2, echelle: 1 }, "trop long : on garde deux pages lisibles");
+  assert.ok(14 * REDUCTION_MINI * 0.75 >= 9, "texte courant (14 px) au moins à 9 pt une fois réduit");
+});
