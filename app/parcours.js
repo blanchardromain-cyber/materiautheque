@@ -4,51 +4,38 @@ import {
   evaluer, verifierChoix, procedesCompatibles, criteresDuNiveau, materiauxVisibles, testerRegle, formaterValeur, usageRequis,
   verifierClassement, verifierCoherence, verdictFinal,
 } from "./moteur.js";
-import { fondPastille, turbineSVG, robinetCoupeSVG, consequence, schemaProcede } from "./illustrations.js";
+import { fondPastille, turbineSVG, robinetCoupeSVG, consequence, schemaProcede, casseroleSVG } from "./illustrations.js";
+import { $, esc, minuscule, majuscule, le, du, au, ordreAuSort, lexique as lexiqueCommun } from "./commun.js";
+import { creerCinquieme } from "./cinquieme.js";
 
-const CLE = "materiautheque-i2";
+// Un enregistrement par niveau : changer de niveau ne perd pas le travail de l'autre.
+const CLES = { 4: "materiautheque-i2", 5: "materiautheque-5e" };
+const CLE_NIVEAU = "materiautheque-niveau";
 const ETAPES = ["J'observe", "Je définis mes critères", "Je trie", "Je choisis le procédé", "Je justifie"];
 const STATUTS = [["indispensable", "Indispensable"], ["souhaitable", "Souhaitable"], ["sans", "Sans importance"]];
-const NIVEAUX_ACTIFS = [4];
+const NIVEAUX_ACTIFS = [5, 4];
+const NOMS_NIVEAUX = { 5: "5e · débutant", 4: "4e · confirmé", 3: "3e · approfondi" };
 const GESTES = { ajout: "ajout de matière", enlevement: "enlèvement de matière", "mise-en-forme": "mise en forme", assemblage: "assemblage" };
-const minuscule = (t) => t.charAt(0).toLowerCase() + t.slice(1);
-const majuscule = (t) => t.charAt(0).toUpperCase() + t.slice(1);
-const VOYELLE = /^[aeiouyhéèêàâîôûAEIOUYHÉÈÊ]/;
-const le = (n) => (VOYELLE.test(n) ? `l'${n}` : `le ${n}`);
-const du = (n) => (VOYELLE.test(n) ? `de l'${n}` : `du ${n}`);
-const au = (n) => (VOYELLE.test(n) ? `à l'${n}` : `au ${n}`);
 
 let D, S; // données, scénario
 let etat = nouvelEtat();
 let robinetOuvert = false;
+let C5; // niveau 5e
 
-function nouvelEtat() {
-  return { niveau: 4, etape: 0, max: 0, contraintes: {}, contraintesVues: false, ordre: null, classement: {}, criteresVus: false, justif: {},
+function nouvelEtat(niveau = 4) {
+  return { niveau, etape: 0, max: 0, contraintes: {}, contraintesVues: false, ordre: null, classement: {}, criteresVus: false, justif: {},
     actifs: [], comparer: [], choix: null, essais: 0, serie: null, proto: null, texte: {},
     familleRep: null, sousFamilleRep: null, ident: {} };
 }
 
 // Ordre des contraintes tiré au sort une fois par élève, gardé ensuite (les vraies ne doivent pas venir en tête).
 function ordreContraintes() {
-  const ids = S.contraintes.map((c) => c.id);
-  if (!etat.ordre || etat.ordre.length !== ids.length || !ids.every((id) => etat.ordre.includes(id))) {
-    const vraie = (id) => S.contraintes.find((c) => c.id === id).vraie;
-    let o;
-    do {
-      o = [...ids];
-      for (let i = o.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [o[i], o[j]] = [o[j], o[i]]; }
-    } while (o.slice(0, 3).filter(vraie).length > 2);
-    etat.ordre = o;
-    sauver();
-  }
+  const o = ordreAuSort(S.contraintes, etat.ordre);
+  if (o !== etat.ordre) { etat.ordre = o; sauver(); }
   return etat.ordre.map((id) => S.contraintes.find((c) => c.id === id));
 }
 
-function lexique(termes) {
-  const defs = termes.map((t) => D.glossaire.find((g) => g.terme === t && g.niveaux.includes(etat.niveau))).filter(Boolean);
-  return `<details class="lexique"><summary>Mots utiles</summary><dl>${defs.map((g) =>
-    `<div><dt>${esc(g.terme)}</dt><dd>${esc(g.definition)}</dd></div>`).join("")}</dl></details>`;
-}
+const lexique = (termes) => lexiqueCommun(D.glossaire, etat.niveau, termes);
 
 function changerChoix(id) {
   etat.choix = etat.choix === id ? null : id;
@@ -58,18 +45,33 @@ function changerChoix(id) {
   sauver();
 }
 
-const $ = (s, r = document) => r.querySelector(s);
-const esc = (t) => String(t ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 const mat = (id) => D.materiaux.find((m) => m.id === id);
 const nomM = (m) => m.nom[etat.niveau];
 const famille = (m) => D.familles.find((f) => f.id === m.famille);
 const criteres = () => criteresDuNiveau(S, etat.niveau);
 const critere = (id) => S.criteres.find((c) => c.id === id);
 
-function sauver() { try { localStorage.setItem(CLE, JSON.stringify(etat)); } catch { /* stockage indisponible */ } }
-function restaurer() {
-  try { const e = JSON.parse(localStorage.getItem(CLE)); if (e && NIVEAUX_ACTIFS.includes(e.niveau)) etat = { ...nouvelEtat(), ...e }; }
+function sauver() {
+  try { localStorage.setItem(CLES[etat.niveau], JSON.stringify(etat)); localStorage.setItem(CLE_NIVEAU, String(etat.niveau)); }
   catch { /* stockage indisponible */ }
+}
+function charger(niveau) {
+  try { const e = JSON.parse(localStorage.getItem(CLES[niveau])); if (e && e.niveau === niveau) return { ...nouvelEtat(niveau), ...e }; }
+  catch { /* stockage indisponible */ }
+  return nouvelEtat(niveau);
+}
+function restaurer() {
+  let n = 4;
+  try { n = Number(localStorage.getItem(CLE_NIVEAU)) || 4; } catch { /* stockage indisponible */ }
+  etat = charger(NIVEAUX_ACTIFS.includes(n) ? n : 4);
+}
+const scenarioDuNiveau = (n) => D.composants.find((s) => (s.niveaux || [5, 4, 3]).includes(n) && (n === 5 ? s.id === "casserole" : s.id === "turbine-p11"));
+function changerNiveau(n) {
+  sauver();
+  etat = charger(n);
+  S = scenarioDuNiveau(n);
+  sauver();
+  rendre();
 }
 
 function aller(etape) {
@@ -86,8 +88,8 @@ function rendreEntete() {
   $("#piece").textContent = etat.etape ? `${S.systeme} · ${S.piece}` : "";
   const n = $("#niveau");
   n.hidden = !etat.etape;
-  n.textContent = `${etat.niveau}e · confirmé`;
-  $("#etapes").innerHTML = ETAPES.map((t, i) => {
+  n.textContent = NOMS_NIVEAUX[etat.niveau];
+  $("#etapes").innerHTML = (etat.niveau === 5 ? C5.titres : ETAPES).map((t, i) => {
     const k = i + 1;
     const courant = etat.etape === k ? ' aria-current="step"' : "";
     return `<li><button type="button" data-aller="${k}"${courant} ${k > etat.max ? "disabled" : ""}>
@@ -97,24 +99,26 @@ function rendreEntete() {
 
 // ---------- Accueil ----------
 function accueil() {
+  const cinq = etat.niveau === 5;
+  const bouton = (n, sous) => NIVEAUX_ACTIFS.includes(n)
+    ? `<button type="button" data-niveau="${n}" class="${etat.niveau === n ? "actif" : ""}" aria-pressed="${etat.niveau === n}">${NOMS_NIVEAUX[n]} <small>${sous}</small></button>`
+    : `<button type="button" disabled>${NOMS_NIVEAUX[n]} <small>à venir</small></button>`;
   return `<section class="accueil">
     <div class="accueil-texte">
       <p class="surtitre">${esc(S.sequence)}</p>
-      <h1>Quel matériau pour la <em>turbine</em> du robinet automatique&nbsp;?</h1>
+      <h1>${cinq ? "Quels matériaux pour la <em>cuve</em> et la <em>poignée</em> d'une casserole&nbsp;?" : "Quel matériau pour la <em>turbine</em> du robinet automatique&nbsp;?"}</h1>
       <p class="chapeau">${esc(S.presentation)}</p>
-      <p>Tu ne vas pas deviner : tu vas partir de ce que subit la pièce, écarter ce qui ne convient pas, puis justifier ton choix.</p>
+      <p>${cinq ? "Tu vas tester des échantillons comme au laboratoire, écarter ceux qui ne conviennent pas, puis justifier tes choix." : "Tu ne vas pas deviner : tu vas partir de ce que subit la pièce, écarter ce qui ne convient pas, puis justifier ton choix."}</p>
       <fieldset class="choix-niveau">
         <legend>Mon niveau</legend>
-        <button type="button" disabled>5e · débutant <small>à venir</small></button>
-        <button type="button" class="actif" aria-pressed="true">4e · confirmé</button>
-        <button type="button" disabled>3e · approfondi <small>à venir</small></button>
+        ${bouton(5, "la casserole")}${bouton(4, "la turbine")}${bouton(3, "")}
       </fieldset>
       <div class="actions">
         <button type="button" class="bouton" data-aller="1">Observer la pièce</button>
         ${etat.max ? `<button type="button" class="bouton-discret" data-action="recommencer">Recommencer depuis le début</button>` : ""}
       </div>
     </div>
-    <div class="accueil-visuel">${turbineSVG({ couleur: "#F2C230" }, "Turbine")}</div>
+    <div class="accueil-visuel">${cinq ? casseroleSVG({ cuve: "#F2C230", poignee: "#18222E", allumee: true }, "Casserole") : turbineSVG({ couleur: "#F2C230" }, "Turbine")}</div>
   </section>`;
 }
 
@@ -495,7 +499,7 @@ function etape5() {
 // ---------- Rendu et événements ----------
 function rendre() {
   rendreEntete();
-  const vues = [accueil, etape1, etape2, etape3, etape4, etape5];
+  const vues = etat.niveau === 5 ? [accueil, ...C5.etapes] : [accueil, etape1, etape2, etape3, etape4, etape5];
   $("#scene").innerHTML = vues[etat.etape]();
 }
 
@@ -504,6 +508,9 @@ function brancher() {
     const b = e.target.closest("button");
     if (!b) return;
     if (b.dataset.aller !== undefined) return aller(Number(b.dataset.aller));
+    if (b.dataset.niveau) return changerNiveau(Number(b.dataset.niveau));
+    if (b.id === "theme") return basculerTheme();
+    if (etat.niveau === 5) return; // les commandes de la 5e sont gérées par cinquieme.js
     if (b.dataset.activer) {
       const id = b.dataset.activer;
       etat.actifs = etat.actifs.includes(id) ? etat.actifs.filter((x) => x !== id) : [...etat.actifs, id];
@@ -524,8 +531,7 @@ function brancher() {
     if (action === "valider-choix") validerChoix();
     if (action === "fermer-consequence") $("#consequence").close();
     if (action === "imprimer") window.print();
-    if (action === "recommencer" && confirm("Effacer ton travail et recommencer ?")) { etat = nouvelEtat(); sauver(); aller(0); }
-    if (b.id === "theme") basculerTheme();
+    if (action === "recommencer" && confirm("Effacer ton travail et recommencer ?")) { etat = nouvelEtat(etat.niveau); sauver(); aller(0); }
   });
 
   document.addEventListener("change", (e) => {
@@ -609,10 +615,16 @@ async function demarrer() {
     $("#scene").innerHTML = `<p class="retour ko">Les données n'ont pas pu être chargées : ${esc(err.message)}. Ouvre l'application par son adresse web, pas en double-cliquant sur le fichier.</p>`;
     return;
   }
-  const params = new URLSearchParams(location.search);
-  S = D.composants.find((s) => s.id === (params.get("composant") || "turbine-p11")) || D.composants[0];
   restaurer();
+  const n = Number(new URLSearchParams(location.search).get("niveau"));
+  if (NIVEAUX_ACTIFS.includes(n) && n !== etat.niveau) etat = charger(n);
+  S = scenarioDuNiveau(etat.niveau);
+  C5 = creerCinquieme({
+    etat: () => etat, D: () => D, S: () => S, sauver, aller, rendre, rendreGarderFocus,
+    nouvelEtat: () => { etat = nouvelEtat(5); return etat; },
+  });
   brancher();
+  C5.brancher();
   rendre();
   if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) navigator.serviceWorker.register("sw.js").catch(() => {});
 }
