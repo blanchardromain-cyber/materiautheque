@@ -3,32 +3,22 @@
     "serie": ["unitaire"], "formes": ["complexe", "volume-simple", "creuse-fine"],
     "principe": "Une buse chauffée dépose un fil de plastique fondu, couche après couche.",
     "regleForme": "Forme complexe en un exemplaire → impression 3D.",
-    "photos": [
-      { "src": "img/procedes/impression-3d.jpg", "legende": "Imprimante Bambu Lab A1 du collège", "credit": "Image du fabricant : à remplacer par une photo du collège avant publication." },
-      { "src": "img/procedes/impression-3d-ultimaker.jpg", "legende": "Imprimante Ultimaker 2+ du collège" }
-    ] },
+    "machineCollege": "Au collège : imprimante 3D Bambu Lab A1" },
   { "id": "decoupe-laser", "nom": "Découpe laser", "geste": "enlevement", "lieu": ["labo"],
     "serie": ["unitaire", "petite"], "formes": ["plate"],
     "principe": "Un faisceau laser brûle la matière le long d'un tracé, dans une plaque.",
     "regleForme": "Pièce plate découpée → découpe laser.",
-    "photos": [
-      { "src": "img/procedes/decoupe-laser.jpg", "legende": "Découpeuse laser xTool du collège", "credit": "Image du fabricant : à remplacer par une photo du collège avant publication." }
-    ] },
+    "machineCollege": "Au collège : découpeuse laser xTool" },
   { "id": "usinage", "nom": "Usinage (fraisage à commande numérique, perçage)", "geste": "enlevement", "lieu": ["labo", "industrie"],
     "serie": ["unitaire", "petite"], "formes": ["volume-simple", "plate"],
     "principe": "Un outil qui tourne enlève des copeaux dans un bloc de matière.",
     "regleForme": "Volume simple taillé dans un bloc → usinage.",
-    "photos": [
-      { "src": "img/procedes/usinage.jpg", "legende": "Fraiseuse à commande numérique Charlyrobot du collège" },
-      { "src": "img/procedes/usinage-perceuse.jpg", "legende": "Perceuse à colonne du collège" }
-    ] },
+    "machineCollege": "Au collège : fraiseuse à commande numérique Charlyrobot" },
   { "id": "pliage-chaud", "nom": "Pliage à chaud", "geste": "mise-en-forme", "lieu": ["labo"],
     "serie": ["unitaire", "petite"], "formes": ["pliee"],
     "principe": "Un fil chauffant ramollit une plaque de plastique le long d'une ligne, puis on la plie.",
     "regleForme": "Plaque pliée selon une ligne → pliage à chaud.",
-    "photos": [
-      { "src": "img/procedes/pliage-chaud.jpg", "legende": "Thermoplieuse du collège" }
-    ] },
+    "machineCollege": "Au collège : thermoplieuse" },
   { "id": "thermoformage", "nom": "Thermoformage", "geste": "mise-en-forme", "lieu": ["labo"],
     "serie": ["unitaire", "petite"], "formes": ["coque"],
     "principe": "Une feuille de plastique chauffée est aspirée sur un moule pour en prendre la forme.",
