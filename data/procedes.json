@@ -1,32 +1,56 @@
 [
   { "id": "impression-3d", "nom": "Impression 3D par dépôt de fil", "geste": "ajout", "lieu": ["labo"],
     "serie": ["unitaire"], "formes": ["complexe", "volume-simple", "creuse-fine"],
-    "regleForme": "Forme complexe en un exemplaire → impression 3D." },
+    "principe": "Une buse chauffée dépose un fil de plastique fondu, couche après couche.",
+    "regleForme": "Forme complexe en un exemplaire → impression 3D.",
+    "photos": [
+      { "src": "img/procedes/impression-3d.jpg", "legende": "Imprimante Bambu Lab A1 du collège", "credit": "Image du fabricant : à remplacer par une photo du collège avant publication." },
+      { "src": "img/procedes/impression-3d-ultimaker.jpg", "legende": "Imprimante Ultimaker 2+ du collège" }
+    ] },
   { "id": "decoupe-laser", "nom": "Découpe laser", "geste": "enlevement", "lieu": ["labo"],
     "serie": ["unitaire", "petite"], "formes": ["plate"],
-    "regleForme": "Pièce plate découpée → découpe laser." },
+    "principe": "Un faisceau laser brûle la matière le long d'un tracé, dans une plaque.",
+    "regleForme": "Pièce plate découpée → découpe laser.",
+    "photos": [
+      { "src": "img/procedes/decoupe-laser.jpg", "legende": "Découpeuse laser xTool du collège", "credit": "Image du fabricant : à remplacer par une photo du collège avant publication." }
+    ] },
   { "id": "usinage", "nom": "Usinage (fraisage à commande numérique, perçage)", "geste": "enlevement", "lieu": ["labo", "industrie"],
     "serie": ["unitaire", "petite"], "formes": ["volume-simple", "plate"],
-    "regleForme": "Volume simple taillé dans un bloc → usinage." },
+    "principe": "Un outil qui tourne enlève des copeaux dans un bloc de matière.",
+    "regleForme": "Volume simple taillé dans un bloc → usinage.",
+    "photos": [
+      { "src": "img/procedes/usinage.jpg", "legende": "Fraiseuse à commande numérique Charlyrobot du collège" },
+      { "src": "img/procedes/usinage-perceuse.jpg", "legende": "Perceuse à colonne du collège" }
+    ] },
   { "id": "pliage-chaud", "nom": "Pliage à chaud", "geste": "mise-en-forme", "lieu": ["labo"],
     "serie": ["unitaire", "petite"], "formes": ["pliee"],
-    "regleForme": "Plaque pliée selon une ligne → pliage à chaud." },
+    "principe": "Un fil chauffant ramollit une plaque de plastique le long d'une ligne, puis on la plie.",
+    "regleForme": "Plaque pliée selon une ligne → pliage à chaud.",
+    "photos": [
+      { "src": "img/procedes/pliage-chaud.jpg", "legende": "Thermoplieuse du collège" }
+    ] },
   { "id": "thermoformage", "nom": "Thermoformage", "geste": "mise-en-forme", "lieu": ["labo"],
     "serie": ["unitaire", "petite"], "formes": ["coque"],
+    "principe": "Une feuille de plastique chauffée est aspirée sur un moule pour en prendre la forme.",
     "regleForme": "Coque fine à partir d'une feuille → thermoformage." },
   { "id": "injection", "nom": "Moulage par injection", "geste": "mise-en-forme", "lieu": ["industrie"],
     "serie": ["grande"], "formes": ["complexe", "creuse-fine", "volume-simple"],
+    "principe": "Du plastique fondu est poussé sous pression dans un moule fermé, refroidi, puis éjecté : une pièce toutes les quelques secondes.",
     "regleForme": "Forme creuse ou fine en grande série → injection." },
   { "id": "fonderie", "nom": "Fonderie / moulage métal", "geste": "mise-en-forme", "lieu": ["industrie"],
     "serie": ["petite", "grande"], "formes": ["complexe", "volume-simple"],
+    "principe": "Du métal fondu est versé dans un moule ; il prend sa forme en refroidissant.",
     "regleForme": "Pièce métallique massive de forme complexe → fonderie." },
   { "id": "emboutissage", "nom": "Emboutissage, pliage de tôle", "geste": "mise-en-forme", "lieu": ["industrie"],
     "serie": ["grande"], "formes": ["coque", "pliee"],
+    "principe": "Une presse déforme une tôle entre deux outils pour lui donner un creux ou un pli.",
     "regleForme": "Coque ou pièce pliée dans une tôle → emboutissage." },
   { "id": "extrusion", "nom": "Extrusion (profilés)", "geste": "mise-en-forme", "lieu": ["industrie"],
     "serie": ["grande"], "formes": ["profile"],
+    "principe": "La matière ramollie est poussée à travers une filière, comme le dentifrice hors du tube.",
     "regleForme": "Profilé de section constante → extrusion." },
   { "id": "assemblage", "nom": "Assemblage (fixe : collage, soudage, rivetage ; démontable : vissage, clipsage)", "geste": "assemblage", "lieu": ["labo", "industrie"],
     "serie": ["unitaire", "petite", "grande"], "formes": [],
+    "principe": "On relie des pièces déjà fabriquées.",
     "regleForme": "L'assemblage relie des pièces déjà formées : il ne donne pas sa forme à une pièce." }
 ]
