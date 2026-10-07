@@ -30,6 +30,8 @@ if (idsProcedes.size !== procedes.length) err("identifiants de procédés en dou
 
 for (const p of procedes) {
   if (!p.principe) err(`${p.id} : principe manquant`);
+  if (p.tempsPiece !== undefined && !(p.tempsPiece > 0)) err(`${p.id} : tempsPiece invalide`);
+  if (p.machineCollege && !p.lieu.includes("labo")) err(`${p.id} : machine du collège mais lieu sans « labo »`);
   if (!p.lieu.every((l) => ["labo", "industrie"].includes(l))) err(`${p.id} : lieu inconnu`);
   if (!p.serie.every((s) => ["unitaire", "petite", "grande"].includes(s))) err(`${p.id} : série inconnue`);
 }
@@ -38,6 +40,8 @@ for (const m of materiaux) {
   const q = `matériau ${m.id}`;
   for (const n of NIVEAUX) if (!m.nom?.[n]) err(`${q} : nom ${n}e manquant`);
   if (!idsFamilles.has(m.famille)) err(`${q} : famille ${m.famille} inconnue`);
+  else if (!familles.find((f) => f.id === m.famille).sousFamilles["4"].includes(m.sousFamille?.["4"]))
+    err(`${q} : sous-famille 4e « ${m.sousFamille?.["4"]} » absente de la famille ${m.famille}`);
   if (!(m.masseVolumique > 0)) err(`${q} : masse volumique invalide`);
   for (const k of ["rigidite", "chocs", "usure", "eau", "corrosion"])
     if (!entier(m.notes?.[k], 1, 5)) err(`${q} : note ${k} hors 1-5`);
