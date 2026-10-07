@@ -5,7 +5,10 @@ import {
   verifierClassement, verifierCoherence, verdictFinal,
 } from "./moteur.js";
 import { fondPastille, turbineSVG, robinetCoupeSVG, consequence, schemaProcede, casseroleSVG } from "./illustrations.js";
-import { $, esc, minuscule, majuscule, le, du, au, ordreAuSort, lexique as lexiqueCommun } from "./commun.js";
+import {
+  $, esc, minuscule, majuscule, le, du, au, ordreAuSort, lexique as lexiqueCommun,
+  identiteHTML, identiteComplete, texteIdentite, formaterIdent,
+} from "./commun.js";
 import { creerCinquieme } from "./cinquieme.js";
 
 // Un enregistrement par niveau : changer de niveau ne perd pas le travail de l'autre.
@@ -420,16 +423,16 @@ function retourFamille(m, f) {
   return `<p class="retour ko"><strong>Bonne famille, sous-famille à revoir.</strong> Ce matériau existe-t-il tel quel dans la nature, ou est-il fabriqué ?</p>`;
 }
 
-const pretAImprimer = () => !!(etat.familleRep && etat.sousFamilleRep
-  && etat.ident.prenom?.trim() && etat.ident.nom?.trim() && etat.ident.classe?.trim());
+const pretAImprimer = () => !!(etat.familleRep && etat.sousFamilleRep && identiteComplete(etat.ident));
+const AIDE_IMPRESSION = "Pour imprimer : choisis la famille et la sous-famille, puis écris le prénom, le nom (et ceux de l'élève 2 en binôme) et la classe.";
 
 function majImpression() {
   const b = $('[data-action="imprimer"]');
   if (b) b.disabled = !pretAImprimer();
   const a = $("#aide-impression");
-  if (a) a.textContent = pretAImprimer() ? "" : "Pour imprimer : choisis la famille et la sous-famille, puis écris ton prénom, ton nom et ta classe.";
+  if (a) a.textContent = pretAImprimer() ? "" : AIDE_IMPRESSION;
   const e = $(".entete-impression");
-  if (e) e.textContent = `${etat.ident.prenom || ""} ${etat.ident.nom || ""} · ${etat.ident.classe || ""} · ${new Date().toLocaleDateString("fr-FR")}`;
+  if (e) e.textContent = texteIdentite(etat.ident);
 }
 
 function etape5() {
@@ -459,7 +462,7 @@ function etape5() {
     <div class="justif-texte">
       <h2 tabindex="-1">5. Je justifie mon choix</h2>
       ${verdict}
-      <p class="impression-seule entete-impression">${esc(etat.ident.prenom)} ${esc(etat.ident.nom)} · ${esc(etat.ident.classe)} · ${new Date().toLocaleDateString("fr-FR")}</p>
+      <p class="impression-seule entete-impression">${esc(texteIdentite(etat.ident))}</p>
       <div class="tableau-defile"><table class="tableau-choix"><caption>Mon tableau de choix</caption>
         <thead><tr><th scope="col">Critère</th>${candidats.map((c) => `<th scope="col">${esc(nomM(c))}</th>`).join("")}</tr></thead>
         <tbody>${mesCriteres.map((c) => `<tr><th scope="row">${esc(c.carte[etat.niveau])}<small>${etat.classement[c.id]}</small></th>${candidats.map((x) => {
@@ -481,17 +484,12 @@ function etape5() {
       ${zone("elimination", "J'écarte… parce que…", "Explique au moins une élimination.")}
       <p class="fixe">Fabrication : <strong>${esc(minuscule(nomProc(etat.serie)))}</strong> pour la série ; prototype au collège par <strong>${esc(minuscule(nomProc(etat.proto)))}</strong>, en ${esc(nomM(matProto))}.</p>
       ${zone("recyclage", "En fin de vie, ce matériau…", "Recyclable ou non ? Pense au code de recyclage.")}
-      <fieldset class="identite ecran-seul"><legend>Pour imprimer ta fiche</legend>
-        <label>Prénom<input type="text" data-ident="prenom" value="${esc(etat.ident.prenom)}" autocomplete="off" maxlength="40"></label>
-        <label>Nom<input type="text" data-ident="nom" value="${esc(etat.ident.nom)}" autocomplete="off" maxlength="40"></label>
-        <label>Classe<input type="text" data-ident="classe" value="${esc(etat.ident.classe)}" autocomplete="off" maxlength="10" placeholder="4e B"></label>
-        <p class="aide">Ces informations restent sur cet ordinateur et s'effacent avec « Recommencer ».</p>
-      </fieldset>
+      ${identiteHTML(etat.ident, "data-ident")}
       <div class="actions ecran-seul">
         <button type="button" class="bouton" data-action="imprimer" ${pretAImprimer() ? "" : "disabled"}>Imprimer ou enregistrer en PDF</button>
         <button type="button" class="bouton-discret" data-action="recommencer">Recommencer</button>
       </div>
-      <p class="aide ecran-seul" id="aide-impression">${pretAImprimer() ? "" : "Pour imprimer : choisis la famille et la sous-famille, puis écris ton prénom, ton nom et ta classe."}</p>
+      <p class="aide ecran-seul" id="aide-impression">${pretAImprimer() ? "" : AIDE_IMPRESSION}</p>
     </div>
   </section>`;
 }
@@ -544,6 +542,7 @@ function brancher() {
       if (avait) rendreGarderFocus(`[data-contrainte="${t.dataset.contrainte}"]`);
     }
     if (t.dataset.classer) classer(t.dataset.classer, t.value);
+    if (t.dataset.ident === "binome") { etat.ident = { ...etat.ident, binome: t.checked }; sauver(); rendreGarderFocus('[data-ident="binome"]'); }
     if (t.dataset.reponse) {
       if (t.dataset.reponse === "famille") { etat.familleRep = t.value || null; etat.sousFamilleRep = null; }
       else etat.sousFamilleRep = t.value || null;
@@ -560,7 +559,10 @@ function brancher() {
     const t = e.target;
     if (t.dataset.justif) { etat.justif[t.dataset.justif] = t.value; sauver(); }
     if (t.dataset.texte) { etat.texte[t.dataset.texte] = t.value; sauver(); }
-    if (t.dataset.ident) { etat.ident = { ...etat.ident, [t.dataset.ident]: t.value }; sauver(); majImpression(); }
+    if (t.dataset.ident && t.type === "text") {
+      t.value = formaterIdent(t.dataset.ident, t.value);
+      etat.ident = { ...etat.ident, [t.dataset.ident]: t.value }; sauver(); majImpression();
+    }
   });
 
   // Glisser-déposer (souris) : complément des boutons, qui restent la voie principale.
