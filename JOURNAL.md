@@ -64,6 +64,21 @@ Chaque itération suit la boucle : spécifier → construire → vérifier techn
 
 **Vérifié** : 16 tests, contrôle des données (questions obligatoires pour les critères vitaux et pièges), le cas de la capture rejoué (4 cartes à revoir, puis PE-HD → « choix acceptable », absent des écartés), animation laiton, comparaison au-delà de 3, mains, dessins des machines.
 
+## I2.3 — 2026-10-07 (troisième relecture du professeur, non publiée)
+
+**Étape 4**
+- L'impression 3D, la découpe laser et le pliage à chaud existent aussi dans l'industrie : lieux corrigés. Le thermoformage passe en « industrie » seulement, faute de thermoformeuse au collège (à rétablir sinon).
+- Deux questions posées en quantités : « fabriquer 10 000 turbines » (tous les procédés) et « fabriquer une turbine d'essai au collège » (les 4 machines du collège).
+- Avis demandé (procédé présent au collège et dans l'industrie, pour la série) : ce n'est pas le lieu qui compte, c'est la cadence. Le retour le montre en heures : impression 3D ≈ 1 h par pièce, soit environ 14 mois pour 10 000 turbines ; injection ≈ 20 s, soit environ 2 jours. Temps par pièce en ordre de grandeur, marqués `aValider`.
+- Le retour s'affiche dans la fiche choisie, et un bandeau fixe en bas résume les deux choix avec le bouton « Justifier mon choix ».
+- Étiquettes : police du texte, en gras, couleurs pleines (« au collège » jaune, « dans l'industrie » bleu acier) et pictogramme du geste.
+
+**Étape 5**
+- La famille et la sous-famille ne sont plus écrites : l'élève les choisit (listes), avec un retour « Exact » ou « À revoir » et un indice tiré des objets du quotidien. Elles ont été retirées des cartes de l'étape 3, qui donnaient la réponse. Les sous-familles 4e des matériaux sont alignées sur celles des familles (contrôle ajouté).
+- Identification (prénom, nom, classe) en fin de parcours, imprimée en tête de la fiche ; impression possible seulement quand la famille et l'identité sont renseignées. Données gardées dans le navigateur et effacées par « Recommencer ».
+
+**Vérifié** : 16 tests, contrôle des données, parcours ABS (impression 3D refusée pour la série avec la durée) puis POM, famille fausse puis juste, impression activée après l'identité, 375 px sans débordement, console sans erreur.
+
 ## Backlog (itérations suivantes)
 
 - Procédés présents au collège mais hors référentiel : cisaillage (cisaille guillotine), pliage de tôle (plieuse), poinçonnage (poinçonneuse) ; à ajouter en I6 si utile.
