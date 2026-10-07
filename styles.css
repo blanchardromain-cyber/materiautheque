@@ -116,6 +116,13 @@ main { max-width: 1240px; margin: 0 auto; padding: 28px 24px 120px; outline: non
 .robinet .capteur { fill: var(--encre-2); }
 .robinet .axe { stroke: var(--encre-2); stroke-width: 4; }
 .robinet .bobine { fill: #B87333; stroke: #7a4a1f; stroke-width: 1.5; }
+.robinet .mains { fill: #E8B48F; stroke: #A86F4C; stroke-width: 1.5; transform: translate(70px, 30px); opacity: 0; transition: transform .6s ease, opacity .6s; }
+.robinet .ondes path { fill: none; stroke: var(--eau); stroke-width: 2; opacity: 0; }
+.robinet.en-marche .mains { transform: none; opacity: 1; }
+.robinet.en-marche .ondes path { animation: onde 1.2s ease-out infinite; }
+.robinet.en-marche .ondes path:nth-child(2) { animation-delay: .2s; }
+.robinet.en-marche .ondes path:nth-child(3) { animation-delay: .4s; }
+@keyframes onde { 0% { opacity: 0; } 30% { opacity: 1; } 100% { opacity: 0; } }
 .robinet .pole { font: bold 11px var(--texte); fill: #fff; }
 .robinet .etiquettes text { font: 13px var(--texte); fill: var(--encre-2); }
 .robinet .etiquette-forte { font-weight: 700; fill: var(--encre) !important; }
@@ -251,13 +258,9 @@ dialog::backdrop { background: rgba(16, 22, 29, .7); }
 .galerie-procedes { list-style: none; margin: 20px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
 .fiche-procede { display: flex; flex-direction: column; background: var(--surface); border: 1px solid var(--trait); border-radius: var(--r); overflow: hidden; box-shadow: var(--ombre); }
 .fiche-procede.retenu { outline: 3px solid var(--encre); outline-offset: 2px; }
-.fiche-media { display: grid; gap: 2px; background: #fff; border-bottom: 1px solid var(--trait); }
-.fiche-media.deux { grid-template-columns: 1fr 1fr; }
-.fiche-media figure { margin: 0; display: flex; flex-direction: column; }
-.fiche-media img { display: block; width: 100%; height: 240px; object-fit: contain; background: #fff; }
-.fiche-media .schema { display: block; width: 100%; height: 240px; background: var(--surface-2); }
-.fiche-media figcaption { padding: 6px 10px; font-size: .8rem; color: #3b4652; background: #fff; }
-.fiche-media figcaption small { display: block; color: #8a4b1f; }
+.fiche-media { margin: 0; background: var(--surface-2); border-bottom: 1px solid var(--trait); }
+.fiche-media .schema { display: block; width: 100%; height: 220px; }
+.fiche-media figcaption { padding: 6px 12px; font-size: .85rem; color: var(--encre-2); background: var(--surface); border-top: 1px solid var(--trait); }
 .fiche-corps { padding: 4px 16px 16px; display: flex; flex-direction: column; flex: 1; }
 .fiche-corps h3 { margin: .8em 0 .3em; }
 .fiche-corps p { margin: 0 0 8px; }
@@ -276,6 +279,23 @@ dialog::backdrop { background: rgba(16, 22, 29, .7); }
 .schema .s-coupe { stroke: var(--encre); stroke-width: 2; stroke-dasharray: 4 3; fill: none; }
 .schema .s-vis { stroke: #4A5664; stroke-width: 6; stroke-dasharray: 8 4; }
 .schema .s-trait-r { fill: #4A5664; }
+.schema .s-bati { fill: #4A5664; stroke: #2B3540; stroke-width: 1.5; }
+.schema .s-bobine { fill: #F2C230; stroke: #8A6A0A; stroke-width: 2; }
+.schema .s-caisson { fill: #F4F6F8; stroke: #4A5664; stroke-width: 2; }
+.schema .s-capot { fill: rgba(176, 106, 40, .35); stroke: #4A5664; stroke-width: 2; }
+.schema .s-capot-arche { fill: rgba(140, 200, 220, .18); stroke: #1F8A8A; stroke-width: 6; stroke-linejoin: round; }
+.schema .s-poignee { fill: #F2C230; stroke: #8A6A0A; stroke-width: 1.5; }
+.schema .s-matiere-r { fill: #D9473A; stroke: #8E2A21; stroke-width: 1.5; }
+.schema .s-arret { fill: #D9473A; stroke: #8E2A21; stroke-width: 2; }
+.schema .s-marche { fill: #3C8A57; stroke: #23542F; stroke-width: 2; }
+
+/* Verdicts */
+.verdict { margin: 8px 0 20px; padding: 12px 16px; border-radius: var(--r); border: 2px solid; background: var(--surface); }
+.verdict p { margin: 0 0 6px; }
+.verdict.meilleur { border-color: var(--ok); }
+.verdict.meilleur strong { color: var(--ok); }
+.verdict.acceptable { border-color: var(--marquage); }
+.carte-critere.a-revoir { border: 2px solid var(--ko); }
 
 /* Lexique */
 .lexique { margin-top: 16px; background: var(--surface); border: 1px solid var(--trait); border-radius: var(--r); padding: 4px 14px; }
