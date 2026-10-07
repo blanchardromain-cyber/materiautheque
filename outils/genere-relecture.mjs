@@ -1,6 +1,6 @@
 // Génère RELECTURE.md à partir des données : node outils/genere-relecture.mjs
 import { readFileSync, writeFileSync } from "node:fs";
-import { evaluer, classementReference, criteresDuNiveau, lireChamp, formaterValeur } from "../app/moteur.js";
+import { evaluer, classementReference, criteresDuNiveau, lireChamp, formaterValeur, scenarioPiece } from "../app/moteur.js";
 
 const racine = new URL("../", import.meta.url);
 const lire = (f) => JSON.parse(readFileSync(new URL(`data/${f}`, racine), "utf8"));
@@ -34,9 +34,10 @@ L.push("");
 
 const libelle = { indispensable: "Indispensable", souhaitable: "Souhaitable", sans: "Sans importance (piège)" };
 const verdictTexte = { reference: "Choix de référence", acceptable: "Acceptable", elimine: "Éliminé" };
-for (const s of scenarios) {
-  L.push(`## 2. Scénario « ${s.piece} » (${s.systeme})`, "", `> ${s.avertissement}`, "");
-  for (const n of [4, 5, 3]) {
+const unites = scenarios.flatMap((sc) => sc.pieces ? sc.pieces.map((p) => ({ ...scenarioPiece(sc, p.id), titre: `${sc.piece} — ${p.piece}` })) : [{ ...sc, titre: sc.piece }]);
+for (const s of unites) {
+  L.push(`## 2. Scénario « ${s.titre} » (${s.systeme})`, "", s.avertissement ? `> ${s.avertissement}` : "", "");
+  for (const n of (s.niveaux || [4, 5, 3])) {
     const ref = classementReference(s, n);
     L.push(`### Niveau ${n}e`, "", "| Critère (carte élève) | Statut de référence | Règle | Poids |", "|---|---|---|---|");
     for (const c of criteresDuNiveau(s, n))
