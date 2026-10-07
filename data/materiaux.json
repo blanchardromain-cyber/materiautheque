@@ -61,7 +61,7 @@
   },
   {
     "id": "pla", "nom": { "5": "Acide polylactique", "4": "PLA", "3": "PLA (biosourcé)" },
-    "famille": "organique", "sousFamille": { "4": "Synthétique (plastique)", "3": "Thermoplastique biosourcé" },
+    "famille": "organique", "sousFamille": { "4": "Synthétiques (plastiques, caoutchoucs)", "3": "Thermoplastique biosourcé" },
     "masseVolumique": 1.24, "tempMax": 50, "tempMaxTexte": "≈ 50", "absorptionEau": 0.5,
     "elec": "isolant", "therm": "isolant", "magnetique": false,
     "notes": { "rigidite": 3, "chocs": 2, "usure": 2, "eau": 2, "corrosion": 2 },
@@ -74,7 +74,7 @@
   },
   {
     "id": "abs", "nom": { "5": "Acrylonitrile butadiène styrène", "4": "ABS", "3": "ABS" },
-    "famille": "organique", "sousFamille": { "4": "Synthétique (plastique)", "3": "Thermoplastique" },
+    "famille": "organique", "sousFamille": { "4": "Synthétiques (plastiques, caoutchoucs)", "3": "Thermoplastique" },
     "masseVolumique": 1.04, "tempMax": 70, "tempMaxTexte": "70", "absorptionEau": 0.3,
     "elec": "isolant", "therm": "isolant", "magnetique": false,
     "notes": { "rigidite": 3, "chocs": 4, "usure": 3, "eau": 3, "corrosion": 4 },
@@ -86,7 +86,7 @@
   },
   {
     "id": "pehd", "nom": { "5": "Polyéthylène haute densité", "4": "PE-HD", "3": "PE-HD" },
-    "famille": "organique", "sousFamille": { "4": "Synthétique (plastique)", "3": "Thermoplastique" },
+    "famille": "organique", "sousFamille": { "4": "Synthétiques (plastiques, caoutchoucs)", "3": "Thermoplastique" },
     "masseVolumique": 0.95, "tempMax": 90, "tempMaxTexte": "90", "absorptionEau": 0,
     "elec": "isolant", "therm": "isolant", "magnetique": false,
     "notes": { "rigidite": 2, "chocs": 4, "usure": 3, "eau": 5, "corrosion": 5 },
@@ -98,7 +98,7 @@
   },
   {
     "id": "pp", "nom": { "5": "Polypropylène", "4": "PP", "3": "PP" },
-    "famille": "organique", "sousFamille": { "4": "Synthétique (plastique)", "3": "Thermoplastique" },
+    "famille": "organique", "sousFamille": { "4": "Synthétiques (plastiques, caoutchoucs)", "3": "Thermoplastique" },
     "masseVolumique": 0.91, "tempMax": 100, "tempMaxTexte": "100", "absorptionEau": 0,
     "elec": "isolant", "therm": "isolant", "magnetique": false,
     "notes": { "rigidite": 2, "chocs": 3, "usure": 3, "eau": 5, "corrosion": 5 },
@@ -110,7 +110,7 @@
   },
   {
     "id": "pmma", "nom": { "5": "Plexiglas", "4": "PMMA", "3": "PMMA" },
-    "famille": "organique", "sousFamille": { "4": "Synthétique (plastique)", "3": "Thermoplastique" },
+    "famille": "organique", "sousFamille": { "4": "Synthétiques (plastiques, caoutchoucs)", "3": "Thermoplastique" },
     "masseVolumique": 1.19, "tempMax": 70, "tempMaxTexte": "70", "absorptionEau": 0.3,
     "elec": "isolant", "therm": "isolant", "magnetique": false,
     "notes": { "rigidite": 3, "chocs": 1, "usure": 3, "eau": 4, "corrosion": 4 },
@@ -122,7 +122,7 @@
   },
   {
     "id": "pa6", "nom": { "5": "Nylon", "4": "PA", "3": "PA 6" },
-    "famille": "organique", "sousFamille": { "4": "Synthétique (plastique)", "3": "Thermoplastique" },
+    "famille": "organique", "sousFamille": { "4": "Synthétiques (plastiques, caoutchoucs)", "3": "Thermoplastique" },
     "masseVolumique": 1.13, "tempMax": 100, "tempMaxTexte": "100", "absorptionEau": 9.5,
     "elec": "isolant", "therm": "isolant", "magnetique": false,
     "notes": { "rigidite": 3, "chocs": 4, "usure": 5, "eau": 2, "corrosion": 4 },
@@ -134,7 +134,7 @@
   },
   {
     "id": "pom", "nom": { "5": "Polyacétal", "4": "POM", "3": "POM-C" },
-    "famille": "organique", "sousFamille": { "4": "Synthétique (plastique)", "3": "Thermoplastique" },
+    "famille": "organique", "sousFamille": { "4": "Synthétiques (plastiques, caoutchoucs)", "3": "Thermoplastique" },
     "masseVolumique": 1.39, "tempMax": 100, "tempMaxTexte": "100", "absorptionEau": 0.8,
     "elec": "isolant", "therm": "isolant", "magnetique": false,
     "notes": { "rigidite": 4, "chocs": 3, "usure": 5, "eau": 4, "corrosion": 5 },
@@ -146,7 +146,7 @@
   },
   {
     "id": "silicone", "nom": { "5": "Caoutchouc silicone", "4": "VMQ", "3": "Silicone" },
-    "famille": "organique", "sousFamille": { "4": "Synthétique (élastomère)", "3": "Élastomère" },
+    "famille": "organique", "sousFamille": { "4": "Synthétiques (plastiques, caoutchoucs)", "3": "Élastomère" },
     "masseVolumique": 1.1, "masseVolumiqueTexte": "≈ 1,1", "tempMax": 180, "tempMaxTexte": "> 180", "absorptionEau": 0.1,
     "elec": "isolant", "therm": "isolant", "magnetique": false,
     "notes": { "rigidite": 1, "chocs": 5, "usure": 2, "eau": 5, "corrosion": 5 },
@@ -158,7 +158,7 @@
   },
   {
     "id": "bois", "nom": { "5": "Pin / hêtre", "4": "Pin / hêtre", "3": "Bois massif" },
-    "famille": "organique", "sousFamille": { "4": "Naturel (bois)", "3": "Bois massif" },
+    "famille": "organique", "sousFamille": { "4": "Naturels (bois, carton, liège)", "3": "Bois massif" },
     "masseVolumique": 0.6, "masseVolumiqueTexte": "≈ 0,5 à 0,7", "tempMax": null, "tempMaxTexte": "—", "absorptionEau": null,
     "elec": "isolant", "therm": "isolant", "magnetique": false,
     "notes": { "rigidite": 3, "chocs": 3, "usure": 2, "eau": 1, "corrosion": 1 },
@@ -170,7 +170,7 @@
   },
   {
     "id": "cp-mdf", "nom": { "5": "Contreplaqué / MDF", "4": "CP / MDF", "3": "Bois aggloméré" },
-    "famille": "composite", "sousFamille": { "4": "Composite bois", "3": "Bois aggloméré" },
+    "famille": "composite", "sousFamille": { "4": "Renfort + matrice", "3": "Bois aggloméré" },
     "masseVolumique": 0.7, "masseVolumiqueTexte": "≈ 0,6 à 0,75", "tempMax": null, "tempMaxTexte": "—", "absorptionEau": null,
     "elec": "isolant", "therm": "isolant", "magnetique": false,
     "notes": { "rigidite": 3, "chocs": 2, "usure": 2, "eau": 1, "corrosion": 1 },
@@ -182,7 +182,7 @@
   },
   {
     "id": "verre", "nom": { "5": "Verre", "4": "Verre", "3": "Verre sodocalcique" },
-    "famille": "ceramique", "sousFamille": { "4": "Verre", "3": "Verre" },
+    "famille": "ceramique", "sousFamille": { "4": "Verres", "3": "Verre" },
     "masseVolumique": 2.5, "tempMax": 400, "tempMaxTexte": "> 400", "absorptionEau": 0,
     "elec": "isolant", "therm": "isolant", "magnetique": false,
     "notes": { "rigidite": 5, "chocs": 1, "usure": 5, "eau": 5, "corrosion": 5 },
@@ -195,7 +195,7 @@
   },
   {
     "id": "porcelaine", "nom": { "5": "Porcelaine", "4": "Porcelaine", "3": "Céramique technique" },
-    "famille": "ceramique", "sousFamille": { "4": "Céramique", "3": "Céramique technique" },
+    "famille": "ceramique", "sousFamille": { "4": "Céramiques", "3": "Céramique technique" },
     "masseVolumique": 2.4, "masseVolumiqueTexte": "≈ 2,4", "tempMax": 1000, "tempMaxTexte": "> 1000", "absorptionEau": 0,
     "elec": "isolant", "therm": "isolant", "magnetique": false,
     "notes": { "rigidite": 5, "chocs": 1, "usure": 5, "eau": 5, "corrosion": 5 },
