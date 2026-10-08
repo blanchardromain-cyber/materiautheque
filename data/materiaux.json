@@ -8,7 +8,7 @@
     "cout": 1, "recyclage": { "note": 5, "code": "Acier (tri par aimant)" }, "origine": "minerai", "energieGrise": 25,
     "procedes": ["usinage", "emboutissage", "assemblage"],
     "peau3D": { "couleur": "#8A8F96", "metal": 1, "rugosite": 0.45 },
-    "exemples": ["vis", "charpentes", "carrosseries"],
+    "exemples": ["vis", "charpentes", "carrosseries"], "noteFamille": "L'acier, c'est du fer avec un peu de carbone : un métal ferreux, attiré par l'aimant.",
     "aValider": ["energieGrise", "notes.chocs", "notes.usure", "notes.corrosion", "cout", "procedes", "absorptionEau"]
   },
   {
@@ -20,7 +20,7 @@
     "cout": 3, "recyclage": { "note": 5, "code": "Acier inoxydable" }, "origine": "minerai", "energieGrise": 60,
     "procedes": ["usinage", "emboutissage", "assemblage"],
     "peau3D": { "couleur": "#C9CDD2", "metal": 1, "rugosite": 0.25 },
-    "exemples": ["éviers", "couverts", "cuves de casserole"],
+    "exemples": ["éviers", "couverts", "cuves de casserole"], "noteFamille": "L'inox est un acier : du fer mêlé de chrome et de nickel. Il est donc ferreux, même si l'aimant ne l'attire pas (inox 304).",
     "aValider": ["energieGrise", "notes.chocs", "notes.usure", "notes.corrosion", "cout", "magnetique", "procedes", "absorptionEau"]
   },
   {
@@ -32,7 +32,7 @@
     "cout": 2, "recyclage": { "note": 5, "code": "Aluminium" }, "origine": "minerai", "energieGrise": 200,
     "procedes": ["usinage", "fonderie", "emboutissage", "extrusion", "assemblage"],
     "peau3D": { "couleur": "#D5D8DC", "metal": 1, "rugosite": 0.35 },
-    "exemples": ["cadres de trottinette", "canettes", "profilés de fenêtre"],
+    "exemples": ["cadres de trottinette", "canettes", "profilés de fenêtre"], "noteFamille": "L'aluminium vient d'un minerai, la bauxite : c'est un métal, même si l'aimant ne l'attire pas. Il ne contient pas de fer : non ferreux.",
     "aValider": ["energieGrise", "notes.chocs", "notes.usure", "notes.corrosion", "cout", "procedes", "absorptionEau"]
   },
   {
@@ -44,7 +44,7 @@
     "cout": 3, "recyclage": { "note": 5, "code": "Cuivre" }, "origine": "minerai", "energieGrise": 60,
     "procedes": ["usinage", "emboutissage", "extrusion", "assemblage"],
     "peau3D": { "couleur": "#B87333", "metal": 1, "rugosite": 0.3 },
-    "exemples": ["fils électriques", "tuyaux de plomberie"],
+    "exemples": ["fils électriques", "tuyaux de plomberie"], "noteFamille": "Le cuivre est extrait d'un minerai : c'est un métal. Il ne contient pas de fer : non ferreux, et l'aimant ne l'attire pas.",
     "aValider": ["energieGrise", "notes.chocs", "notes.usure", "notes.corrosion", "cout", "procedes", "absorptionEau"]
   },
   {
@@ -56,7 +56,7 @@
     "cout": 3, "recyclage": { "note": 5, "code": "Laiton" }, "origine": "minerai", "energieGrise": 40,
     "procedes": ["usinage", "fonderie", "assemblage"],
     "peau3D": { "couleur": "#C9A54A", "metal": 1, "rugosite": 0.2 },
-    "exemples": ["corps de robinet", "raccords de plomberie", "clés"],
+    "exemples": ["corps de robinet", "raccords de plomberie", "clés"], "noteFamille": "Le laiton mélange le cuivre et le zinc, tirés de minerais : un métal non ferreux.",
     "aValider": ["energieGrise", "notes.chocs", "notes.usure", "notes.corrosion", "cout", "procedes", "absorptionEau"]
   },
   {
@@ -68,7 +68,7 @@
     "cout": 1, "recyclage": { "note": 2, "code": "7 / PLA" }, "origine": "renouvelable", "energieGrise": 50,
     "procedes": ["impression-3d"],
     "peau3D": { "couleur": "#E8E4D8", "metal": 0, "rugosite": 0.6 },
-    "exemples": ["pièces imprimées au collège", "gobelets compostables"],
+    "exemples": ["pièces imprimées au collège", "gobelets compostables"], "noteFamille": "Le PLA est un plastique fabriqué en usine à partir de maïs ou de canne à sucre : organique synthétique, dit biosourcé.",
     "aValider": ["energieGrise", "notes.eau", "notes.chocs", "notes.usure", "notes.corrosion", "cout", "absorptionEau", "recyclage.code"],
     "noteEau": "Le tableau 3.4 du cadrage donnait 3 ; ramené à 2 car le PLA vieillit dans l'eau et ramollit vers 50-60 °C (tableau 4.1, décision du 2026-10-07)."
   },
@@ -81,7 +81,7 @@
     "cout": 1, "recyclage": { "note": 3, "code": "7 / ABS" }, "origine": "fossile", "energieGrise": 95,
     "procedes": ["impression-3d", "thermoformage", "injection"],
     "peau3D": { "couleur": "#2F3236", "metal": 0, "rugosite": 0.5 },
-    "exemples": ["boîtiers électroniques", "briques de jeu", "coques d'aspirateur"],
+    "exemples": ["boîtiers électroniques", "briques de jeu", "coques d'aspirateur"], "noteFamille": "L'ABS est un plastique fabriqué à partir du pétrole : organique synthétique.",
     "aValider": ["energieGrise", "notes.chocs", "notes.usure", "notes.corrosion", "cout", "absorptionEau", "recyclage.code"]
   },
   {
@@ -93,7 +93,7 @@
     "cout": 1, "recyclage": { "note": 5, "code": "2 / PE-HD" }, "origine": "fossile", "energieGrise": 80,
     "procedes": ["injection", "extrusion"],
     "peau3D": { "couleur": "#F4F4F0", "metal": 0, "rugosite": 0.7 },
-    "exemples": ["bidons", "flacons de lessive", "tuyaux d'arrosage"],
+    "exemples": ["bidons", "flacons de lessive", "tuyaux d'arrosage"], "noteFamille": "Le PE-HD est un plastique fabriqué à partir du pétrole : organique synthétique.",
     "aValider": ["energieGrise", "notes.chocs", "notes.usure", "notes.corrosion", "cout", "absorptionEau", "procedes"]
   },
   {
@@ -105,7 +105,7 @@
     "cout": 1, "recyclage": { "note": 4, "code": "5 / PP" }, "origine": "fossile", "energieGrise": 75,
     "procedes": ["injection"],
     "peau3D": { "couleur": "#EDEBE4", "metal": 0, "rugosite": 0.65 },
-    "exemples": ["boîtes alimentaires", "bouchons", "charnières de boîtier"],
+    "exemples": ["boîtes alimentaires", "bouchons", "charnières de boîtier"], "noteFamille": "Le PP est un plastique fabriqué à partir du pétrole : organique synthétique.",
     "aValider": ["energieGrise", "notes.chocs", "notes.usure", "notes.corrosion", "cout", "absorptionEau"]
   },
   {
@@ -117,7 +117,7 @@
     "cout": 2, "recyclage": { "note": 3, "code": "7 / PMMA" }, "origine": "fossile", "energieGrise": 100,
     "procedes": ["decoupe-laser", "usinage", "pliage-chaud", "injection"],
     "peau3D": { "couleur": "#DDEEF5", "metal": 0, "rugosite": 0.05, "transparence": 0.7 },
-    "exemples": ["vitrines", "façades de maquette", "feux arrière"],
+    "exemples": ["vitrines", "façades de maquette", "feux arrière"], "noteFamille": "Le PMMA (plexiglas) est un plastique fabriqué à partir du pétrole : organique synthétique, même s'il ressemble au verre.",
     "aValider": ["energieGrise", "notes.chocs", "notes.usure", "notes.corrosion", "cout", "absorptionEau", "recyclage.code", "procedes"]
   },
   {
@@ -129,7 +129,7 @@
     "cout": 2, "recyclage": { "note": 3, "code": "7 / PA" }, "origine": "fossile", "energieGrise": 120,
     "procedes": ["injection", "usinage"],
     "peau3D": { "couleur": "#EFE9DC", "metal": 0, "rugosite": 0.55 },
-    "exemples": ["engrenages", "colliers de serrage", "chevilles"],
+    "exemples": ["engrenages", "colliers de serrage", "chevilles"], "noteFamille": "Le nylon (PA) est un plastique fabriqué à partir du pétrole : organique synthétique.",
     "aValider": ["energieGrise", "notes.chocs", "notes.usure", "notes.corrosion", "cout", "recyclage.code"]
   },
   {
@@ -141,7 +141,7 @@
     "cout": 2, "recyclage": { "note": 3, "code": "7 / POM" }, "origine": "fossile", "energieGrise": 90,
     "procedes": ["injection", "usinage"],
     "peau3D": { "couleur": "#F2F0EA", "metal": 0, "rugosite": 0.55 },
-    "exemples": ["engrenages", "turbines de compteur d'eau", "clips"],
+    "exemples": ["engrenages", "turbines de compteur d'eau", "clips"], "noteFamille": "Le POM est un plastique fabriqué à partir du pétrole : organique synthétique.",
     "aValider": ["energieGrise", "notes.corrosion"]
   },
   {
@@ -153,7 +153,7 @@
     "cout": 3, "recyclage": { "note": 1, "code": "non recyclé en filière courante" }, "origine": "mixte", "energieGrise": 120,
     "procedes": ["injection"],
     "peau3D": { "couleur": "#D94F3D", "metal": 0, "rugosite": 0.8 },
-    "exemples": ["joints de robinet", "moules à gâteau", "maniques"],
+    "exemples": ["joints de robinet", "moules à gâteau", "maniques"], "noteFamille": "Le silicone est un caoutchouc fabriqué en usine : organique synthétique.",
     "aValider": ["energieGrise", "notes.chocs", "notes.usure", "notes.corrosion", "cout", "absorptionEau", "origine", "procedes", "recyclage.code"]
   },
   {
@@ -165,7 +165,7 @@
     "cout": 1, "recyclage": { "note": 4, "code": "Bois" }, "origine": "renouvelable", "energieGrise": 10,
     "procedes": ["usinage", "assemblage"],
     "peau3D": { "couleur": "#C8A06A", "metal": 0, "rugosite": 0.85 },
-    "exemples": ["meubles", "charpentes", "manches d'outils"],
+    "exemples": ["meubles", "charpentes", "manches d'outils"], "noteFamille": "Le bois vient directement d'un arbre : organique naturel.",
     "aValider": ["energieGrise", "tempMax", "notes.chocs", "notes.usure", "notes.corrosion", "cout", "procedes"]
   },
   {
@@ -177,7 +177,7 @@
     "cout": 1, "recyclage": { "note": 3, "code": "Bois" }, "origine": "renouvelable", "energieGrise": 15,
     "procedes": ["decoupe-laser", "usinage", "assemblage"],
     "peau3D": { "couleur": "#B98B5A", "metal": 0, "rugosite": 0.9 },
-    "exemples": ["façades de maquette", "plateaux de skate", "meubles en kit"],
+    "exemples": ["façades de maquette", "plateaux de skate", "meubles en kit"], "noteFamille": "Le contreplaqué colle des feuilles de bois avec une résine : deux matériaux assemblés, c'est un composite.",
     "aValider": ["energieGrise", "notes.chocs", "notes.usure", "notes.corrosion", "cout", "procedes"]
   },
   {
@@ -189,7 +189,7 @@
     "cout": 1, "recyclage": { "note": 5, "code": "Verre" }, "origine": "minerai", "energieGrise": 15,
     "procedes": [],
     "peau3D": { "couleur": "#CFE6E0", "metal": 0, "rugosite": 0.05, "transparence": 0.8 },
-    "exemples": ["bouteilles", "vitres", "bocaux"],
+    "exemples": ["bouteilles", "vitres", "bocaux"], "noteFamille": "Le verre est du sable fondu : un matériau minéral.",
     "aValider": ["energieGrise", "notes.chocs", "notes.usure", "notes.corrosion", "cout", "absorptionEau"],
     "noteProcedes": "Soufflage et moulage du verre : hors des 10 procédés du référentiel."
   },
@@ -202,7 +202,7 @@
     "cout": 2, "recyclage": { "note": 1, "code": "non recyclé en filière courante" }, "origine": "minerai", "energieGrise": 25,
     "procedes": [],
     "peau3D": { "couleur": "#F7F7F2", "metal": 0, "rugosite": 0.15 },
-    "exemples": ["vaisselle", "isolateurs électriques", "lavabos"],
+    "exemples": ["vaisselle", "isolateurs électriques", "lavabos"], "noteFamille": "La porcelaine est de l'argile cuite à très haute température : une céramique.",
     "aValider": ["energieGrise", "notes.chocs", "notes.usure", "notes.corrosion", "cout", "absorptionEau"],
     "noteProcedes": "Moulage et cuisson des céramiques : hors des 10 procédés du référentiel."
   },
@@ -215,7 +215,7 @@
     "cout": 3, "recyclage": { "note": 1, "code": "non recyclé en filière courante" }, "origine": "mixte", "energieGrise": 100,
     "procedes": ["usinage"],
     "peau3D": { "couleur": "#C7D6B0", "metal": 0, "rugosite": 0.4 },
-    "exemples": ["coques de bateau", "cannes à pêche", "circuits imprimés"],
+    "exemples": ["coques de bateau", "cannes à pêche", "circuits imprimés"], "noteFamille": "Des fibres de verre noyées dans une résine plastique : deux familles assemblées, c'est un composite.",
     "aValider": ["energieGrise", "notes.chocs", "notes.usure", "notes.corrosion", "cout", "absorptionEau", "procedes"],
     "noteProcedes": "Moulage au contact et stratification : hors des 10 procédés du référentiel."
   },
@@ -228,7 +228,7 @@
     "cout": 1, "recyclage": { "note": 1, "code": "non recyclable (thermodurcissable)" }, "origine": "fossile", "energieGrise": 90,
     "procedes": ["injection"],
     "peau3D": { "couleur": "#3B2A22", "metal": 0, "rugosite": 0.35 },
-    "exemples": ["poignées de casserole", "boutons de cuisinière", "anciennes prises électriques"],
+    "exemples": ["poignées de casserole", "boutons de cuisinière", "anciennes prises électriques"], "noteFamille": "La bakélite est un plastique fabriqué à partir du pétrole : organique synthétique. Une fois durcie, elle ne fond plus.",
     "aValider": ["energieGrise", "masseVolumique", "tempMax", "absorptionEau", "notes.rigidite", "notes.chocs", "notes.usure", "notes.eau", "notes.corrosion", "cout", "recyclage.note", "procedes"],
     "noteProcedes": "Moulé par compression ou par injection de résine thermodurcissable."
   }
