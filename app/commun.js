@@ -1,4 +1,7 @@
 // Outils d'affichage partagés par les niveaux.
+
+// Numéros des étapes du parcours, communs à tous les niveaux : on ne les écrit jamais en dur.
+export const ETAPE = { observer: 1, criteres: 2, trier: 3, procede: 4, justifier: 5 };
 export const $ = (s, r = document) => r.querySelector(s);
 export const esc = (t) => String(t ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 export const minuscule = (t) => t.charAt(0).toLowerCase() + t.slice(1);
