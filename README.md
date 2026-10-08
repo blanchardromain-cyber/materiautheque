@@ -37,11 +37,22 @@ Trois rendez-vous, sans jamais donner la réponse avant que l'élève l'ait cher
 | Moment | Ce qui est vérifié | Retour à l'élève |
 |---|---|---|
 | Étape 1 « Vérifier mes réponses » | Ce que subit la pièce | « Bien vu » / « À revoir » + explication, contrainte par contrainte |
-| Étape 2 « Vérifier mes critères » | Les critères vitaux (eau, légèreté) sont indispensables ; les pièges (électricité, 200 °C) sont sans importance. Les autres cartes sont libres. | « À revoir » + une question qui renvoie à l'étape 1. Pas de tri tant que ce n'est pas juste. |
-| Étape 3 « Valider ce matériau » | Le matériau respecte **tous** les critères indispensables de l'élève, et un procédé de série permet de le fabriquer | Animation de la conséquence (rouille, démarrage lent…) ou « ce matériau n'est plus en lice », puis retour au tri |
-| Étape 5 (verdict) | Comparaison avec le cahier des charges de référence | « Meilleur compromis » ou « Choix acceptable : il …, un autre matériau en lice fait mieux sur … » (sans nommer ce matériau) |
+| Étape 2 « Je classe » | La famille (d'où vient la matière ?), puis la sous-famille en 4e | « Exact » / « À revoir » ; l'explication propre au matériau n'apparaît qu'au 2e essai |
+| Étape 3 « Vérifier mes critères » | Les critères vitaux (eau, légèreté) sont indispensables ; les pièges (électricité, 200 °C) sont sans importance. Les autres cartes sont libres. | « À revoir » + une question qui renvoie à l'étape 1. Pas de tri tant que ce n'est pas juste. |
+| Étape 4 « Valider ce matériau » | Le matériau respecte **tous** les critères indispensables de l'élève, et un procédé de série permet de le fabriquer | Animation de la conséquence (rouille, démarrage lent…) ou « ce matériau n'est plus en lice », puis retour au tri |
+| Étape 6 (verdict) | Comparaison avec le cahier des charges de référence | « Meilleur compromis » ou « Choix acceptable : il …, un autre matériau en lice fait mieux sur … » (sans nommer ce matériau) |
 
 **Matériaux possibles pour la turbine (4e)** : le **POM** est le meilleur compromis (léger, résistant à l'eau et à l'usure, rigide, injectable). **ABS, PMMA, PE-HD et PP** sont des choix acceptables : ils respectent les critères indispensables mais perdent sur l'usure (et la rigidité pour PE-HD et PP). Plusieurs élèves peuvent donc rendre des matériaux différents ; la note porte sur la justification du compromis (grille 7.3), pas sur le seul nom du matériau. La correction collective peut faire émerger le POM à partir des choix acceptables.
+
+## Étape « Je classe » (5e et 4e)
+
+Placée après « J'observe », en trois temps :
+
+1. **Mon tri** : l'élève range les échantillons dans 4 groupes (A à D) avec ses propres critères et nomme chaque groupe. Rien n'est noté.
+2. **D'où vient la matière ?** : une seule question par échantillon (minerai, être vivant ou pétrole, roche/sable/argile, assemblage). Pièges voulus : alu et cuivre ne sont pas attirés par l'aimant mais sont des métaux. En 4e, la sous-famille suit (« Contient-il du fer ? » : l'inox est ferreux).
+3. **Le bilan** : ses groupes face aux familles (groupe mélangé, famille éclatée, famille réunie), puis l'arbre de classification. La couleur de chaque famille se retrouve sur le bord des cartes jusqu'à la fin.
+
+Les textes viennent de `data/familles.json` (`origine`, `explication`, `questionSousFamille`) et de `noteFamille` dans `data/materiaux.json`. Un parcours enregistré avant cette étape est recalé automatiquement.
 
 ## Ajouter ou corriger un matériau
 
@@ -61,7 +72,9 @@ Node.js du poste : `ClaudeConfig/nodejs/node-v24.18.0-win-x64/node.exe`.
 |---|---|
 | `data/*.json` | familles, propriétés, 18 matériaux, 10 procédés, scénarios, glossaire |
 | `app/moteur.js` | tri : élimination argumentée, classement, contrôle du choix, procédés compatibles (sans DOM, testé) |
-| `app/parcours.js` | les 5 étapes de l'élève |
+| `app/parcours.js` | les 6 étapes de l'élève (4e) et l'aiguillage des niveaux |
+| `app/cinquieme.js` | les étapes propres à la 5e (casserole, banc d'essai) |
+| `app/classer.js` | l'étape « Je classe », commune aux niveaux |
 | `app/illustrations.js` | SVG : robinet en coupe, turbine, conséquences d'un mauvais choix |
 | `sw.js` | hors ligne |
 | `RELECTURE.md` | fiche de relecture pour un 2e enseignant (générée) |
