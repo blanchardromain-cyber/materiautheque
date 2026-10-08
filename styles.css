@@ -517,3 +517,34 @@ dialog::backdrop { background: rgba(16, 22, 29, .7); }
 .pdf-page .tableau-essais th, .pdf-page .tableau-essais td { padding: 4px 6px; font-size: 11.5px; }
 .pdf-cadre { width: 718px; overflow: hidden; background: #fff; }
 .pdf-page.reduite { transform-origin: top left; }
+
+/* ---------- Étape « Je classe » ---------- */
+.sous-etapes { display: flex; flex-wrap: wrap; gap: 6px 18px; list-style: none; padding: 0; margin: 0 0 12px; color: var(--encre-2); font-weight: 700; }
+.sous-etapes .courante { color: var(--encre); border-bottom: 3px solid var(--marquage); }
+.boites-tri { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin: 12px 0; }
+.boite-tri { background: var(--surface); border: 2px dashed var(--trait); border-radius: var(--r); padding: 8px 10px; min-height: 120px; }
+.boite-tri label { display: flex; align-items: center; gap: 8px; }
+.boite-tri input { flex: 1; min-width: 0; min-height: 40px; padding: 4px 8px; border: 1px solid var(--trait); border-radius: 8px; background: var(--surface-2); font-weight: 700; }
+.boite-lettre { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: var(--encre); color: var(--paillasse); font-weight: 800; flex: none; }
+.boite-tri ul { list-style: none; padding: 0; margin: 8px 0 0; display: grid; gap: 4px; font-size: .92rem; }
+.boite-tri li.vide { color: var(--encre-2); font-style: italic; }
+.lignes-tri { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+.ligne-tri, .ligne-origine { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; background: var(--surface); border: 1px solid var(--trait); border-radius: var(--r); padding: 8px 12px; }
+.ligne-nom { font-weight: 700; min-width: 150px; }
+.segments-boites { min-width: 200px; }
+.ligne-origine select { flex: 1; min-width: 240px; min-height: 44px; padding: 4px 8px; border: 2px solid var(--encre-2); border-radius: 8px; background: var(--surface); color: var(--encre); font: inherit; }
+.ligne-origine .retour { flex-basis: 100%; margin: 0; }
+.groupes-sous { display: grid; gap: 14px; margin-top: 10px; }
+.groupe-sous { border-left: 6px solid var(--famille); padding-left: 12px; }
+.groupe-sous h4 { margin: 4px 0; }
+.puce-famille { display: inline-block; padding: 3px 10px; border-radius: 999px; background: var(--famille); color: #fff; font-weight: 700; font-size: .85rem; margin: 2px; }
+.arbre-familles { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; }
+.branche { background: var(--surface); border: 1px solid var(--trait); border-top: 6px solid var(--famille); border-radius: var(--r); padding: 4px 14px 10px; }
+.branche h4 { margin: 8px 0 2px; color: var(--famille); }
+.branche ul { margin: 6px 0 0; padding-left: 18px; }
+.tableau-comparaison td { font-family: var(--texte); }
+@media (max-width: 900px) { .boites-tri { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 600px) {
+  .tableau-comparaison tr { display: block; border-bottom: 1px solid var(--trait); padding: 6px 0; }
+  .tableau-comparaison th, .tableau-comparaison td { display: block; border: 0; padding: 2px 10px; }
+}
