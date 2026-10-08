@@ -3,36 +3,48 @@
     "id": "metal",
     "couleur": "#4F6E8F",
     "nom": { "5": "Métaux", "4": "Matériaux métalliques", "3": "Matériaux métalliques" },
+    "origine": "d'un minerai : une roche extraite du sous-sol, chauffée pour en tirer le métal",
+    "explication": "Tous les métaux viennent d'un minerai. Ils conduisent l'électricité et la chaleur, mais l'aimant n'attire que ceux qui contiennent du fer (et pas tous).",
     "sousFamilles": {
       "4": ["Ferreux", "Non ferreux"],
       "3": ["Métaux purs", "Alliages", "Aciers non alliés", "Aciers inoxydables"]
-    }
+    },
+    "questionSousFamille": { "4": "Contient-il du fer ? (attention : l'aimant ne suffit pas à le savoir)" }
   },
   {
     "id": "organique",
     "couleur": "#3C8A57",
     "nom": { "5": "Bois et plastiques", "4": "Matériaux organiques", "3": "Matériaux organiques" },
+    "origine": "d'un être vivant (arbre, plante) ou du pétrole",
+    "explication": "Les matériaux organiques viennent du vivant : directement (bois, liège) ou après transformation (plastiques, faits à partir du pétrole ou de plantes).",
     "sousFamilles": {
       "4": ["Naturels (bois, carton, liège)", "Synthétiques (plastiques, caoutchoucs)"],
       "3": ["Thermoplastiques", "Thermodurcissables", "Élastomères", "Biosourcés"]
-    }
+    },
+    "questionSousFamille": { "4": "Existe-t-il tel quel dans la nature, ou a-t-il été fabriqué en usine ?" }
   },
   {
     "id": "ceramique",
     "couleur": "#B0582F",
     "nom": { "5": "Verre et terre cuite", "4": "Céramiques et minéraux", "3": "Céramiques et minéraux" },
+    "origine": "de la roche, du sable ou de l'argile, chauffés très fort ou fondus",
+    "explication": "Les céramiques et minéraux viennent de la roche, du sable ou de l'argile : le verre est du sable fondu, la porcelaine de l'argile cuite.",
     "sousFamilles": {
       "4": ["Verres", "Céramiques", "Pierres et bétons"],
       "3": ["Céramiques techniques (alumine)"]
-    }
+    },
+    "questionSousFamille": { "4": "Est-il du sable fondu (verre), de l'argile cuite (céramique) ou de la roche taillée ou coulée (pierre, béton) ?" }
   },
   {
     "id": "composite",
     "couleur": "#7656A8",
     "nom": { "5": "Composites", "4": "Composites", "3": "Composites" },
+    "origine": "de l'assemblage de deux matériaux de familles différentes, collés ensemble",
+    "explication": "Un composite assemble deux matériaux : un renfort (fibres, feuilles de bois) noyé dans une matrice (colle, résine) qui les tient ensemble.",
     "sousFamilles": {
       "4": ["Renfort + matrice"],
       "3": ["Fibre de verre", "Fibre de carbone", "Bois agglomérés"]
-    }
+    },
+    "questionSousFamille": { "4": "Repère le renfort et la matrice qui le tient." }
   }
 ]
