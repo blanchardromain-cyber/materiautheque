@@ -7,7 +7,7 @@ import {
 import { fondPastille, turbineSVG, robinetCoupeSVG, consequence, schemaProcede, casseroleSVG } from "./illustrations.js";
 import {
   $, esc, minuscule, majuscule, le, du, au, ordreAuSort, lexique as lexiqueCommun,
-  identiteHTML, identiteComplete, texteIdentite, formaterIdent, enregistrerPDF, copieStatique, nomFichierPDF,
+  ETAPE, identiteHTML, identiteComplete, texteIdentite, formaterIdent, enregistrerPDF, copieStatique, nomFichierPDF,
 } from "./commun.js";
 import { creerCinquieme } from "./cinquieme.js";
 
@@ -44,7 +44,7 @@ function changerChoix(id) {
   etat.choix = etat.choix === id ? null : id;
   etat.serie = null;
   etat.proto = null;
-  etat.max = Math.min(etat.max, 3);
+  etat.max = Math.min(etat.max, ETAPE.trier);
   sauver();
 }
 
@@ -117,7 +117,7 @@ function accueil() {
         ${bouton(5, "la casserole")}${bouton(4, "la turbine")}${bouton(3, "")}
       </fieldset>
       <div class="actions">
-        <button type="button" class="bouton" data-aller="1">Observer la pièce</button>
+        <button type="button" class="bouton" data-aller="${ETAPE.observer}">Observer la pièce</button>
         ${etat.max ? `<button type="button" class="bouton-discret" data-action="recommencer">Recommencer depuis le début</button>` : ""}
       </div>
     </div>
@@ -137,7 +137,7 @@ function etape1() {
   }).join("");
   return `<section class="deux-colonnes">
     <div>
-      <h2 tabindex="-1">1. J'observe la pièce</h2>
+      <h2 tabindex="-1">${ETAPE.observer}. J'observe la pièce</h2>
       <p class="consigne">Approche les mains du capteur et regarde où se trouve la turbine. Coche ce qu'elle subit vraiment.</p>
       <figure class="cadre">${robinetCoupeSVG().replace('class="robinet"', `class="robinet${robinetOuvert ? " en-marche" : ""}"`)}
         <figcaption><button type="button" class="bouton-discret" data-action="eau" aria-pressed="${robinetOuvert}">${robinetOuvert ? "Retirer les mains" : "Approcher les mains du capteur"}</button></figcaption>
@@ -150,7 +150,7 @@ function etape1() {
       <ul class="liste-cases">${items}</ul>
       <div class="actions">
         <button type="button" class="bouton-discret" data-action="verifier-contraintes">Vérifier mes réponses</button>
-        <button type="button" class="bouton" data-aller="2" ${etat.contraintesVues ? "" : "disabled"}>Définir mes critères</button>
+        <button type="button" class="bouton" data-aller="${ETAPE.criteres}" ${etat.contraintesVues ? "" : "disabled"}>Définir mes critères</button>
       </div>
       ${etat.contraintesVues ? "" : `<p class="aide">Vérifie tes réponses pour passer à l'étape suivante.</p>`}
     </div>
@@ -184,7 +184,7 @@ function etape2() {
     ? `<p class="retour ok"><strong>Tes critères tiennent compte de ce que subit la turbine.</strong> Tu peux trier les matériaux.</p>`
     : `<p class="retour ko"><strong>${erreurs.length} carte${erreurs.length > 1 ? "s" : ""} à revoir.</strong> Lis la question sous chaque carte marquée, puis vérifie à nouveau.</p>`;
   return `<section>
-    <h2 tabindex="-1">2. Je définis mes critères</h2>
+    <h2 tabindex="-1">${ETAPE.criteres}. Je définis mes critères</h2>
     <p class="consigne">Range chaque carte selon ce que tu as observé. Un critère <strong>indispensable</strong> élimine tout matériau qui ne le respecte pas ; un critère <strong>souhaitable</strong> départage ceux qui restent.</p>
     ${pile.length ? `<div class="pile"><h3>À ranger (${pile.length})</h3><ul>${pile.map(carteCritere).join("")}</ul></div>` : ""}
     <div class="zones">
@@ -195,7 +195,7 @@ function etape2() {
     ${bilan}
     <div class="actions">
       <button type="button" class="bouton-discret" data-action="verifier-criteres" ${range ? "" : "disabled"}>Vérifier mes critères</button>
-      <button type="button" class="bouton" data-aller="3" ${juste ? "" : "disabled"}>Trier les matériaux</button>
+      <button type="button" class="bouton" data-aller="${ETAPE.trier}" ${juste ? "" : "disabled"}>Trier les matériaux</button>
     </div>
     ${range ? (juste ? "" : `<p class="aide">Vérifie tes critères pour passer au tri.</p>`) : `<p class="aide">Range toutes les cartes, puis vérifie tes critères.</p>`}
   </section>`;
@@ -261,7 +261,7 @@ function etape3() {
   const restants = res.filter((r) => !r.elimine).length;
   return `<section class="tri">
     <div class="tri-criteres">
-      <h2 tabindex="-1">3. Je trie</h2>
+      <h2 tabindex="-1">${ETAPE.trier}. Je trie</h2>
       <p class="consigne">Active tes critères un par un et regarde quels matériaux tombent.</p>
       <ul class="interrupteurs">${mesCriteres.map((c) => `<li><button type="button" class="interrupteur ${etat.classement[c.id]}"
         data-activer="${c.id}" aria-pressed="${etat.actifs.includes(c.id)}"><span class="voyant"></span>
@@ -291,7 +291,7 @@ function validerChoix() {
   const violations = [...propres, ...ref];
   etat.essais += 1;
   sauver();
-  if (!violations.length) return aller(4);
+  if (!violations.length) return aller(ETAPE.procede);
   const m = mat(etat.choix);
   const premiere = violations.find((x) => x.consequence) || violations[0];
   const dlg = $("#consequence");
@@ -391,12 +391,12 @@ function etape4() {
 
   const machines = liste.filter((p) => proc(p.id).machineCollege);
   const impasse = fabricable ? "" : `<div class="retour ko"><strong>Aucun procédé de grande série ne convient ${esc(au(nomM(m)))} pour des aubes fines.</strong> C'est un indice : retourne au tri et choisis un autre matériau.
-      <div class="actions"><button type="button" class="bouton" data-aller="3">Retourner au tri</button></div></div>`;
+      <div class="actions"><button type="button" class="bouton" data-aller="${ETAPE.trier}">Retourner au tri</button></div></div>`;
   const etat1 = !etat.serie ? "à choisir" : serieOk ? `✓ ${minuscule(proc(etat.serie).nom)}` : "✗ à revoir";
   const etat2 = !etat.proto ? "à choisir" : protoOk ? `✓ ${proc(etat.proto).machineCollege}` : "✗ à revoir";
 
   return `<section class="etape-procedes">
-    <h2 tabindex="-1">4. Je choisis le procédé</h2>
+    <h2 tabindex="-1">${ETAPE.procede}. Je choisis le procédé</h2>
     <p class="consigne">Un matériau ne va jamais sans son procédé. La turbine a des aubes fines, de forme complexe. Réponds à deux questions : comment en fabriquer <strong>${nombre}</strong> pour les vendre, et comment en fabriquer <strong>une seule</strong> au collège pour l'essayer.</p>
     ${impasse}
     <h3 class="question-procede"><span>1</span> Fabriquer ${nombre} turbines en ${esc(nomM(m))} : quel procédé ?</h3>
@@ -406,8 +406,8 @@ function etape4() {
     <div class="barre-choix barre-procedes">
       <p><span>Série : <strong class="${serieOk ? "ok" : etat.serie ? "ko" : ""}">${esc(etat1)}</strong></span>
          <span>Essai au collège : <strong class="${protoOk ? "ok" : etat.proto ? "ko" : ""}">${esc(etat2)}</strong></span></p>
-      <button type="button" class="bouton-discret" data-aller="3">Revenir au tri</button>
-      <button type="button" class="bouton" data-aller="5" ${serieOk && protoOk ? "" : "disabled"}>Justifier mon choix</button>
+      <button type="button" class="bouton-discret" data-aller="${ETAPE.trier}">Revenir au tri</button>
+      <button type="button" class="bouton" data-aller="${ETAPE.justifier}" ${serieOk && protoOk ? "" : "disabled"}>Justifier mon choix</button>
     </div>
   </section>`;
 }
@@ -463,7 +463,7 @@ function etape5() {
     ? `<div class="verdict meilleur"><p><strong>Meilleur compromis.</strong> ${esc(majuscule(le(nomM(m))))} respecte tous les critères indispensables et satisfait le plus de critères souhaitables. À toi de le justifier.</p></div>`
     : `<div class="verdict acceptable"><p><strong>Choix acceptable.</strong> ${esc(majuscule(le(nomM(m))))} respecte tous les critères indispensables, mais il ${v.pertes.map((p) => esc(p.texte)).join(" ; il ")}.</p>
         ${v.mieux.length ? `<p>Un autre matériau encore en lice fait mieux sur ${cartes(v.mieux)}. Explique pourquoi tu acceptes ce compromis, ou retourne au tri pour le trouver.</p>` : ""}
-        <div class="actions ecran-seul"><button type="button" class="bouton-discret" data-aller="3">Retourner au tri</button></div></div>`;
+        <div class="actions ecran-seul"><button type="button" class="bouton-discret" data-aller="${ETAPE.trier}">Retourner au tri</button></div></div>`;
   const nomProc = (id) => D.procedes.find((p) => p.id === id).nom;
   const protoDirect = procedesCompatibles(m, D.procedes, S, etat.niveau).find((p) => p.id === etat.proto)?.compatible;
   const matProto = protoDirect ? m : mat(S.materiauPrototype);
@@ -477,7 +477,7 @@ function etape5() {
           `<tr><th scope="row">${esc(nomM(x))}${x === m ? " <small>mon choix</small>" : ""}</th><td>${esc(x.masseVolumiqueTexte || formaterValeur(x.masseVolumique))} g/cm³</td></tr>`).join("")}</tbody></table>
     </div>
     <div class="justif-texte">
-      <h2 tabindex="-1">5. Je justifie mon choix</h2>
+      <h2 tabindex="-1">${ETAPE.justifier}. Je justifie mon choix</h2>
       ${verdict}
       <p class="impression-seule entete-impression">${esc(texteIdentite(etat.ident))}</p>
       <div class="tableau-defile"><table class="tableau-choix"><caption>Mon tableau de choix</caption>
@@ -535,7 +535,7 @@ function brancher() {
     if (b.dataset.procede) {
       const g = b.dataset.procede, v = b.dataset.valeur;
       etat[g] = etat[g] === v ? null : v;
-      etat.max = Math.min(etat.max, 4);
+      etat.max = Math.min(etat.max, ETAPE.procede);
       sauver(); return rendreGarderFocus(`[data-procede="${g}"][data-valeur="${v}"]`);
     }
     const action = b.dataset.action;
@@ -601,7 +601,7 @@ function classer(id, statut) {
   etat.classement[id] = statut;
   etat.criteresVus = false;
   etat.actifs = etat.actifs.filter((x) => x !== id);
-  etat.max = Math.min(etat.max, 2);
+  etat.max = Math.min(etat.max, ETAPE.criteres);
   sauver();
   rendreGarderFocus(`[data-classer="${id}"][value="${statut}"]`);
 }
