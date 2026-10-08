@@ -1,8 +1,8 @@
 // Hors ligne : changer VERSION à chaque publication pour renouveler le cache.
-const VERSION = "materiautheque-2026-10-07h";
+const VERSION = "materiautheque-2026-10-08a";
 const COQUILLE = [
   "./", "index.html", "styles.css",
-  "app/parcours.js", "app/moteur.js", "app/donnees.js", "app/illustrations.js", "app/commun.js", "app/cinquieme.js",
+  "app/parcours.js", "app/moteur.js", "app/donnees.js", "app/illustrations.js", "app/commun.js", "app/cinquieme.js", "app/classer.js",
   "data/familles.json", "data/proprietes.json", "data/materiaux.json",
   "data/procedes.json", "data/composants.json", "data/glossaire.json", "data/essais.json",
 ];
