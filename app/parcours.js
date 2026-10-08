@@ -7,14 +7,15 @@ import {
 import { fondPastille, turbineSVG, robinetCoupeSVG, consequence, schemaProcede, casseroleSVG } from "./illustrations.js";
 import {
   $, esc, minuscule, majuscule, le, du, au, ordreAuSort, lexique as lexiqueCommun,
-  ETAPE, identiteHTML, identiteComplete, texteIdentite, formaterIdent, enregistrerPDF, copieStatique, nomFichierPDF,
+  ETAPE, SCHEMA, identiteHTML, identiteComplete, texteIdentite, formaterIdent, enregistrerPDF, copieStatique, nomFichierPDF,
 } from "./commun.js";
 import { creerCinquieme } from "./cinquieme.js";
+import { creerClasser } from "./classer.js";
 
 // Un enregistrement par niveau : changer de niveau ne perd pas le travail de l'autre.
 const CLES = { 4: "materiautheque-i2", 5: "materiautheque-5e" };
 const CLE_NIVEAU = "materiautheque-niveau";
-const ETAPES = ["J'observe", "Je définis mes critères", "Je trie", "Je choisis le procédé", "Je justifie"];
+const ETAPES = ["J'observe", "Je classe", "Je définis mes critères", "Je trie", "Je choisis le procédé", "Je justifie"];
 const STATUTS = [["indispensable", "Indispensable"], ["souhaitable", "Souhaitable"], ["sans", "Sans importance"]];
 const NIVEAUX_ACTIFS = [5, 4];
 const NOMS_NIVEAUX = { 5: "5e · débutant", 4: "4e · confirmé", 3: "3e · approfondi" };
@@ -24,9 +25,10 @@ let D, S; // données, scénario
 let etat = nouvelEtat();
 let robinetOuvert = false;
 let C5; // niveau 5e
+let CL; // étape « Je classe », commune aux niveaux
 
 function nouvelEtat(niveau = 4) {
-  return { niveau, etape: 0, max: 0, contraintes: {}, contraintesVues: false, ordre: null, classement: {}, criteresVus: false, justif: {},
+  return { schema: SCHEMA, niveau, etape: 0, max: 0, contraintes: {}, contraintesVues: false, ordre: null, classement: {}, criteresVus: false, justif: {},
     actifs: [], comparer: [], choix: null, essais: 0, serie: null, proto: null, texte: {},
     familleRep: null, sousFamilleRep: null, ident: {} };
 }
@@ -59,10 +61,20 @@ function sauver() {
   catch { /* stockage indisponible */ }
 }
 function charger(niveau) {
-  try { const e = JSON.parse(localStorage.getItem(CLES[niveau])); if (e && e.niveau === niveau) return { ...nouvelEtat(niveau), ...e }; }
+  try { const e = JSON.parse(localStorage.getItem(CLES[niveau])); if (e && e.niveau === niveau) return { ...nouvelEtat(niveau), ...recaler(e) }; }
   catch { /* stockage indisponible */ }
   return nouvelEtat(niveau);
 }
+// Parcours enregistré avant l'ajout de « Je classe » : les étapes 2 et suivantes avancent d'un cran.
+function recaler(e) {
+  if ((e.schema || 1) < 2) {
+    if (e.etape >= 2) e.etape += 1;
+    if (e.max >= 2) e.max += 1;
+    e.schema = 2;
+  }
+  return e;
+}
+
 function restaurer() {
   let n = 4;
   try { n = Number(localStorage.getItem(CLE_NIVEAU)) || 4; } catch { /* stockage indisponible */ }
@@ -150,7 +162,7 @@ function etape1() {
       <ul class="liste-cases">${items}</ul>
       <div class="actions">
         <button type="button" class="bouton-discret" data-action="verifier-contraintes">Vérifier mes réponses</button>
-        <button type="button" class="bouton" data-aller="${ETAPE.criteres}" ${etat.contraintesVues ? "" : "disabled"}>Définir mes critères</button>
+        <button type="button" class="bouton" data-aller="${ETAPE.classer}" ${etat.contraintesVues ? "" : "disabled"}>Classer les échantillons</button>
       </div>
       ${etat.contraintesVues ? "" : `<p class="aide">Vérifie tes réponses pour passer à l'étape suivante.</p>`}
     </div>
@@ -419,8 +431,8 @@ function retourFamille(m, f) {
   const bonneFamille = etat.familleRep === f.id;
   const bonneSous = etat.sousFamilleRep === m.sousFamille[etat.niveau];
   if (bonneFamille && bonneSous) return `<p class="retour ok"><strong>Exact.</strong></p>`;
-  if (!bonneFamille) return `<p class="retour ko"><strong>À revoir.</strong> Pense aux objets faits dans ce matériau : ${esc(m.exemples.join(", "))}. Est-ce un métal, un bois, un plastique, un verre, un mélange de matériaux ?</p>`;
-  return `<p class="retour ko"><strong>Bonne famille, sous-famille à revoir.</strong> Ce matériau existe-t-il tel quel dans la nature, ou est-il fabriqué ?</p>`;
+  if (!bonneFamille) return `<p class="retour ko"><strong>À revoir.</strong> Reprends l'étape « Je classe » : d'où vient la matière de ce matériau ?</p>`;
+  return `<p class="retour ko"><strong>Bonne famille, sous-famille à revoir.</strong> ${esc(f.questionSousFamille?.["4"] || "")}</p>`;
 }
 
 async function enregistrer(bouton) {
@@ -514,7 +526,7 @@ function etape5() {
 // ---------- Rendu et événements ----------
 function rendre() {
   rendreEntete();
-  const vues = etat.niveau === 5 ? [accueil, ...C5.etapes] : [accueil, etape1, etape2, etape3, etape4, etape5];
+  const vues = etat.niveau === 5 ? [accueil, ...C5.etapes] : [accueil, etape1, CL.etape, etape2, etape3, etape4, etape5];
   $("#scene").innerHTML = vues[etat.etape]();
 }
 
@@ -638,12 +650,14 @@ async function demarrer() {
   const n = Number(new URLSearchParams(location.search).get("niveau"));
   if (NIVEAUX_ACTIFS.includes(n) && n !== etat.niveau) etat = charger(n);
   S = scenarioDuNiveau(etat.niveau);
+  CL = creerClasser({ etat: () => etat, D: () => D, S: () => S, sauver, rendreGarderFocus });
   C5 = creerCinquieme({
-    etat: () => etat, D: () => D, S: () => S, sauver, aller, rendre, rendreGarderFocus,
+    etat: () => etat, D: () => D, S: () => S, sauver, aller, rendre, rendreGarderFocus, etapeClasser: CL.etape,
     nouvelEtat: () => { etat = nouvelEtat(5); return etat; },
   });
   brancher();
   C5.brancher();
+  CL.brancher();
   rendre();
   if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) navigator.serviceWorker.register("sw.js").catch(() => {});
 }
