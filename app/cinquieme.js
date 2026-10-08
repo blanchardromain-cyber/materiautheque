@@ -7,7 +7,7 @@ import { fondPastille, casseroleSVG, consequenceCasserole, essaiSVG, schemaProce
 import { ETAPE, $, esc, le, ordreAuSort, lexique, identiteHTML, identiteComplete, texteIdentite, formaterIdent, enregistrerPDF, copieStatique, nomFichierPDF } from "./commun.js";
 
 const NIVEAU = 5;
-const TITRES = ["J'observe", "Je définis mes critères", "Je teste et je trie", "Comment est-elle fabriquée ?", "Je justifie"];
+const TITRES = ["J'observe", "Je classe", "Je définis mes critères", "Je teste et je trie", "Comment est-elle fabriquée ?", "Je justifie"];
 const PIECES = [["cuve", "La cuve"], ["poignee", "La poignée"]];
 const STATUTS = [["indispensable", "Indispensable"], ["sans", "Sans importance"]];
 
@@ -60,7 +60,7 @@ export function creerCinquieme(ctx) {
         ${PIECES.map(groupe).join("")}
         <div class="actions">
           <button type="button" class="bouton-discret" data-c5="verifier-contraintes">Vérifier mes réponses</button>
-          <button type="button" class="bouton" data-aller="${ETAPE.criteres}" ${c.contraintesVues ? "" : "disabled"}>Définir mes critères</button>
+          <button type="button" class="bouton" data-aller="${ETAPE.classer}" ${c.contraintesVues ? "" : "disabled"}>Classer les échantillons</button>
         </div>
         ${c.contraintesVues ? "" : `<p class="aide">Vérifie tes réponses pour passer à l'étape suivante.</p>`}
       </div>
@@ -254,7 +254,7 @@ export function creerCinquieme(ctx) {
       const f = D().familles.find((x) => x.id === m.famille);
       const rep = c.familleRep[piece];
       const retour = !rep ? "" : rep === f.id ? `<p class="retour ok"><strong>Exact.</strong></p>`
-        : `<p class="retour ko"><strong>À revoir.</strong> Regarde tes essais : l'aimant, la lampe et la chaleur te donnent des indices sur la famille.</p>`;
+        : `<p class="retour ko"><strong>À revoir.</strong> Retourne à l'étape « Je classe » : d'où vient la matière ?</p>`;
       const v = verdictFinal(sc(piece), D().materiaux, NIVEAU, m.id);
       return `<div class="fixe phrase-famille">
         <p>${titre} est en <strong>${esc(nom(m))}</strong>, un matériau de la famille des
@@ -351,5 +351,5 @@ export function creerCinquieme(ctx) {
     });
   }
 
-  return { titres: TITRES, etapes: [etape1, etape2, etape3, etape4, etape5], brancher };
+  return { titres: TITRES, etapes: [etape1, ctx.etapeClasser, etape2, etape3, etape4, etape5], brancher };
 }
