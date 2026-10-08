@@ -1,7 +1,9 @@
 // Outils d'affichage partagés par les niveaux.
 
 // Numéros des étapes du parcours, communs à tous les niveaux : on ne les écrit jamais en dur.
-export const ETAPE = { observer: 1, criteres: 2, trier: 3, procede: 4, justifier: 5 };
+export const ETAPE = { observer: 1, classer: 2, criteres: 3, trier: 4, procede: 5, justifier: 6 };
+// Version de l'enregistrement : la 2 ajoute l'étape « Je classe » (les parcours plus anciens sont recalés).
+export const SCHEMA = 2;
 export const $ = (s, r = document) => r.querySelector(s);
 export const esc = (t) => String(t ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 export const minuscule = (t) => t.charAt(0).toLowerCase() + t.slice(1);
