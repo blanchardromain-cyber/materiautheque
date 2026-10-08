@@ -4,7 +4,7 @@ import {
   materiauxVisibles, scenarioPiece, lireEssai, criteresDuNiveau,
 } from "./moteur.js";
 import { fondPastille, casseroleSVG, consequenceCasserole, essaiSVG, schemaProcede } from "./illustrations.js";
-import { $, esc, le, ordreAuSort, lexique, identiteHTML, identiteComplete, texteIdentite, formaterIdent, enregistrerPDF, copieStatique, nomFichierPDF } from "./commun.js";
+import { ETAPE, $, esc, le, ordreAuSort, lexique, identiteHTML, identiteComplete, texteIdentite, formaterIdent, enregistrerPDF, copieStatique, nomFichierPDF } from "./commun.js";
 
 const NIVEAU = 5;
 const TITRES = ["J'observe", "Je définis mes critères", "Je teste et je trie", "Comment est-elle fabriquée ?", "Je justifie"];
@@ -50,7 +50,7 @@ export function creerCinquieme(ctx) {
     };
     return `<section class="deux-colonnes">
       <div>
-        <h2 tabindex="-1">1. J'observe la casserole</h2>
+        <h2 tabindex="-1">${ETAPE.observer}. J'observe la casserole</h2>
         <p class="consigne">Allume la plaque et regarde comment la chaleur se déplace. Coche ce que subit vraiment chaque pièce.</p>
         <figure class="cadre">${casseroleSVG({ allumee }, "Casserole sur une plaque de cuisson")}
           <figcaption><button type="button" class="bouton-discret" data-c5="plaque" aria-pressed="${allumee}">${allumee ? "Éteindre la plaque" : "Allumer la plaque"}</button></figcaption></figure>
@@ -60,7 +60,7 @@ export function creerCinquieme(ctx) {
         ${PIECES.map(groupe).join("")}
         <div class="actions">
           <button type="button" class="bouton-discret" data-c5="verifier-contraintes">Vérifier mes réponses</button>
-          <button type="button" class="bouton" data-aller="2" ${c.contraintesVues ? "" : "disabled"}>Définir mes critères</button>
+          <button type="button" class="bouton" data-aller="${ETAPE.criteres}" ${c.contraintesVues ? "" : "disabled"}>Définir mes critères</button>
         </div>
         ${c.contraintesVues ? "" : `<p class="aide">Vérifie tes réponses pour passer à l'étape suivante.</p>`}
       </div>
@@ -87,7 +87,7 @@ export function creerCinquieme(ctx) {
     const juste = c.criteresVus && nbErreurs === 0;
     const marque = (p) => (c.criteresVus ? (erreursCriteres(p).length ? " ✗" : " ✓") : "");
     return `<section>
-      <h2 tabindex="-1">2. Je définis mes critères</h2>
+      <h2 tabindex="-1">${ETAPE.criteres}. Je définis mes critères</h2>
       <p class="consigne">Pour chaque pièce, range les cartes. Un critère <strong>indispensable</strong> éliminera tout échantillon qui ne le respecte pas.</p>
       ${onglets(marque)}
       <ul class="cartes-5e">${cartes}</ul>
@@ -96,7 +96,7 @@ export function creerCinquieme(ctx) {
         : `<p class="retour ko"><strong>${nbErreurs} carte${nbErreurs > 1 ? "s" : ""} à revoir</strong> (regarde les deux pièces).</p>`) : ""}
       <div class="actions">
         <button type="button" class="bouton-discret" data-c5="verifier-criteres" ${tousRanges ? "" : "disabled"}>Vérifier mes critères</button>
-        <button type="button" class="bouton" data-aller="3" ${juste ? "" : "disabled"}>Tester les échantillons</button>
+        <button type="button" class="bouton" data-aller="${ETAPE.trier}" ${juste ? "" : "disabled"}>Tester les échantillons</button>
       </div>
       ${tousRanges ? "" : `<p class="aide">Range toutes les cartes des deux pièces (onglets ci-dessus).</p>`}
     </section>`;
@@ -146,7 +146,7 @@ export function creerCinquieme(ctx) {
     const etatPiece = (p) => c.valide[p] ? `✓ ${nom(mat(c.choix[p]))}` : c.choix[p] ? `${nom(mat(c.choix[p]))} (à valider)` : "à choisir";
     const toutValide = c.valide.cuve && c.valide.poignee;
     return `<section class="tri5">
-      <h2 tabindex="-1">3. Je teste et je trie</h2>
+      <h2 tabindex="-1">${ETAPE.trier}. Je teste et je trie</h2>
       <p class="consigne">Fais passer les échantillons sur le banc d'essai : chaque « ? » est un essai. Active ensuite tes critères : un échantillon n'est écarté que si tu l'as testé.</p>
       ${onglets()}
       <div class="banc">
@@ -162,7 +162,7 @@ export function creerCinquieme(ctx) {
       <div class="barre-choix barre-procedes">
         <p><span>Cuve : <strong>${esc(etatPiece("cuve"))}</strong></span><span>Poignée : <strong>${esc(etatPiece("poignee"))}</strong></span></p>
         ${c.choix[c.piece] && !c.valide[c.piece] ? `<button type="button" class="bouton" data-c5="valider">Valider ${esc(nomPiece(c.piece).toLowerCase())}</button>` : ""}
-        <button type="button" class="${toutValide ? "bouton" : "bouton-discret"}" data-aller="4" ${toutValide ? "" : "disabled"}>Continuer</button>
+        <button type="button" class="${toutValide ? "bouton" : "bouton-discret"}" data-aller="${ETAPE.procede}" ${toutValide ? "" : "disabled"}>Continuer</button>
       </div>
     </section>`;
   }
@@ -178,7 +178,7 @@ export function creerCinquieme(ctx) {
       const autre = piece === "cuve" ? "poignee" : "cuve";
       if (!c.valide[autre]) c.piece = autre;
       sauver();
-      return ctx.rendreGarderFocus('[data-c5="valider"], [data-aller="4"]');
+      return ctx.rendreGarderFocus(`[data-c5="valider"], [data-aller="${ETAPE.procede}"]`);
     }
     const v = violations.find((x) => x.consequence) || violations[0];
     const r = consequenceCasserole(v.consequence || "fabrication", piece, mat(id));
@@ -216,11 +216,11 @@ export function creerCinquieme(ctx) {
     const ok = (p) => procedesCompatibles(mat(c.choix[p]), D().procedes, sc(p), NIVEAU).find((x) => x.id === c.usine[p])?.compatible;
     const pret = ok("cuve") && ok("poignee");
     return `<section class="etape-procedes">
-      <h2 tabindex="-1">4. Comment est-elle fabriquée ?</h2>
+      <h2 tabindex="-1">${ETAPE.procede}. Comment est-elle fabriquée ?</h2>
       <p class="consigne">À l'usine, chaque pièce est mise en forme par un procédé. Retrouve celui de la cuve et celui de la poignée.</p>
       ${PIECES.map(bloc).join("")}
       <aside class="encart-college">${schemaProcede("impression-3d", "Impression 3D")}<p><strong>Et au collège ?</strong> ${esc(S().prototype)}</p></aside>
-      <div class="actions"><button type="button" class="bouton" data-aller="5" ${pret ? "" : "disabled"}>Je justifie mes choix</button></div>
+      <div class="actions"><button type="button" class="bouton" data-aller="${ETAPE.justifier}" ${pret ? "" : "disabled"}>Je justifie mes choix</button></div>
     </section>`;
   }
 
@@ -275,7 +275,7 @@ export function creerCinquieme(ctx) {
       <div class="justif-visuel"><figure class="cadre">${casseroleSVG({ cuve: mat(c.choix.cuve).peau3D.couleur, poignee: mat(c.choix.poignee).peau3D.couleur }, "Ma casserole")}
         <figcaption>Cuve en <strong>${esc(nom(mat(c.choix.cuve)))}</strong>, poignée en <strong>${esc(nom(mat(c.choix.poignee)))}</strong></figcaption></figure></div>
       <div class="justif-texte">
-        <h2 tabindex="-1">5. Je justifie mes choix</h2>
+        <h2 tabindex="-1">${ETAPE.justifier}. Je justifie mes choix</h2>
         <p class="impression-seule entete-impression">${esc(texteIdentite(i))}</p>
         ${PIECES.map(phrase).join("")}
         ${tableau}
@@ -308,11 +308,11 @@ export function creerCinquieme(ctx) {
       }
       if (d.c5Choisir) {
         c.choix[c.piece] = c.choix[c.piece] === d.c5Choisir ? null : d.c5Choisir;
-        c.valide[c.piece] = false; c.usine[c.piece] = null; limiter(3);
+        c.valide[c.piece] = false; c.usine[c.piece] = null; limiter(ETAPE.trier);
         sauver(); return ctx.rendreGarderFocus(`[data-c5-choisir="${d.c5Choisir}"]`);
       }
       if (d.c5Usine) {
-        c.usine[d.c5Pour] = c.usine[d.c5Pour] === d.c5Usine ? null : d.c5Usine; limiter(4);
+        c.usine[d.c5Pour] = c.usine[d.c5Pour] === d.c5Usine ? null : d.c5Usine; limiter(ETAPE.procede);
         sauver(); return ctx.rendreGarderFocus(`[data-c5-usine="${d.c5Usine}"][data-c5-pour="${d.c5Pour}"]`);
       }
       const a = d.c5;
@@ -334,7 +334,7 @@ export function creerCinquieme(ctx) {
       }
       if (d.c5Classer) {
         c.classement[c.piece][d.c5Classer] = t.value; c.criteresVus = false;
-        c.actifs[c.piece] = c.actifs[c.piece].filter((x) => x !== d.c5Classer); limiter(2);
+        c.actifs[c.piece] = c.actifs[c.piece].filter((x) => x !== d.c5Classer); limiter(ETAPE.criteres);
         sauver(); ctx.rendreGarderFocus(`[data-c5-classer="${d.c5Classer}"][value="${t.value}"]`);
       }
       if (d.c5Ident === "binome") { const e = ctx.etat(); e.ident = { ...e.ident, binome: t.checked }; sauver(); ctx.rendreGarderFocus('[data-c5-ident="binome"]'); }
