@@ -139,3 +139,26 @@ export function procedesCompatibles(materiau, procedes, scenario, niveau) {
       return { id: p.id, compatible: true, usage, raison: p.regleForme };
     });
 }
+
+// ---------- Étape « Je classe » : la famille se reconnaît à l'origine de la matière ----------
+const parId = (materiaux, id) => materiaux.find((m) => m.id === id);
+
+// reponses : { idMateriau: idFamille } → { idMateriau: juste ? }
+export function verifierFamilles(materiaux, reponses) {
+  return Object.fromEntries(Object.entries(reponses).map(([id, f]) => [id, parId(materiaux, id).famille === f]));
+}
+
+// reponses : { idMateriau: libellé de sous-famille du niveau } → { idMateriau: juste ? }
+export function verifierSousFamilles(materiaux, reponses, niveau) {
+  return Object.fromEntries(Object.entries(reponses).map(([id, sf]) => [id, parId(materiaux, id).sousFamille?.[String(niveau)] === sf]));
+}
+
+// Tri libre de l'élève (boîtes numérotées) croisé avec les vraies familles : { boîte: { famille: nombre } }
+export function croiserGroupes(materiaux, groupes) {
+  const x = {};
+  for (const [id, boite] of Object.entries(groupes)) {
+    const f = parId(materiaux, id).famille;
+    (x[boite] ||= {})[f] = (x[boite][f] || 0) + 1;
+  }
+  return x;
+}
