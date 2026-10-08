@@ -19,10 +19,15 @@ const procedes = lire("procedes.json");
 const composants = lire("composants.json");
 lire("glossaire.json");
 
+const NIVEAUX = ["5", "4", "3"];
 const idsFamilles = new Set(familles.map((f) => f.id));
+for (const f of familles) {
+  for (const k of ["couleur", "origine", "explication"]) if (!f[k]?.trim?.()) err(`famille ${f.id} : ${k} manquant`);
+  for (const n of NIVEAUX) if (!f.nom?.[n]) err(`famille ${f.id} : nom ${n}e manquant`);
+  if (f.sousFamilles["4"].length > 1 && !f.questionSousFamille?.["4"]) err(`famille ${f.id} : questionSousFamille 4e manquante`);
+}
 const idsProcedes = new Set(procedes.map((p) => p.id));
 const idsMateriaux = new Set(materiaux.map((m) => m.id));
-const NIVEAUX = ["5", "4", "3"];
 
 if (materiaux.length !== 19) err(`19 matériaux attendus, ${materiaux.length} trouvés`);
 if (idsMateriaux.size !== materiaux.length) err("identifiants de matériaux en double");
@@ -43,6 +48,7 @@ for (const m of materiaux) {
   if (!idsFamilles.has(m.famille)) err(`${q} : famille ${m.famille} inconnue`);
   else if (!familles.find((f) => f.id === m.famille).sousFamilles["4"].includes(m.sousFamille?.["4"]))
     err(`${q} : sous-famille 4e « ${m.sousFamille?.["4"]} » absente de la famille ${m.famille}`);
+  if (!m.noteFamille?.trim()) err(`${q} : noteFamille manquante (étape « Je classe »)`);
   if (!(m.masseVolumique > 0)) err(`${q} : masse volumique invalide`);
   for (const k of ["rigidite", "chocs", "usure", "eau", "corrosion"])
     if (!entier(m.notes?.[k], 1, 5)) err(`${q} : note ${k} hors 1-5`);
