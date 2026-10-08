@@ -111,6 +111,17 @@ Chaque itération suit la boucle : spécifier → construire → vérifier techn
 - Mise en page propre au PDF : bande du haut (dessin, verdict, masses volumiques), titre redondant retiré, tableau resserré, matériaux écartés sur deux colonnes. Hauteur 4e : 1 602 px → environ 1 060 px (une page à 97 %).
 - Vérifié : 4e et 5e sur une page (relues page à page) ; réponses très longues → deux pages.
 
+## I4b — 2026-10-08 : étape « Je classe » (familles et sous-familles)
+
+- Question du professeur : comment les élèves acquièrent-ils la classification par familles et sous-familles ? Version intégrée retenue : une étape 2 « Je classe » dans les parcours 5e et 4e (`app/classer.js`).
+- Trois temps : tri libre en 4 groupes nommés → « D'où vient la matière ? » (puis sous-famille en 4e) → bilan qui confronte les groupes de l'élève aux familles, avec arbre coloré.
+- Retours gradués : « À revoir » + indice général au 1er essai, explication propre au matériau (`noteFamille`) au 2e.
+- Données : `familles.json` réécrit (origine, explication, sous-familles 5e/4e/3e, question de sous-famille) ; `noteFamille` pour les 19 matériaux ; contrôles ajoutés dans `controle-donnees.mjs`.
+- Moteur : `verifierFamilles`, `verifierSousFamilles`, `croiserGroupes` (testés, 29 tests au vert).
+- Étapes renumérotées par constantes (`ETAPE`) ; `SCHEMA = 2` recale un parcours enregistré avant l'ajout (vérifié : un parcours 5e à l'étape 5 rouvre à l'étape 6).
+- Vérifié au navigateur : 4e (pièges alu, cuivre, inox ; note au 2e essai ; bilan), 5e (sans sous-familles, enchaînement vers les critères), 375 px sans débordement (tableau du bilan empilé sur mobile).
+- Correction en cours de test : une famille seule dans un groupe mais éclatée sur plusieurs groupes n'est plus saluée d'un « ✓ ».
+
 ## Backlog (itérations suivantes)
 
 - Procédés présents au collège mais hors référentiel : cisaillage (cisaille guillotine), pliage de tôle (plieuse), poinçonnage (poinçonneuse) ; à ajouter en I6 si utile.
