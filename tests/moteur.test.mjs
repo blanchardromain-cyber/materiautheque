@@ -213,3 +213,28 @@ test("banc d'essai : lecture en mots, première règle satisfaite", () => {
   assert.equal(lireEssai(e("plaque"), mat("pp")).classe, "faible");
   assert.equal(lireEssai(e("flexion"), mat("cuivre")).classe, "moyen", "lourd ne veut pas dire le plus rigide");
 });
+
+// ---------- Étape « Je classe » ----------
+import { verifierFamilles, verifierSousFamilles, croiserGroupes } from "../app/moteur.js";
+const familles = lire("familles.json");
+
+test("je classe : la famille dépend de l'origine, pas de l'aimant (alu, cuivre = métaux)", () => {
+  const v = verifierFamilles(materiaux, { alu: "metal", cuivre: "organique", bois: "organique", "cp-mdf": "organique" });
+  assert.deepEqual(v, { alu: true, cuivre: false, bois: true, "cp-mdf": false }, "le contreplaqué est un composite");
+});
+
+test("je classe : sous-familles 4e, l'inox est ferreux même non aimanté", () => {
+  const v = verifierSousFamilles(materiaux, { inox: "Ferreux", alu: "Ferreux", pla: "Synthétiques (plastiques, caoutchoucs)" }, 4);
+  assert.deepEqual(v, { inox: true, alu: false, pla: true });
+  assert.equal(mat("inox").magnetique, false, "piège voulu : ferreux mais non attiré par l'aimant");
+});
+
+test("je classe : croisement tri libre × familles", () => {
+  const x = croiserGroupes(materiaux, { acier: 0, alu: 0, pom: 0, bois: 1 });
+  assert.deepEqual(x, { 0: { metal: 2, organique: 1 }, 1: { organique: 1 } });
+});
+
+test("je classe : chaque famille a une origine, chaque matériau une note de famille", () => {
+  for (const f of familles) assert.ok(f.origine && f.explication, f.id);
+  for (const m of materiaux) assert.ok(m.noteFamille && m.noteFamille.length > 20, m.id);
+});
