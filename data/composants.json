@@ -622,11 +622,11 @@
     }
   },
   {
-    "id": "dissipateur",
+    "id": "mousseur",
     "systeme": "Robinet automatique",
     "sequence": "P11 — Comment préserver une ressource essentielle : l'eau ?",
     "quantiteSerie": 10000,
-    "piece": "Dissipateur de la carte électronique",
+    "piece": "Mousseur du bec",
     "niveaux": [
       4
     ],
@@ -635,151 +635,167 @@
       "classe": "Classe de 4ᵉ",
       "sequence": "P11 — L’eau, ressource essentielle",
       "titre": "Matériauthèque — bibliothèque de pièces",
-      "sousTitre": "Le choix du matériau : dissipateur de la carte électronique (Robinet automatique)"
+      "sousTitre": "Le choix du matériau : mousseur du bec (Robinet automatique)"
     },
-    "presentation": "La carte électronique du robinet chauffe quand elle commande l'électrovanne. Un dissipateur à ailettes, posé sur son composant le plus chaud, évacue cette chaleur. Quel matériau choisir pour ce dissipateur ?",
+    "presentation": "Au bout du bec, le mousseur mélange de l'air à l'eau : le jet est plus doux et le robinet consomme moins d'eau. Il est vissé, et on le dévisse pour enlever le calcaire. Quel matériau choisir pour ce mousseur ?",
     "nom": {
-      "le": "le dissipateur",
-      "seul": "dissipateur",
-      "un": "un dissipateur",
-      "pluriel": "dissipateurs",
-      "essai": "le dissipateur d'essai",
-      "unEssai": "un dissipateur d'essai",
+      "le": "le mousseur",
+      "seul": "mousseur",
+      "un": "un mousseur",
+      "pluriel": "mousseurs",
+      "essai": "le mousseur d'essai",
+      "unEssai": "un mousseur d'essai",
       "pronom": "il",
       "feminin": false
     },
-    "aideObservation": "Le composant qui commande l'électrovanne chauffe. Le dissipateur, posé dessus, prend sa chaleur et la rend à l'air par ses ailettes. Il est fixé sur la carte électronique (en vert), dans le boîtier : un dissipateur lourd tirerait sur ses soudures.",
+    "aideObservation": "Le mousseur est vissé au bout du bec. Sa grille fine mélange de l'air à l'eau : le jet est plus doux et consomme moins d'eau. Le calcaire de l'eau s'y dépose : on le dévisse régulièrement pour le nettoyer.",
     "lexiqueObservation": [
-      "conducteur",
-      "isolant",
-      "masse volumique"
+      "usure",
+      "rigide"
     ],
-    "forme": "profile",
-    "formePrototype": "volume-simple",
-    "formeDescription": "Le dissipateur est un profilé à ailettes, coupé à la longueur.",
-    "formeCourte": "pour un profilé à ailettes",
-    "butPrototype": "Il sert à vérifier que le dissipateur tient sur le composant.",
+    "forme": "complexe",
+    "formeDescription": "Le mousseur est une petite pièce à grille fine, de forme complexe.",
+    "formeCourte": "pour une grille fine",
+    "butPrototype": "Il sert à vérifier le filetage et la forme de la grille.",
     "proprietesCarte": [
       "masseVolumique",
-      "therm",
-      "elec",
-      "notes.corrosion",
+      "notes.rigidite",
+      "notes.usure",
+      "notes.eau",
+      "notes.chocs",
       "cout"
     ],
     "contraintes": [
       {
-        "id": "chaleur",
-        "texte": "Il reçoit la chaleur d'un composant électronique.",
+        "id": "eau",
+        "texte": "L'eau le traverse à chaque utilisation.",
         "vraie": true,
-        "explication": "Vrai : il est posé sur le composant qui chauffe."
+        "explication": "Vrai : toute l'eau du robinet passe par sa grille."
       },
       {
-        "id": "air",
-        "texte": "Il rend cette chaleur à l'air par ses ailettes.",
+        "id": "calcaire",
+        "texte": "Le calcaire s'y dépose : on le dévisse pour le nettoyer.",
         "vraie": true,
-        "explication": "Vrai : plus la chaleur le traverse facilement, mieux il refroidit."
+        "explication": "Vrai : il est vissé et dévissé plusieurs fois par an."
       },
       {
-        "id": "carte",
-        "texte": "Il est fixé sur la carte électronique.",
+        "id": "filetage",
+        "texte": "Son filetage doit tenir serré au bout du bec.",
         "vraie": true,
-        "explication": "Vrai : s'il est lourd, il tire sur les soudures de la carte."
+        "explication": "Vrai : un filetage qui se déforme laisse fuir l'eau."
+      },
+      {
+        "id": "coups",
+        "texte": "Il peut être heurté par une casserole ou un verre.",
+        "vraie": true,
+        "explication": "Vrai : il dépasse au bout du bec, au-dessus du lavabo."
       },
       {
         "id": "forme",
-        "texte": "C'est un profilé à ailettes, coupé à la longueur.",
+        "texte": "C'est une petite pièce à grille fine, de forme complexe.",
         "vraie": true,
-        "explication": "Vrai : une longue barre à ailettes, découpée en morceaux."
+        "explication": "Vrai : la grille est faite de trous et de lamelles très fins."
       },
       {
-        "id": "deux-cents",
+        "id": "chaleur",
         "texte": "Il est chauffé à plus de 200 °C.",
         "vraie": false,
-        "explication": "Faux : le composant chauffe, mais bien moins : une centaine de degrés au plus."
+        "explication": "Faux : l'eau du robinet ne dépasse pas 60 °C."
       },
       {
         "id": "courant",
-        "texte": "Le courant de la carte doit le traverser.",
+        "texte": "Un courant électrique le traverse.",
         "vraie": false,
-        "explication": "Faux : le courant passe dans le composant, pas dans le dissipateur."
+        "explication": "Faux : il ne fait partie d'aucun circuit électrique."
       },
       {
-        "id": "immersion",
-        "texte": "Il baigne dans l'eau.",
+        "id": "leger",
+        "texte": "Il doit être le plus léger possible.",
         "vraie": false,
-        "explication": "Faux : il est enfermé dans le boîtier, à l'abri."
+        "explication": "Faux : il ne pèse que quelques grammes ; son poids ne compte pas."
       }
     ],
     "criteres": [
       {
-        "ref": "conduitChaleur",
-        "pourquoi": "Il doit faire passer la chaleur vers l'air.",
-        "questionClassement": "Relis l'étape 1 : à quoi sert le dissipateur ? Un matériau qui garde la chaleur peut-il convenir ?",
-        "questionRetour": "Si la chaleur ne traverse pas le dissipateur, où reste-t-elle ?"
+        "ref": "eau",
+        "pourquoi": "L'eau le traverse à chaque utilisation.",
+        "questionClassement": "Relis l'étape 1 : l'eau traverse-t-elle le mousseur ? Un matériau qui s'y abîme peut-il convenir ?",
+        "questionRetour": "L'eau traverse le mousseur à chaque utilisation : quelle note de résistance à l'eau faut-il au minimum ?"
       },
       {
-        "ref": "leger",
-        "seuil": 3,
-        "pourquoi": "Il est fixé sur la carte.",
-        "questionClassement": "Relis l'étape 1 : où est fixé le dissipateur ? Peut-il être lourd ?",
-        "questionRetour": "Un dissipateur lourd posé sur la carte : que deviennent les soudures ? Compare les masses volumiques."
+        "ref": "rigide",
+        "pourquoi": "Son filetage doit tenir serré.",
+        "questionClassement": "Relis l'étape 1 : comment le mousseur tient-il au bout du bec ? Un filetage mou peut-il tenir serré ?",
+        "questionRetour": "Un filetage souple se déforme quand on serre : l'eau reste-t-elle dans le bec ?"
       },
       {
         "ref": "cout",
         "pourquoi": "Il est fabriqué à 10 000 exemplaires."
       },
       {
-        "ref": "corrosion",
-        "pourquoi": "Il vit dans le boîtier d'un robinet."
+        "ref": "usure",
+        "pourquoi": "On le visse et on le dévisse pour enlever le calcaire."
+      },
+      {
+        "ref": "chocs",
+        "seuil": 4,
+        "pourquoi": "Il peut être heurté par une casserole ou un verre."
+      },
+      {
+        "ref": "recyclable",
+        "pourquoi": "Le robinet finira à la déchetterie."
       },
       {
         "ref": "elec",
-        "pourquoi": "Piège : le courant ne passe pas dans le dissipateur.",
-        "questionClassement": "Relis l'étape 1 : le courant de la carte doit-il traverser le dissipateur ? Ce critère concerne-t-il cette pièce ?"
+        "pourquoi": "Piège : aucun courant ne traverse le mousseur.",
+        "questionClassement": "Relis l'étape 1 : un courant traverse-t-il le mousseur ? Ce critère concerne-t-il cette pièce ?"
       },
       {
         "ref": "chaleur200",
-        "pourquoi": "Piège : le composant chauffe bien moins.",
-        "questionClassement": "Relis l'étape 1 : le dissipateur est-il chauffé à plus de 200 °C ? Ce critère concerne-t-il cette pièce ?"
+        "pourquoi": "Piège : l'eau du robinet ne dépasse pas 60 °C.",
+        "questionClassement": "Relis l'étape 1 : le mousseur est-il chauffé à plus de 200 °C ? Ce critère concerne-t-il cette pièce ?"
+      },
+      {
+        "ref": "leger",
+        "pourquoi": "Piège : il ne pèse que quelques grammes.",
+        "questionClassement": "Relis l'étape 1 : pour une pièce de quelques grammes, le poids compte-t-il ?"
       }
     ],
     "reference": {
       "4": {
-        "conduitChaleur": "indispensable",
-        "leger": "indispensable",
+        "eau": "indispensable",
+        "rigide": "indispensable",
         "cout": "souhaitable",
-        "corrosion": "souhaitable",
+        "usure": "souhaitable",
+        "chocs": "souhaitable",
+        "recyclable": "souhaitable",
         "elec": "sans",
-        "chaleur200": "sans"
+        "chaleur200": "sans",
+        "leger": "sans"
       }
     },
     "formeProcedes": {
-      "serie": "extrusion",
-      "prototype": "usinage"
+      "serie": "injection",
+      "prototype": "impression-3d"
     },
-    "materiauPrototype": "alu",
+    "materiauPrototype": "pla",
     "sansProcede": {
-      "nonParceQue": "ne peut pas être fabriqué en profilé à ailettes en grande série",
-      "question": "Quel procédé de grande série donne un profilé à ailettes dans ce matériau ? Regarde quels procédés conviennent à chaque matériau, puis reviens au tri."
+      "nonParceQue": "ne peut pas être fabriqué avec une grille fine en grande série",
+      "question": "Quel procédé de grande série donne une grille fine dans ce matériau ? Regarde quels procédés conviennent à chaque matériau, puis reviens au tri."
     },
     "reponsesAttendues": {
       "4": [
-        "alu"
+        "pom",
+        "abs"
       ]
     },
     "elimineAttendus": {
       "4": [
         "acier",
-        "inox",
-        "cuivre",
-        "laiton",
         "pla",
-        "abs",
         "pehd",
         "pp",
-        "pmma",
-        "pa6",
-        "pom"
+        "pa6"
       ]
     },
     "materiauxVisibles": {
@@ -1404,7 +1420,7 @@
         "id": "eau",
         "texte": "Elle roule dans l'eau des canalisations.",
         "vraie": true,
-        "explication": "Vrai : elle est mouillée pendant toute l'inspection."
+        "explication": "Vrai : elle est mouillée pendant l'inspection (une demi-heure), puis elle sèche."
       },
       {
         "id": "chocs",
@@ -1440,20 +1456,18 @@
       },
       {
         "ref": "eau",
-        "pourquoi": "Elle roule dans l'eau.",
-        "questionClassement": "Relis l'étape 1 : la jante est-elle dans l'eau ? Un matériau qui s'y abîme peut-il convenir ?",
-        "questionRetour": "La jante est mouillée pendant toute l'inspection : quelle note de résistance à l'eau faut-il ?"
+        "pourquoi": "Elle roule dans l'eau pendant l'inspection, puis sèche."
       },
       {
         "ref": "chocs",
-        "seuil": 3,
-        "pourquoi": "Elle cogne les obstacles.",
-        "questionClassement": "Relis l'étape 1 : la jante reçoit-elle des chocs ? Peut-on accepter qu'elle se fende ?",
-        "questionRetour": "La jante cogne le fond de la canalisation : quelle note de résistance aux chocs faut-il ?"
+        "seuil": 4,
+        "pourquoi": "Elle cogne les obstacles."
       },
       {
         "ref": "leger",
-        "carte": { "4": "Être légère (2 g/cm³ au plus)" },
+        "carte": {
+          "4": "Être légère (2 g/cm³ au plus)"
+        },
         "pourquoi": "Quatre jantes à porter (ligne ④).",
         "questionClassement": "Relis l'étape 1 : pourquoi le poids des jantes compte-t-il ?",
         "questionRetour": "Quatre jantes lourdes : que devient l'autonomie ? Compare les masses volumiques."
@@ -1476,9 +1490,9 @@
     "reference": {
       "4": {
         "usure": "indispensable",
-        "eau": "indispensable",
-        "chocs": "indispensable",
         "leger": "indispensable",
+        "eau": "souhaitable",
+        "chocs": "souhaitable",
         "cout": "souhaitable",
         "elec": "sans",
         "chaleur200": "sans"
@@ -1495,7 +1509,8 @@
     },
     "reponsesAttendues": {
       "4": [
-        "pom"
+        "pom",
+        "pa6"
       ]
     },
     "elimineAttendus": {
@@ -1509,8 +1524,7 @@
         "abs",
         "pehd",
         "pp",
-        "pmma",
-        "pa6"
+        "pmma"
       ]
     },
     "materiauxVisibles": {
