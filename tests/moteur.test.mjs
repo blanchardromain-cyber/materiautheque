@@ -332,3 +332,30 @@ test("coque : l'ABS tombe à 80 °C, le PP aux chocs", () => {
   assert.deepEqual(r.abs.raisons.map((x) => x.critere), ["tient80"]);
   assert.equal(r.pp.raisons[0].critere, "chocs");
 });
+
+test("verdict : seul matériau en lice, égalité, critères souhaitables manqués", () => {
+  const sc = { ...turbine, criteres: turbine.criteres, reference: { 4: { eau: "indispensable", leger: "indispensable", rigide: "souhaitable", usure: "souhaitable", forme: "souhaitable", cout: "souhaitable", elec: "sans", chaleur: "sans" } } };
+  const pom = verdictFinal(sc, materiaux, 4, "pom");
+  assert.equal(pom.seul, false);
+  assert.equal(pom.exAequo, false);
+  assert.equal(pom.nbSouhaitables, 4);
+  const seul = verdictFinal({ ...sc, reference: { 4: { ...sc.reference["4"], usure: "indispensable" } } }, materiaux, 4, "pom");
+  assert.equal(seul.seul, true, "le POM seul passe eau + léger + usure");
+  const cinq = verdictFinal(turbine, materiaux, 5, "abs");
+  assert.equal(cinq.exAequo, true);
+  assert.equal(cinq.nbSouhaitables, 0);
+});
+
+test("support mural et axe : vrais compromis, deux réponses à égalité", () => {
+  const support = composants.find((s) => s.id === "support-robinet");
+  const axe = composants.find((s) => s.id === "axe-robot");
+  for (const [s, ids] of [[support, ["inox", "alu"]], [axe, ["inox", "pom"]]]) {
+    assert.deepEqual([...s.reponsesAttendues["4"]].sort(), [...ids].sort());
+    for (const id of ids) {
+      const v = verdictFinal(s, materiaux, 4, id);
+      assert.equal(v.niveau, "meilleur", `${s.id} : ${id}`);
+      assert.equal(v.exAequo, true, `${s.id} : ${id} à égalité`);
+      assert.ok(v.pertes.length > 0, `${s.id} : ${id} perd au moins un critère souhaitable`);
+    }
+  }
+});
