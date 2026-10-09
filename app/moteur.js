@@ -168,3 +168,21 @@ export function croiserGroupes(materiaux, groupes) {
   }
   return x;
 }
+
+// ---------- Catalogue de critères (bibliothèque de pièces) ----------
+// Entrée de fiche { ref, seuil?, ...textes propres } → critère complet ; une entrée sans ref est gardée telle quelle.
+export function resoudreCriteres(fiche, catalogue) {
+  const criteres = fiche.criteres.map((e) => {
+    if (!e.ref) return e;
+    const { ref, seuil, ...propre } = e;
+    const base = catalogue.find((c) => c.id === ref);
+    if (!base) throw new Error(`critère inconnu : ${ref}`);
+    const regle = seuil === undefined ? base.regle : { ...base.regle, valeur: seuil };
+    const carte = Object.fromEntries(Object.entries(base.carte).map(([n, t]) => [n, t.replace("{s}", formaterValeur(regle.valeur))]));
+    return { ...base, id: ref, carte, regle, ...propre };
+  });
+  return { ...fiche, criteres };
+}
+
+export const avecCatalogue = (composants, catalogue) =>
+  composants.map((f) => (f.criteres ? resoudreCriteres(f, catalogue) : f));
