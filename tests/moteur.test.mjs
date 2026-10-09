@@ -239,9 +239,10 @@ test("je classe : chaque famille a une origine, chaque matériau une note de fam
   for (const m of materiaux) assert.ok(m.noteFamille && m.noteFamille.length > 20, m.id);
 });
 
-test("série selon la quantité : grande à partir de 1 000 pièces, petite en dessous", () => {
+test("série selon la quantité : grande à partir de 5 000 pièces, petite en dessous", () => {
   assert.equal(usageRequis(4, turbine), "serie");
   assert.equal(usageRequis(4, { ...turbine, quantiteSerie: 300 }), "petite");
+  assert.equal(usageRequis(4, { ...turbine, quantiteSerie: 1200 }), "petite", "1 200 jantes : petite série");
   assert.equal(usageRequis(5, turbine), "prototype");
   assert.equal(usageRequis(5, { usageFabrication: "tout" }), "tout");
 });
