@@ -4,7 +4,7 @@ import { readFileSync } from "node:fs";
 import { robinetCoupeSVG, objetSVG, dessinPiece, consequence, turbineSVG } from "../app/illustrations.js";
 
 const temoin = readFileSync(new URL("./fixtures/robinet-turbine.svg", import.meta.url), "utf8");
-const PIECES = { robinet: ["boitier-capteur", "support-robinet", "dissipateur"], robot: ["coque-robot", "chassis-robot", "axe-robot", "jante-robot"] };
+const PIECES = { robinet: ["boitier-capteur", "support-robinet", "mousseur"], robot: ["coque-robot", "chassis-robot", "axe-robot", "jante-robot"] };
 const nom = { le: "le boîtier", seul: "boîtier", pronom: "il", feminin: false };
 
 test("robinet de la turbine : dessin inchangé", () => {
