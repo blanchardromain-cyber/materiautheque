@@ -10,14 +10,14 @@ Notes de 1 (faible) à 5 (fort) ; coût de 1 (€) à 3 (€€€).
 
 | Matériau (4e) | Famille | Masse vol. (g/cm³) | Rigidité | Chocs | Usure | Eau | Corrosion | Absorption eau (%) | Temp. max (°C) | Coût | Recyclage | Origine | Magnétique | Procédés | Correction |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| Acier | Matériaux métalliques | 7,85 | 5 | **4** ✱ | **4** ✱ | 1 | **1** ✱ | **0** ✱ | > 300 | **1** ✱ | 5 (Acier (tri par aimant)) | minerai | oui | **Usinage ; Emboutissage, pliage de tôle ; Assemblage** ✱ |  |
-| Inox | Matériaux métalliques | 7,9 | 5 | **4** ✱ | **4** ✱ | 5 | **5** ✱ | **0** ✱ | > 300 | **3** ✱ | 5 (Acier inoxydable) | minerai | **non** ✱ | **Usinage ; Emboutissage, pliage de tôle ; Assemblage** ✱ |  |
-| Alu | Matériaux métalliques | 2,7 | 4 | **3** ✱ | **2** ✱ | 4 | **4** ✱ | **0** ✱ | > 200 | **2** ✱ | 5 (Aluminium) | minerai | non | **Usinage ; Fonderie / moulage métal ; Emboutissage, pliage de tôle ; Extrusion ; Assemblage** ✱ |  |
-| Cu | Matériaux métalliques | 8,96 | 3 | **3** ✱ | **2** ✱ | 4 | **4** ✱ | **0** ✱ | > 200 | **3** ✱ | 5 (Cuivre) | minerai | non | **Usinage ; Emboutissage, pliage de tôle ; Extrusion ; Assemblage** ✱ |  |
-| Laiton | Matériaux métalliques | 8,5 | 4 | **3** ✱ | **3** ✱ | 4 | **4** ✱ | **0** ✱ | > 200 | **3** ✱ | 5 (Laiton) | minerai | non | **Usinage ; Fonderie / moulage métal ; Assemblage** ✱ |  |
+| Acier | Matériaux métalliques | 7,85 | 5 | **4** ✱ | **4** ✱ | 1 | **1** ✱ | **0** ✱ | > 300 | **1** ✱ | 5 (Acier (tri par aimant)) | minerai | oui | **Usinage ; Emboutissage, pliage de tôle ; Pliage de tôle à la plieuse ; Assemblage** ✱ |  |
+| Inox | Matériaux métalliques | 7,9 | 5 | **4** ✱ | **4** ✱ | 5 | **5** ✱ | **0** ✱ | > 300 | **3** ✱ | 5 (Acier inoxydable) | minerai | **non** ✱ | **Usinage ; Emboutissage, pliage de tôle ; Pliage de tôle à la plieuse ; Assemblage** ✱ |  |
+| Alu | Matériaux métalliques | 2,7 | 4 | **3** ✱ | **2** ✱ | 4 | **4** ✱ | **0** ✱ | > 200 | **2** ✱ | 5 (Aluminium) | minerai | non | **Usinage ; Fonderie / moulage métal ; Emboutissage, pliage de tôle ; Pliage de tôle à la plieuse ; Extrusion ; Assemblage** ✱ |  |
+| Cu | Matériaux métalliques | 8,96 | 3 | **3** ✱ | **2** ✱ | 4 | **4** ✱ | **0** ✱ | > 200 | **3** ✱ | 5 (Cuivre) | minerai | non | **Usinage ; Emboutissage, pliage de tôle ; Pliage de tôle à la plieuse ; Extrusion ; Assemblage** ✱ |  |
+| Laiton | Matériaux métalliques | 8,5 | 4 | **3** ✱ | **3** ✱ | 4 | **4** ✱ | **0** ✱ | > 200 | **3** ✱ | 5 (Laiton) | minerai | non | **Usinage ; Fonderie / moulage métal ; Pliage de tôle à la plieuse ; Assemblage** ✱ |  |
 | PLA | Matériaux organiques | 1,24 | 3 | **2** ✱ | **2** ✱ | **2** ✱ | **2** ✱ | **0,5** ✱ | ≈ 50 | **1** ✱ | 2 (**7 / PLA** ✱) | renouvelable | non | Impression 3D par dépôt de fil |  |
 | ABS | Matériaux organiques | 1,04 | 3 | **4** ✱ | **3** ✱ | 3 | **4** ✱ | **0,3** ✱ | 70 | **1** ✱ | 3 (**7 / ABS** ✱) | fossile | non | Impression 3D par dépôt de fil ; Thermoformage ; Moulage par injection |  |
-| PE-HD | Matériaux organiques | 0,95 | 2 | **4** ✱ | **3** ✱ | 5 | **5** ✱ | **0** ✱ | 90 | **1** ✱ | 5 (2 / PE-HD) | fossile | non | **Moulage par injection ; Extrusion** ✱ |  |
+| PE-HD | Matériaux organiques | 0,95 | 2 | **4** ✱ | **3** ✱ | 5 | **5** ✱ | **0** ✱ | 90 | **1** ✱ | 5 (2 / PE-HD) | fossile | non | **Moulage par injection ; Extrusion ; Thermoformage** ✱ |  |
 | PP | Matériaux organiques | 0,91 | 2 | **3** ✱ | **3** ✱ | 5 | **5** ✱ | **0** ✱ | 100 | **1** ✱ | 4 (5 / PP) | fossile | non | Moulage par injection |  |
 | PMMA | Matériaux organiques | 1,19 | 3 | **1** ✱ | **3** ✱ | 4 | **4** ✱ | **0,3** ✱ | 70 | **2** ✱ | 3 (**7 / PMMA** ✱) | fossile | non | **Découpe laser ; Usinage ; Pliage à chaud ; Moulage par injection** ✱ |  |
 | PA | Matériaux organiques | 1,13 | 3 | **4** ✱ | **5** ✱ | 2 | **4** ✱ | 9,5 | 100 | **2** ✱ | 3 (**7 / PA** ✱) | fossile | non | Moulage par injection ; Usinage |  |
