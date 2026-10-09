@@ -47,13 +47,13 @@ Notes de 1 (faible) à 5 (fort) ; coût de 1 (€) à 3 (€€€).
 | Conduire l'électricité | Sans importance (piège) | `elec == "conducteur"` |  |
 | Résister à plus de 200 °C | Sans importance (piège) | `tempMax >= 200` |  |
 
-| Matériau | Verdict calculé | Score | Raison (éliminé) ou ce que l'on perd | D'accord ? |
+| Matériau | Verdict calculé | Critères souhaitables respectés | Raison (éliminé) ou ce que l'on perd | D'accord ? |
 |---|---|---|---|---|
-| POM | Choix de référence | 4 | — |  |
-| ABS | Acceptable | 3 | s'use vite (usure 3/5) |  |
-| PMMA | Acceptable | 3 | s'use vite (usure 3/5) |  |
-| PE-HD | Acceptable | 2 | est trop souple (rigidité 2/5) : les aubes se tordent ; s'use vite (usure 3/5) |  |
-| PP | Acceptable | 2 | est trop souple (rigidité 2/5) : les aubes se tordent ; s'use vite (usure 3/5) |  |
+| POM | Choix de référence | 4 / 4 | — |  |
+| ABS | Acceptable | 3 / 4 | s'use vite (usure 3/5) |  |
+| PMMA | Acceptable | 3 / 4 | s'use vite (usure 3/5) |  |
+| PE-HD | Acceptable | 2 / 4 | est trop souple (rigidité 2/5) : les aubes se tordent ; s'use vite (usure 3/5) |  |
+| PP | Acceptable | 2 / 4 | est trop souple (rigidité 2/5) : les aubes se tordent ; s'use vite (usure 3/5) |  |
 | Acier | Éliminé |  | s'abîme dans l'eau (résistance à l'eau 1/5) ; est trop lourd (7,85 g/cm³) : la turbine démarre mal |  |
 | Inox | Éliminé |  | est trop lourd (7,9 g/cm³) : la turbine démarre mal |  |
 | Alu | Éliminé |  | est trop lourd (2,7 g/cm³) : la turbine démarre mal |  |
@@ -70,11 +70,11 @@ Notes de 1 (faible) à 5 (fort) ; coût de 1 (€) à 3 (€€€).
 | Être légère | Indispensable | `masseVolumique <= 2` |  |
 | Conduire l'électricité | Sans importance (piège) | `elec == "conducteur"` |  |
 
-| Matériau | Verdict calculé | Score | Raison (éliminé) ou ce que l'on perd | D'accord ? |
+| Matériau | Verdict calculé | Critères souhaitables respectés | Raison (éliminé) ou ce que l'on perd | D'accord ? |
 |---|---|---|---|---|
-| Acrylonitrile butadiène styrène | Choix de référence | 0 | — |  |
-| Polypropylène | Choix de référence | 0 | — |  |
-| Polyacétal | Choix de référence | 0 | — |  |
+| Acrylonitrile butadiène styrène | Choix de référence (à égalité) | — (aucun critère souhaitable) | — |  |
+| Polypropylène | Choix de référence (à égalité) — refusé : pas de procédé possible | — (aucun critère souhaitable) | — |  |
+| Polyacétal | Choix de référence (à égalité) — refusé : pas de procédé possible | — (aucun critère souhaitable) | — |  |
 | Acier | Éliminé |  | s'abîme dans l'eau (résistance à l'eau 1/5) ; est trop lourd (7,85 g/cm³) : la turbine démarre mal |  |
 | Aluminium | Éliminé |  | est trop lourd (2,7 g/cm³) : la turbine démarre mal |  |
 | Laiton | Éliminé |  | est trop lourd (8,5 g/cm³) : la turbine démarre mal |  |
@@ -95,14 +95,14 @@ Notes de 1 (faible) à 5 (fort) ; coût de 1 (€) à 3 (€€€).
 | Conduire l'électricité | Sans importance (piège) | `elec == "conducteur"` |  |
 | Résister à plus de 200 °C | Sans importance (piège) | `tempMax >= 200` |  |
 
-| Matériau | Verdict calculé | Score | Raison (éliminé) ou ce que l'on perd | D'accord ? |
+| Matériau | Verdict calculé | Critères souhaitables respectés | Raison (éliminé) ou ce que l'on perd | D'accord ? |
 |---|---|---|---|---|
-| POM-C | Choix de référence | 9 | — |  |
-| Phénoplaste (PF) | Acceptable | 8 | se recycle mal (1/5) |  |
-| PA 6 | Acceptable | 7 | absorbe 9,5 % d'eau et gonfle |  |
-| ABS | Acceptable | 6 | s'use vite (usure 3/5) |  |
-| PMMA | Acceptable | 6 | s'use vite (usure 3/5) |  |
-| Composite verre-époxy | Acceptable | 5 | ne se moule pas par injection : pas d'aubes fines en grande série ; coûte cher (€€€) ; se recycle mal (1/5) |  |
+| POM-C | Choix de référence | 9 / 9 | — |  |
+| Phénoplaste (PF) | Acceptable | 8 / 9 | se recycle mal (1/5) |  |
+| PA 6 | Acceptable | 7 / 9 | absorbe 9,5 % d'eau et gonfle |  |
+| ABS | Acceptable | 6 / 9 | s'use vite (usure 3/5) |  |
+| PMMA | Acceptable | 6 / 9 | s'use vite (usure 3/5) |  |
+| Composite verre-époxy | Acceptable — refusé : pas de procédé possible | 5 / 9 | ne se moule pas par injection : pas d'aubes fines en grande série ; coûte cher (€€€) ; se recycle mal (1/5) |  |
 | Acier S235 | Éliminé |  | se dégrade dans l'eau (tenue 1/5) ; est trop lourd (7,85 g/cm³) : la turbine démarre mal ; est attiré par l'aimant et le freine |  |
 | Inox X5CrNi18-10 (304) | Éliminé |  | est trop lourd (7,9 g/cm³) : la turbine démarre mal |  |
 | Aluminium EN AW-6060 | Éliminé |  | est trop lourd (2,7 g/cm³) : la turbine démarre mal |  |
@@ -129,11 +129,11 @@ Notes de 1 (faible) à 5 (fort) ; coût de 1 (€) à 3 (€€€).
 | Supporter la chaleur de la plaque | Indispensable | `tempMax >= 180` |  |
 | Conduire l'électricité | Sans importance (piège) | `elec == "conducteur"` |  |
 
-| Matériau | Verdict calculé | Score | Raison (éliminé) ou ce que l'on perd | D'accord ? |
+| Matériau | Verdict calculé | Critères souhaitables respectés | Raison (éliminé) ou ce que l'on perd | D'accord ? |
 |---|---|---|---|---|
-| Acier inoxydable | Choix de référence | 0 | — |  |
-| Aluminium | Choix de référence | 0 | — |  |
-| Cuivre | Choix de référence | 0 | — |  |
+| Acier inoxydable | Choix de référence (à égalité) | — (aucun critère souhaitable) | — |  |
+| Aluminium | Choix de référence (à égalité) | — (aucun critère souhaitable) | — |  |
+| Cuivre | Choix de référence (à égalité) | — (aucun critère souhaitable) | — |  |
 | Pin / hêtre | Éliminé |  | est isolant thermique : les aliments chauffent mal ; ne supporte pas la plaque (150 °C au plus) |  |
 | Polypropylène | Éliminé |  | est isolant thermique : les aliments chauffent mal ; ne supporte pas la plaque (100 °C au plus) |  |
 | Bakélite | Éliminé |  | est isolant thermique : les aliments chauffent mal ; ne supporte pas la plaque (150 °C au plus) |  |
@@ -150,10 +150,10 @@ Notes de 1 (faible) à 5 (fort) ; coût de 1 (€) à 3 (€€€).
 | Résister à la chaleur près de la cuve | Indispensable | `tempMax >= 120` |  |
 | Conduire l'électricité | Sans importance (piège) | `elec == "conducteur"` |  |
 
-| Matériau | Verdict calculé | Score | Raison (éliminé) ou ce que l'on perd | D'accord ? |
+| Matériau | Verdict calculé | Critères souhaitables respectés | Raison (éliminé) ou ce que l'on perd | D'accord ? |
 |---|---|---|---|---|
-| Pin / hêtre | Choix de référence | 0 | — |  |
-| Bakélite | Choix de référence | 0 | — |  |
+| Pin / hêtre | Choix de référence (à égalité) | — (aucun critère souhaitable) | — |  |
+| Bakélite | Choix de référence (à égalité) | — (aucun critère souhaitable) | — |  |
 | Acier inoxydable | Éliminé |  | est conducteur de chaleur : la poignée devient brûlante |  |
 | Aluminium | Éliminé |  | est conducteur de chaleur : la poignée devient brûlante |  |
 | Cuivre | Éliminé |  | est conducteur de chaleur : la poignée devient brûlante |  |
@@ -197,13 +197,13 @@ Quantité : 10000 (grande série). Forme : creuse-fine.
 | Résister à plus de 200 °C | Sans importance (piège) | `tempMax >= 200` |  |
 | Ne pas être attiré par un aimant | Sans importance (piège) | `magnetique == false` |  |
 
-| Matériau | Verdict calculé | Score | Raison (éliminé) ou ce que l'on perd | D'accord ? |
+| Matériau | Verdict calculé | Critères souhaitables respectés | Raison (éliminé) ou ce que l'on perd | D'accord ? |
 |---|---|---|---|---|
-| ABS | Choix de référence | 3 | — |  |
-| PE-HD | Acceptable | 2 | n'est pas assez rigide (rigidité 2/5) |  |
-| PP | Acceptable | 1 | n'est pas assez rigide (rigidité 2/5) ; résiste mal aux chocs (chocs 3/5) |  |
-| PMMA | Acceptable | 1 | résiste mal aux chocs (chocs 1/5) ; coûte plus cher (coût 2 sur 3) |  |
-| POM | Acceptable | 1 | résiste mal aux chocs (chocs 3/5) ; coûte plus cher (coût 2 sur 3) |  |
+| ABS | Choix de référence | 3 / 3 | — |  |
+| PE-HD | Acceptable | 2 / 3 | n'est pas assez rigide (rigidité 2/5) |  |
+| PP | Acceptable | 1 / 3 | n'est pas assez rigide (rigidité 2/5) ; résiste mal aux chocs (chocs 3/5) |  |
+| PMMA | Acceptable | 1 / 3 | résiste mal aux chocs (chocs 1/5) ; coûte plus cher (coût 2 sur 3) |  |
+| POM | Acceptable | 1 / 3 | résiste mal aux chocs (chocs 3/5) ; coûte plus cher (coût 2 sur 3) |  |
 | Acier | Éliminé |  | conduit l'électricité ; s'abîme dans l'eau (résistance à l'eau 1/5) |  |
 | Inox | Éliminé |  | conduit l'électricité |  |
 | Alu | Éliminé |  | conduit l'électricité |  |
@@ -224,15 +224,18 @@ Quantité : 10000 (grande série). Forme : pliee.
 | Il est dans une pièce humide, sous les éclaboussures. | vraie | Vrai : une salle d'eau est humide en permanence. |  |
 | Il doit tenir des années sans entretien. | vraie | Vrai : on ne démonte pas un robinet pour repeindre son support. |  |
 | C'est une tôle pliée percée de trous de fixation. | vraie | Vrai : une plaque pliée, vissée au mur. |  |
+| On peut le cogner avec une casserole, un seau ou le coude. | vraie | Vrai : il est à hauteur de main, au-dessus du lavabo. |  |
 | Un courant électrique le traverse. | fausse (piège) | Faux : le support ne fait partie d'aucun circuit électrique. |  |
 | Il doit être le plus léger possible. | fausse (piège) | Faux : fixé au mur, il ne se déplace jamais ; son poids ne gêne pas. |  |
 | Il est chauffé à plus de 200 °C. | fausse (piège) | Faux : il reste à la température de la pièce. |  |
 
 | Critère | Pourquoi | Question si mal classé | Question si choix refusé | Correction |
 |---|---|---|---|---|
-| Être très rigide (5/5) | S'il plie, le robinet penche. | Relis l'étape 1 : que porte le support ? Peut-on accepter un support qui plie ? | Si le support plie un peu à chaque appui, que devient le robinet au bout d'un an ? |  |
+| Être rigide (4/5 au moins) | S'il plie, le robinet penche. | Relis l'étape 1 : que porte le support ? Peut-on accepter un support qui plie ? | Si le support plie un peu à chaque appui, que devient le robinet au bout d'un an ? |  |
 | Ne pas rouiller ni se dégrader | Il vit dans une pièce humide. | Relis l'étape 1 : le support est-il dans une pièce humide, pour des années ? Un matériau qui rouille peut-il convenir ? | Après des années dans une salle d'eau, que devient un métal qui rouille ? |  |
 | Coûter peu (€ ou €€) | Il est fabriqué à 10 000 exemplaires. |  |  |  |
+| Résister aux chocs (4/5 au moins) | On le cogne avec une casserole, un seau, le coude. |  |  |  |
+| Se recycler en fin de vie | Le robinet finira à la déchetterie. |  |  |  |
 | Conduire l'électricité | Piège : aucun courant ne traverse le support. | Relis l'étape 1 : un courant traverse-t-il le support ? Ce critère concerne-t-il cette pièce ? |  |  |
 | Être léger (2 g/cm³ au plus) | Piège : fixé au mur, son poids ne gêne pas. | Relis l'étape 1 : le support doit-il être léger ? Un support fixé au mur se déplace-t-il ? |  |  |
 
@@ -240,26 +243,28 @@ Quantité : 10000 (grande série). Forme : pliee.
 
 | Critère (carte élève) | Statut de référence | Règle | Poids |
 |---|---|---|---|
-| Être très rigide (5/5) | Indispensable | `notes.rigidite >= 5` |  |
+| Être rigide (4/5 au moins) | Indispensable | `notes.rigidite >= 4` |  |
 | Ne pas rouiller ni se dégrader | Indispensable | `notes.corrosion >= 3` |  |
 | Coûter peu (€ ou €€) | Souhaitable | `cout <= 2` | 1 |
+| Résister aux chocs (4/5 au moins) | Souhaitable | `notes.chocs >= 4` | 1 |
+| Se recycler en fin de vie | Souhaitable | `recyclage.note >= 3` | 1 |
 | Conduire l'électricité | Sans importance (piège) | `elec == "conducteur"` |  |
 | Être léger (2 g/cm³ au plus) | Sans importance (piège) | `masseVolumique <= 2` |  |
 
-| Matériau | Verdict calculé | Score | Raison (éliminé) ou ce que l'on perd | D'accord ? |
+| Matériau | Verdict calculé | Critères souhaitables respectés | Raison (éliminé) ou ce que l'on perd | D'accord ? |
 |---|---|---|---|---|
-| Inox | Choix de référence | 0 | coûte plus cher (coût 3 sur 3) |  |
+| Inox | Choix de référence (à égalité) | 2 / 3 | coûte plus cher (coût 3 sur 3) |  |
+| Alu | Choix de référence (à égalité) | 2 / 3 | résiste mal aux chocs (chocs 3/5) |  |
+| POM | Choix de référence (à égalité) — refusé : pas de procédé possible | 2 / 3 | résiste mal aux chocs (chocs 3/5) |  |
+| Laiton | Acceptable — refusé : pas de procédé possible | 1 / 3 | coûte plus cher (coût 3 sur 3) ; résiste mal aux chocs (chocs 3/5) |  |
 | Acier | Éliminé |  | se dégrade avec le temps (tenue 1/5) |  |
-| Alu | Éliminé |  | n'est pas assez rigide (rigidité 4/5) |  |
 | Cu | Éliminé |  | n'est pas assez rigide (rigidité 3/5) |  |
-| Laiton | Éliminé |  | n'est pas assez rigide (rigidité 4/5) |  |
 | PLA | Éliminé |  | n'est pas assez rigide (rigidité 3/5) ; se dégrade avec le temps (tenue 2/5) |  |
 | ABS | Éliminé |  | n'est pas assez rigide (rigidité 3/5) |  |
 | PE-HD | Éliminé |  | n'est pas assez rigide (rigidité 2/5) |  |
 | PP | Éliminé |  | n'est pas assez rigide (rigidité 2/5) |  |
 | PMMA | Éliminé |  | n'est pas assez rigide (rigidité 3/5) |  |
 | PA | Éliminé |  | n'est pas assez rigide (rigidité 3/5) |  |
-| POM | Éliminé |  | n'est pas assez rigide (rigidité 4/5) |  |
 
 ## 2. Scénario « Dissipateur de la carte électronique » (Robinet automatique)
 
@@ -297,9 +302,9 @@ Quantité : 10000 (grande série). Forme : profile.
 | Conduire l'électricité | Sans importance (piège) | `elec == "conducteur"` |  |
 | Résister à plus de 200 °C | Sans importance (piège) | `tempMax >= 200` |  |
 
-| Matériau | Verdict calculé | Score | Raison (éliminé) ou ce que l'on perd | D'accord ? |
+| Matériau | Verdict calculé | Critères souhaitables respectés | Raison (éliminé) ou ce que l'on perd | D'accord ? |
 |---|---|---|---|---|
-| Alu | Choix de référence | 2 | — |  |
+| Alu | Seul matériau en lice | 2 / 2 | — |  |
 | Acier | Éliminé |  | est trop lourd (7,85 g/cm³) |  |
 | Inox | Éliminé |  | est trop lourd (7,9 g/cm³) |  |
 | Cu | Éliminé |  | est trop lourd (8,96 g/cm³) |  |
@@ -352,9 +357,9 @@ Quantité : 300 (petite série). Forme : coque.
 | Résister à plus de 200 °C | Sans importance (piège) | `tempMax >= 200` |  |
 | Conduire l'électricité | Sans importance (piège) | `elec == "conducteur"` |  |
 
-| Matériau | Verdict calculé | Score | Raison (éliminé) ou ce que l'on perd | D'accord ? |
+| Matériau | Verdict calculé | Critères souhaitables respectés | Raison (éliminé) ou ce que l'on perd | D'accord ? |
 |---|---|---|---|---|
-| PE-HD | Choix de référence | 2 | — |  |
+| PE-HD | Seul matériau en lice | 2 / 2 | — |  |
 | Acier | Éliminé |  | s'abîme dans l'eau (résistance à l'eau 1/5) ; est trop lourd (7,85 g/cm³) |  |
 | Inox | Éliminé |  | est trop lourd (7,9 g/cm³) |  |
 | Alu | Éliminé |  | résiste mal aux chocs (chocs 3/5) ; est trop lourd (2,7 g/cm³) |  |
@@ -402,10 +407,10 @@ Quantité : 300 (petite série). Forme : pliee.
 | Conduire l'électricité | Sans importance (piège) | `elec == "conducteur"` |  |
 | Résister à plus de 200 °C | Sans importance (piège) | `tempMax >= 200` |  |
 
-| Matériau | Verdict calculé | Score | Raison (éliminé) ou ce que l'on perd | D'accord ? |
+| Matériau | Verdict calculé | Critères souhaitables respectés | Raison (éliminé) ou ce que l'on perd | D'accord ? |
 |---|---|---|---|---|
-| Alu | Choix de référence | 1 | — |  |
-| POM | Choix de référence | 1 | — |  |
+| Alu | Choix de référence (à égalité) | 1 / 1 | — |  |
+| POM | Choix de référence (à égalité) — refusé : pas de procédé possible | 1 / 1 | — |  |
 | Acier | Éliminé |  | se dégrade avec le temps (tenue 1/5) ; est trop lourd (7,85 g/cm³) |  |
 | Inox | Éliminé |  | est trop lourd (7,9 g/cm³) |  |
 | Cu | Éliminé |  | n'est pas assez rigide (rigidité 3/5) ; est trop lourd (8,96 g/cm³) |  |
@@ -429,15 +434,17 @@ Quantité : 1200 (petite série). Forme : volume-simple.
 | Il tourne et frotte sans arrêt dans ses paliers. | vraie | Vrai : il s'use à chaque tour de roue. |  |
 | Il roule dans des canalisations humides (ligne ⑤). | vraie | Vrai : il ne doit pas rouiller, sinon il grippe. |  |
 | C'est une tige fine : elle ne doit pas plier. | vraie | Vrai : un axe qui plie fait frotter la roue contre le châssis. |  |
+| Quand une roue heurte un obstacle, l'axe encaisse le choc. | vraie | Vrai : le fond des canalisations est encombré (ligne ⑤ : légers chocs). |  |
 | Il doit être le plus léger possible. | fausse (piège) | Faux : l'axe est une toute petite pièce ; sa solidité compte bien plus que son poids. |  |
 | Le courant de la batterie le traverse. | fausse (piège) | Faux : le courant passe dans les fils et les moteurs. |  |
 
 | Critère | Pourquoi | Question si mal classé | Question si choix refusé | Correction |
 |---|---|---|---|---|
-| Être très rigide (5/5) | Une tige fine qui porte le robot. | Relis l'étape 1 : l'axe peut-il plier ? Que devient la roue ? | Une tige fine porte le robot : que se passe-t-il si elle plie un peu ? |  |
+| Être rigide (4/5 au moins) | Une tige fine qui porte le robot. | Relis l'étape 1 : l'axe peut-il plier ? Que devient la roue ? | Une tige fine porte le robot : que se passe-t-il si elle plie un peu ? |  |
 | Résister à l'usure | Il frotte dans ses paliers. | Relis l'étape 1 : l'axe frotte-t-il ? Peut-on accepter un axe qui s'use vite ? | Combien de tours fait une roue pendant une inspection ? Que subit l'axe ? |  |
 | Ne pas rouiller ni se dégrader | Canalisations humides (ligne ⑤). | Relis l'étape 1 : l'axe vit-il dans l'humidité ? Un matériau qui rouille peut-il convenir ? | Un axe rouillé tourne-t-il encore librement ? |  |
 | Coûter peu (€ ou €€) | Prix maximal du robot (ligne ⑨). |  |  |  |
+| Résister aux chocs (4/5 au moins) | Les roues cognent les obstacles : l'axe encaisse le choc. |  |  |  |
 | Être léger (2 g/cm³ au plus) | Piège : l'axe est une toute petite pièce. | Relis l'étape 1 : pour une si petite pièce, le poids compte-t-il plus que la solidité ? |  |  |
 | Conduire l'électricité | Piège : le courant passe dans les fils. | Relis l'étape 1 : un courant traverse-t-il l'axe ? Ce critère concerne-t-il cette pièce ? |  |  |
 
@@ -445,27 +452,28 @@ Quantité : 1200 (petite série). Forme : volume-simple.
 
 | Critère (carte élève) | Statut de référence | Règle | Poids |
 |---|---|---|---|
-| Être très rigide (5/5) | Indispensable | `notes.rigidite >= 5` |  |
+| Être rigide (4/5 au moins) | Indispensable | `notes.rigidite >= 4` |  |
 | Résister à l'usure | Indispensable | `notes.usure >= 4` |  |
 | Ne pas rouiller ni se dégrader | Indispensable | `notes.corrosion >= 3` |  |
 | Coûter peu (€ ou €€) | Souhaitable | `cout <= 2` | 1 |
+| Résister aux chocs (4/5 au moins) | Souhaitable | `notes.chocs >= 4` | 1 |
 | Être léger (2 g/cm³ au plus) | Sans importance (piège) | `masseVolumique <= 2` |  |
 | Conduire l'électricité | Sans importance (piège) | `elec == "conducteur"` |  |
 
-| Matériau | Verdict calculé | Score | Raison (éliminé) ou ce que l'on perd | D'accord ? |
+| Matériau | Verdict calculé | Critères souhaitables respectés | Raison (éliminé) ou ce que l'on perd | D'accord ? |
 |---|---|---|---|---|
-| Inox | Choix de référence | 0 | coûte plus cher (coût 3 sur 3) |  |
+| Inox | Choix de référence (à égalité) | 1 / 2 | coûte plus cher (coût 3 sur 3) |  |
+| POM | Choix de référence (à égalité) | 1 / 2 | résiste mal aux chocs (chocs 3/5) |  |
 | Acier | Éliminé |  | se dégrade avec le temps (tenue 1/5) |  |
-| Alu | Éliminé |  | n'est pas assez rigide (rigidité 4/5) ; s'use vite (usure 2/5) |  |
+| Alu | Éliminé |  | s'use vite (usure 2/5) |  |
 | Cu | Éliminé |  | n'est pas assez rigide (rigidité 3/5) ; s'use vite (usure 2/5) |  |
-| Laiton | Éliminé |  | n'est pas assez rigide (rigidité 4/5) ; s'use vite (usure 3/5) |  |
+| Laiton | Éliminé |  | s'use vite (usure 3/5) |  |
 | PLA | Éliminé |  | n'est pas assez rigide (rigidité 3/5) ; s'use vite (usure 2/5) ; se dégrade avec le temps (tenue 2/5) |  |
 | ABS | Éliminé |  | n'est pas assez rigide (rigidité 3/5) ; s'use vite (usure 3/5) |  |
 | PE-HD | Éliminé |  | n'est pas assez rigide (rigidité 2/5) ; s'use vite (usure 3/5) |  |
 | PP | Éliminé |  | n'est pas assez rigide (rigidité 2/5) ; s'use vite (usure 3/5) |  |
 | PMMA | Éliminé |  | n'est pas assez rigide (rigidité 3/5) ; s'use vite (usure 3/5) |  |
 | PA | Éliminé |  | n'est pas assez rigide (rigidité 3/5) |  |
-| POM | Éliminé |  | n'est pas assez rigide (rigidité 4/5) |  |
 
 ## 2. Scénario « Jante des roues » (Robot explorateur RS-1)
 
@@ -504,9 +512,9 @@ Quantité : 1200 (petite série). Forme : volume-simple.
 | Conduire l'électricité | Sans importance (piège) | `elec == "conducteur"` |  |
 | Résister à plus de 200 °C | Sans importance (piège) | `tempMax >= 200` |  |
 
-| Matériau | Verdict calculé | Score | Raison (éliminé) ou ce que l'on perd | D'accord ? |
+| Matériau | Verdict calculé | Critères souhaitables respectés | Raison (éliminé) ou ce que l'on perd | D'accord ? |
 |---|---|---|---|---|
-| POM | Choix de référence | 1 | — |  |
+| POM | Seul matériau en lice | 1 / 1 | — |  |
 | Acier | Éliminé |  | s'abîme dans l'eau (résistance à l'eau 1/5) ; est trop lourd (7,85 g/cm³) |  |
 | Inox | Éliminé |  | est trop lourd (7,9 g/cm³) |  |
 | Alu | Éliminé |  | s'use vite (usure 2/5) ; est trop lourd (2,7 g/cm³) |  |
