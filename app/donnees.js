@@ -1,5 +1,7 @@
 // Chargement du référentiel (data/*.json).
-const FICHIERS = ["familles", "proprietes", "materiaux", "procedes", "composants", "glossaire", "essais"];
+import { avecCatalogue } from "./moteur.js";
+
+const FICHIERS = ["familles", "proprietes", "materiaux", "procedes", "composants", "glossaire", "essais", "criteres"];
 
 export async function chargerDonnees(base = "data/") {
   const entrees = await Promise.all(
@@ -9,5 +11,7 @@ export async function chargerDonnees(base = "data/") {
       return [nom, await r.json()];
     })
   );
-  return Object.fromEntries(entrees);
+  const d = Object.fromEntries(entrees);
+  d.composants = avecCatalogue(d.composants, d.criteres);
+  return d;
 }
