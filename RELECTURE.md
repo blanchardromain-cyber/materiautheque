@@ -201,9 +201,9 @@ Quantité : 10000 (grande série). Forme : creuse-fine.
 |---|---|---|---|---|
 | ABS | Choix de référence | 3 | — |  |
 | PE-HD | Acceptable | 2 | n'est pas assez rigide (rigidité 2/5) |  |
-| PP | Acceptable | 1 | n'est pas assez rigide (rigidité 2/5) ; se fend sous les chocs (chocs 3/5) |  |
-| PMMA | Acceptable | 1 | se fend sous les chocs (chocs 1/5) ; coûte plus cher (coût 2 sur 3) |  |
-| POM | Acceptable | 1 | se fend sous les chocs (chocs 3/5) ; coûte plus cher (coût 2 sur 3) |  |
+| PP | Acceptable | 1 | n'est pas assez rigide (rigidité 2/5) ; résiste mal aux chocs (chocs 3/5) |  |
+| PMMA | Acceptable | 1 | résiste mal aux chocs (chocs 1/5) ; coûte plus cher (coût 2 sur 3) |  |
+| POM | Acceptable | 1 | résiste mal aux chocs (chocs 3/5) ; coûte plus cher (coût 2 sur 3) |  |
 | Acier | Éliminé |  | conduit l'électricité ; s'abîme dans l'eau (résistance à l'eau 1/5) |  |
 | Inox | Éliminé |  | conduit l'électricité |  |
 | Alu | Éliminé |  | conduit l'électricité |  |
@@ -333,7 +333,7 @@ Quantité : 300 (petite série). Forme : coque.
 | Résister à l'eau et à l'humidité | Humidité et écoulements (ligne ⑤). | Relis l'étape 1 : la coque reçoit-elle de l'eau ? Un matériau qui s'y abîme peut-il convenir ? | Relis la ligne ⑤ : la coque reçoit-elle de l'eau ? Quelle note de résistance à l'eau faut-il ? |  |
 | Résister aux chocs (4/5 au moins) | Légers chocs contre les parois (ligne ⑤). | Relis l'étape 1 : la coque reçoit-elle des chocs ? Peut-on accepter une coque qui se fend ? | La coque heurte les parois de la canalisation : quelle note de résistance aux chocs faut-il ? |  |
 | Supporter 80 °C | Jusqu'à 80 °C (ligne ⑦). | Relis l'étape 1 : jusqu'à quelle température la coque doit-elle tenir ? Peut-on s'en passer ? | Relis la ligne ⑦ : quelle température la coque doit-elle supporter ? Compare avec la température maximale du matériau. |  |
-| Être léger (2 g/cm³ au plus) | L'autonomie de la batterie (ligne ④). | Relis l'étape 1 : pourquoi chaque gramme compte-t-il ? Peut-on accepter une coque lourde ? | Un robot plus lourd vide sa batterie plus vite : compare les masses volumiques. |  |
+| Être légère (2 g/cm³ au plus) | L'autonomie de la batterie (ligne ④). | Relis l'étape 1 : pourquoi chaque gramme compte-t-il ? Peut-on accepter une coque lourde ? | Un robot plus lourd vide sa batterie plus vite : compare les masses volumiques. |  |
 | Coûter peu (€ ou €€) | Prix maximal du robot (ligne ⑨). |  |  |  |
 | Se recycler en fin de vie | Le robot sera recyclé en fin de vie. |  |  |  |
 | Résister à plus de 200 °C | Piège : le cahier des charges s'arrête à 80 °C. | Relis l'étape 1 : la coque doit-elle tenir plus de 200 °C ? Ce critère concerne-t-il cette pièce ? |  |  |
@@ -346,7 +346,7 @@ Quantité : 300 (petite série). Forme : coque.
 | Résister à l'eau et à l'humidité | Indispensable | `notes.eau >= 3` |  |
 | Résister aux chocs (4/5 au moins) | Indispensable | `notes.chocs >= 4` |  |
 | Supporter 80 °C | Indispensable | `tempMax >= 80` |  |
-| Être léger (2 g/cm³ au plus) | Indispensable | `masseVolumique <= 2` |  |
+| Être légère (2 g/cm³ au plus) | Indispensable | `masseVolumique <= 2` |  |
 | Coûter peu (€ ou €€) | Souhaitable | `cout <= 2` | 1 |
 | Se recycler en fin de vie | Souhaitable | `recyclage.note >= 3` | 1 |
 | Résister à plus de 200 °C | Sans importance (piège) | `tempMax >= 200` |  |
@@ -357,15 +357,15 @@ Quantité : 300 (petite série). Forme : coque.
 | PE-HD | Choix de référence | 2 | — |  |
 | Acier | Éliminé |  | s'abîme dans l'eau (résistance à l'eau 1/5) ; est trop lourd (7,85 g/cm³) |  |
 | Inox | Éliminé |  | est trop lourd (7,9 g/cm³) |  |
-| Alu | Éliminé |  | se fend sous les chocs (chocs 3/5) ; est trop lourd (2,7 g/cm³) |  |
-| Cu | Éliminé |  | se fend sous les chocs (chocs 3/5) ; est trop lourd (8,96 g/cm³) |  |
-| Laiton | Éliminé |  | se fend sous les chocs (chocs 3/5) ; est trop lourd (8,5 g/cm³) |  |
-| PLA | Éliminé |  | s'abîme dans l'eau (résistance à l'eau 2/5) ; se fend sous les chocs (chocs 2/5) ; ne supporte pas 80 °C (50 °C au plus) |  |
+| Alu | Éliminé |  | résiste mal aux chocs (chocs 3/5) ; est trop lourd (2,7 g/cm³) |  |
+| Cu | Éliminé |  | résiste mal aux chocs (chocs 3/5) ; est trop lourd (8,96 g/cm³) |  |
+| Laiton | Éliminé |  | résiste mal aux chocs (chocs 3/5) ; est trop lourd (8,5 g/cm³) |  |
+| PLA | Éliminé |  | s'abîme dans l'eau (résistance à l'eau 2/5) ; résiste mal aux chocs (chocs 2/5) ; ne supporte pas 80 °C (50 °C au plus) |  |
 | ABS | Éliminé |  | ne supporte pas 80 °C (70 °C au plus) |  |
-| PP | Éliminé |  | se fend sous les chocs (chocs 3/5) |  |
-| PMMA | Éliminé |  | se fend sous les chocs (chocs 1/5) ; ne supporte pas 80 °C (70 °C au plus) |  |
+| PP | Éliminé |  | résiste mal aux chocs (chocs 3/5) |  |
+| PMMA | Éliminé |  | résiste mal aux chocs (chocs 1/5) ; ne supporte pas 80 °C (70 °C au plus) |  |
 | PA | Éliminé |  | s'abîme dans l'eau (résistance à l'eau 2/5) |  |
-| POM | Éliminé |  | se fend sous les chocs (chocs 3/5) |  |
+| POM | Éliminé |  | résiste mal aux chocs (chocs 3/5) |  |
 
 ## 2. Scénario « Châssis » (Robot explorateur RS-1)
 
@@ -487,7 +487,7 @@ Quantité : 300 (petite série). Forme : volume-simple.
 | Résister à l'usure | Son trou central frotte sur l'axe. | Relis l'étape 1 : la jante frotte-t-elle ? Peut-on accepter qu'elle s'use vite ? | Que devient le trou de la jante après des milliers de tours ? |  |
 | Résister à l'eau et à l'humidité | Elle roule dans l'eau. | Relis l'étape 1 : la jante est-elle dans l'eau ? Un matériau qui s'y abîme peut-il convenir ? | La jante est mouillée pendant toute l'inspection : quelle note de résistance à l'eau faut-il ? |  |
 | Résister aux chocs (3/5 au moins) | Elle cogne les obstacles. | Relis l'étape 1 : la jante reçoit-elle des chocs ? Peut-on accepter qu'elle se fende ? | La jante cogne le fond de la canalisation : quelle note de résistance aux chocs faut-il ? |  |
-| Être léger (2 g/cm³ au plus) | Quatre jantes à porter (ligne ④). | Relis l'étape 1 : pourquoi le poids des jantes compte-t-il ? | Quatre jantes lourdes : que devient l'autonomie ? Compare les masses volumiques. |  |
+| Être légère (2 g/cm³ au plus) | Quatre jantes à porter (ligne ④). | Relis l'étape 1 : pourquoi le poids des jantes compte-t-il ? | Quatre jantes lourdes : que devient l'autonomie ? Compare les masses volumiques. |  |
 | Coûter peu (€ ou €€) | Prix maximal du robot (ligne ⑨). |  |  |  |
 | Conduire l'électricité | Piège : le courant passe dans les fils. | Relis l'étape 1 : un courant traverse-t-il la jante ? Ce critère concerne-t-il cette pièce ? |  |  |
 | Résister à plus de 200 °C | Piège : le cahier des charges s'arrête à 80 °C. | Relis l'étape 1 : la jante doit-elle tenir plus de 200 °C ? Ce critère concerne-t-il cette pièce ? |  |  |
@@ -499,7 +499,7 @@ Quantité : 300 (petite série). Forme : volume-simple.
 | Résister à l'usure | Indispensable | `notes.usure >= 4` |  |
 | Résister à l'eau et à l'humidité | Indispensable | `notes.eau >= 3` |  |
 | Résister aux chocs (3/5 au moins) | Indispensable | `notes.chocs >= 3` |  |
-| Être léger (2 g/cm³ au plus) | Indispensable | `masseVolumique <= 2` |  |
+| Être légère (2 g/cm³ au plus) | Indispensable | `masseVolumique <= 2` |  |
 | Coûter peu (€ ou €€) | Souhaitable | `cout <= 2` | 1 |
 | Conduire l'électricité | Sans importance (piège) | `elec == "conducteur"` |  |
 | Résister à plus de 200 °C | Sans importance (piège) | `tempMax >= 200` |  |
@@ -512,11 +512,11 @@ Quantité : 300 (petite série). Forme : volume-simple.
 | Alu | Éliminé |  | s'use vite (usure 2/5) ; est trop lourd (2,7 g/cm³) |  |
 | Cu | Éliminé |  | s'use vite (usure 2/5) ; est trop lourd (8,96 g/cm³) |  |
 | Laiton | Éliminé |  | s'use vite (usure 3/5) ; est trop lourd (8,5 g/cm³) |  |
-| PLA | Éliminé |  | s'use vite (usure 2/5) ; s'abîme dans l'eau (résistance à l'eau 2/5) ; se fend sous les chocs (chocs 2/5) |  |
+| PLA | Éliminé |  | s'use vite (usure 2/5) ; s'abîme dans l'eau (résistance à l'eau 2/5) ; résiste mal aux chocs (chocs 2/5) |  |
 | ABS | Éliminé |  | s'use vite (usure 3/5) |  |
 | PE-HD | Éliminé |  | s'use vite (usure 3/5) |  |
 | PP | Éliminé |  | s'use vite (usure 3/5) |  |
-| PMMA | Éliminé |  | s'use vite (usure 3/5) ; se fend sous les chocs (chocs 1/5) |  |
+| PMMA | Éliminé |  | s'use vite (usure 3/5) ; résiste mal aux chocs (chocs 1/5) |  |
 | PA | Éliminé |  | s'abîme dans l'eau (résistance à l'eau 2/5) |  |
 
 ## 3. Questions pour le relecteur
