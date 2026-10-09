@@ -252,5 +252,1258 @@
         }
       }
     ]
+  },
+  {
+    "id": "boitier-capteur",
+    "systeme": "Robinet automatique",
+    "sequence": "P11 — Comment préserver une ressource essentielle : l'eau ?",
+    "quantiteSerie": 10000,
+    "piece": "Boîtier du capteur infrarouge",
+    "niveaux": [
+      4
+    ],
+    "objet": "robinet",
+    "entete": {
+      "classe": "Classe de 4ᵉ",
+      "sequence": "P11 — L’eau, ressource essentielle",
+      "titre": "Matériauthèque — bibliothèque de pièces",
+      "sousTitre": "Le choix du matériau : boîtier du capteur infrarouge (Robinet automatique)"
+    },
+    "presentation": "Sous le bec du robinet, un petit boîtier protège le capteur infrarouge qui détecte les mains, et sa carte électronique. Quel matériau choisir pour ce boîtier ?",
+    "nom": {
+      "le": "le boîtier",
+      "seul": "boîtier",
+      "un": "un boîtier",
+      "pluriel": "boîtiers",
+      "essai": "le boîtier d'essai",
+      "unEssai": "un boîtier d'essai",
+      "pronom": "il",
+      "feminin": false
+    },
+    "aideObservation": "Le capteur infrarouge envoie une lumière invisible : quand des mains la renvoient, la carte électronique ouvre l'électrovanne. Le boîtier enferme le capteur et sa carte, juste au-dessus des éclaboussures du lavabo.",
+    "lexiqueObservation": [
+      "isolant",
+      "conducteur"
+    ],
+    "forme": "creuse-fine",
+    "formeDescription": "Le boîtier est une petite coque creuse à parois fines.",
+    "formeCourte": "pour une coque à parois fines",
+    "butPrototype": "Il sert à vérifier que le capteur et sa carte y trouvent leur place.",
+    "proprietesCarte": [
+      "masseVolumique",
+      "notes.rigidite",
+      "notes.chocs",
+      "notes.eau",
+      "elec",
+      "cout"
+    ],
+    "contraintes": [
+      {
+        "id": "eclaboussures",
+        "texte": "Il reçoit des éclaboussures d'eau.",
+        "vraie": true,
+        "explication": "Vrai : il est placé au-dessus du lavabo, près du jet."
+      },
+      {
+        "id": "electronique",
+        "texte": "Il contient une carte électronique alimentée par la pile.",
+        "vraie": true,
+        "explication": "Vrai : un boîtier qui conduit l'électricité pourrait mettre la carte en court-circuit."
+      },
+      {
+        "id": "coups",
+        "texte": "Il peut recevoir des petits coups (bagues, verres, brosses).",
+        "vraie": true,
+        "explication": "Vrai : les petits chocs du quotidien ne doivent pas le fendre."
+      },
+      {
+        "id": "forme",
+        "texte": "C'est une coque creuse à parois fines.",
+        "vraie": true,
+        "explication": "Vrai : il entoure le capteur au plus près."
+      },
+      {
+        "id": "chaleur",
+        "texte": "Il est chauffé à plus de 200 °C.",
+        "vraie": false,
+        "explication": "Faux : il reste à la température de la pièce."
+      },
+      {
+        "id": "aimant",
+        "texte": "Un aimant le fait tourner.",
+        "vraie": false,
+        "explication": "Faux : le boîtier est fixe ; l'aimant tourne dans le générateur, plus loin."
+      },
+      {
+        "id": "immersion",
+        "texte": "Il baigne en permanence dans l'eau.",
+        "vraie": false,
+        "explication": "Faux : il reçoit des éclaboussures, mais il n'est pas dans le passage de l'eau."
+      }
+    ],
+    "criteres": [
+      {
+        "ref": "isolant",
+        "pourquoi": "Il enferme une carte électronique.",
+        "questionClassement": "Relis l'étape 1 : que contient le boîtier ? Un boîtier qui conduit l'électricité peut-il convenir ?",
+        "questionRetour": "Que se passe-t-il si le boîtier conduit le courant de la carte électronique ?"
+      },
+      {
+        "ref": "eau",
+        "pourquoi": "Il reçoit des éclaboussures.",
+        "questionClassement": "Relis l'étape 1 : le boîtier reçoit-il de l'eau ? Un matériau qui s'y abîme peut-il convenir ?",
+        "questionRetour": "Le boîtier est éclaboussé tous les jours : quelle note de résistance à l'eau faut-il au minimum ?"
+      },
+      {
+        "ref": "rigide",
+        "pourquoi": "Il doit garder sa forme autour du capteur."
+      },
+      {
+        "ref": "chocs",
+        "seuil": 4,
+        "pourquoi": "Il reçoit de petits coups."
+      },
+      {
+        "ref": "cout",
+        "seuil": 1,
+        "carte": {
+          "4": "Coûter très peu (€)"
+        },
+        "pourquoi": "Il est fabriqué à 10 000 exemplaires."
+      },
+      {
+        "ref": "chaleur200",
+        "pourquoi": "Piège : il reste à la température de la pièce.",
+        "questionClassement": "Relis l'étape 1 : le boîtier est-il chauffé à plus de 200 °C ? Ce critère concerne-t-il cette pièce ?"
+      },
+      {
+        "ref": "amagnetique",
+        "pourquoi": "Piège : aucun aimant ne tourne dans le boîtier.",
+        "questionClassement": "Relis l'étape 1 : un aimant agit-il sur le boîtier ? Ce critère concerne-t-il cette pièce ?"
+      }
+    ],
+    "reference": {
+      "4": {
+        "isolant": "indispensable",
+        "eau": "indispensable",
+        "rigide": "souhaitable",
+        "chocs": "souhaitable",
+        "cout": "souhaitable",
+        "chaleur200": "sans",
+        "amagnetique": "sans"
+      }
+    },
+    "formeProcedes": {
+      "serie": "injection",
+      "prototype": "impression-3d"
+    },
+    "materiauPrototype": "pla",
+    "sansProcede": {
+      "nonParceQue": "ne peut pas être fabriqué en coque à parois fines en grande série",
+      "question": "Quel procédé de grande série donne une coque à parois fines dans ce matériau ? Regarde quels procédés conviennent à chaque matériau, puis reviens au tri."
+    },
+    "reponsesAttendues": {
+      "4": [
+        "abs"
+      ]
+    },
+    "elimineAttendus": {
+      "4": [
+        "acier",
+        "inox",
+        "alu",
+        "cuivre",
+        "laiton",
+        "pla",
+        "pa6"
+      ]
+    },
+    "materiauxVisibles": {
+      "4": [
+        "acier",
+        "inox",
+        "alu",
+        "cuivre",
+        "laiton",
+        "pla",
+        "abs",
+        "pehd",
+        "pp",
+        "pmma",
+        "pa6",
+        "pom"
+      ]
+    }
+  },
+  {
+    "id": "support-robinet",
+    "systeme": "Robinet automatique",
+    "sequence": "P11 — Comment préserver une ressource essentielle : l'eau ?",
+    "quantiteSerie": 10000,
+    "piece": "Support mural",
+    "niveaux": [
+      4
+    ],
+    "objet": "robinet",
+    "entete": {
+      "classe": "Classe de 4ᵉ",
+      "sequence": "P11 — L’eau, ressource essentielle",
+      "titre": "Matériauthèque — bibliothèque de pièces",
+      "sousTitre": "Le choix du matériau : support mural (Robinet automatique)"
+    },
+    "presentation": "Le robinet est fixé au mur par un support en tôle pliée. Il porte le poids du robinet et encaisse les efforts quand on s'appuie dessus. Quel matériau choisir pour ce support ?",
+    "nom": {
+      "le": "le support",
+      "seul": "support",
+      "un": "un support",
+      "pluriel": "supports",
+      "essai": "le support d'essai",
+      "unEssai": "un support d'essai",
+      "pronom": "il",
+      "feminin": false
+    },
+    "aideObservation": "Le support relie le robinet au mur. Quand on s'appuie sur le robinet ou qu'on le cogne, c'est lui qui tient : s'il plie, le robinet penche et le joint fuit. Il est dans une pièce humide, sous les éclaboussures.",
+    "lexiqueObservation": [
+      "rigide",
+      "corrosion"
+    ],
+    "forme": "pliee",
+    "formeDescription": "Le support est une tôle pliée.",
+    "formeCourte": "pour une tôle pliée",
+    "butPrototype": "Il sert à vérifier les dimensions et les trous de fixation.",
+    "proprietesCarte": [
+      "masseVolumique",
+      "notes.rigidite",
+      "notes.corrosion",
+      "elec",
+      "cout"
+    ],
+    "contraintes": [
+      {
+        "id": "effort",
+        "texte": "Il porte le poids du robinet et les appuis de la main.",
+        "vraie": true,
+        "explication": "Vrai : s'il plie, le robinet penche et le joint fuit."
+      },
+      {
+        "id": "humidite",
+        "texte": "Il est dans une pièce humide, sous les éclaboussures.",
+        "vraie": true,
+        "explication": "Vrai : une salle d'eau est humide en permanence."
+      },
+      {
+        "id": "duree",
+        "texte": "Il doit tenir des années sans entretien.",
+        "vraie": true,
+        "explication": "Vrai : on ne démonte pas un robinet pour repeindre son support."
+      },
+      {
+        "id": "forme",
+        "texte": "C'est une tôle pliée percée de trous de fixation.",
+        "vraie": true,
+        "explication": "Vrai : une plaque pliée, vissée au mur."
+      },
+      {
+        "id": "courant",
+        "texte": "Un courant électrique le traverse.",
+        "vraie": false,
+        "explication": "Faux : le support ne fait partie d'aucun circuit électrique."
+      },
+      {
+        "id": "leger",
+        "texte": "Il doit être le plus léger possible.",
+        "vraie": false,
+        "explication": "Faux : fixé au mur, il ne se déplace jamais ; son poids ne gêne pas."
+      },
+      {
+        "id": "chaleur",
+        "texte": "Il est chauffé à plus de 200 °C.",
+        "vraie": false,
+        "explication": "Faux : il reste à la température de la pièce."
+      }
+    ],
+    "criteres": [
+      {
+        "ref": "rigide",
+        "seuil": 5,
+        "carte": {
+          "4": "Être très rigide (5/5)"
+        },
+        "pourquoi": "S'il plie, le robinet penche.",
+        "questionClassement": "Relis l'étape 1 : que porte le support ? Peut-on accepter un support qui plie ?",
+        "questionRetour": "Si le support plie un peu à chaque appui, que devient le robinet au bout d'un an ?"
+      },
+      {
+        "ref": "corrosion",
+        "pourquoi": "Il vit dans une pièce humide.",
+        "questionClassement": "Relis l'étape 1 : le support est-il dans une pièce humide, pour des années ? Un matériau qui rouille peut-il convenir ?",
+        "questionRetour": "Après des années dans une salle d'eau, que devient un métal qui rouille ?"
+      },
+      {
+        "ref": "cout",
+        "pourquoi": "Il est fabriqué à 10 000 exemplaires."
+      },
+      {
+        "ref": "elec",
+        "pourquoi": "Piège : aucun courant ne traverse le support.",
+        "questionClassement": "Relis l'étape 1 : un courant traverse-t-il le support ? Ce critère concerne-t-il cette pièce ?"
+      },
+      {
+        "ref": "leger",
+        "pourquoi": "Piège : fixé au mur, son poids ne gêne pas.",
+        "questionClassement": "Relis l'étape 1 : le support doit-il être léger ? Un support fixé au mur se déplace-t-il ?"
+      }
+    ],
+    "reference": {
+      "4": {
+        "rigide": "indispensable",
+        "corrosion": "indispensable",
+        "cout": "souhaitable",
+        "elec": "sans",
+        "leger": "sans"
+      }
+    },
+    "formeProcedes": {
+      "serie": "emboutissage",
+      "prototype": "pliage-tole"
+    },
+    "materiauPrototype": "alu",
+    "sansProcede": {
+      "nonParceQue": "ne peut pas être fabriqué en tôle pliée en grande série",
+      "question": "Quel procédé de grande série plie une tôle dans ce matériau ? Regarde quels procédés conviennent à chaque matériau, puis reviens au tri."
+    },
+    "reponsesAttendues": {
+      "4": [
+        "inox"
+      ]
+    },
+    "elimineAttendus": {
+      "4": [
+        "acier",
+        "alu",
+        "cuivre",
+        "laiton",
+        "pla",
+        "abs",
+        "pehd",
+        "pp",
+        "pmma",
+        "pa6",
+        "pom"
+      ]
+    },
+    "materiauxVisibles": {
+      "4": [
+        "acier",
+        "inox",
+        "alu",
+        "cuivre",
+        "laiton",
+        "pla",
+        "abs",
+        "pehd",
+        "pp",
+        "pmma",
+        "pa6",
+        "pom"
+      ]
+    }
+  },
+  {
+    "id": "dissipateur",
+    "systeme": "Robinet automatique",
+    "sequence": "P11 — Comment préserver une ressource essentielle : l'eau ?",
+    "quantiteSerie": 10000,
+    "piece": "Dissipateur de la carte électronique",
+    "niveaux": [
+      4
+    ],
+    "objet": "robinet",
+    "entete": {
+      "classe": "Classe de 4ᵉ",
+      "sequence": "P11 — L’eau, ressource essentielle",
+      "titre": "Matériauthèque — bibliothèque de pièces",
+      "sousTitre": "Le choix du matériau : dissipateur de la carte électronique (Robinet automatique)"
+    },
+    "presentation": "La carte électronique du robinet chauffe quand elle commande l'électrovanne. Un dissipateur à ailettes, posé sur son composant le plus chaud, évacue cette chaleur. Quel matériau choisir pour ce dissipateur ?",
+    "nom": {
+      "le": "le dissipateur",
+      "seul": "dissipateur",
+      "un": "un dissipateur",
+      "pluriel": "dissipateurs",
+      "essai": "le dissipateur d'essai",
+      "unEssai": "un dissipateur d'essai",
+      "pronom": "il",
+      "feminin": false
+    },
+    "aideObservation": "Le composant qui commande l'électrovanne chauffe. Le dissipateur, posé dessus, prend sa chaleur et la rend à l'air par ses ailettes. Il est fixé sur la carte électronique (en vert), dans le boîtier : un dissipateur lourd tirerait sur ses soudures.",
+    "lexiqueObservation": [
+      "conducteur",
+      "isolant",
+      "masse volumique"
+    ],
+    "forme": "profile",
+    "formePrototype": "volume-simple",
+    "formeDescription": "Le dissipateur est un profilé à ailettes, coupé à la longueur.",
+    "formeCourte": "pour un profilé à ailettes",
+    "butPrototype": "Il sert à vérifier que le dissipateur tient sur le composant.",
+    "proprietesCarte": [
+      "masseVolumique",
+      "therm",
+      "elec",
+      "notes.corrosion",
+      "cout"
+    ],
+    "contraintes": [
+      {
+        "id": "chaleur",
+        "texte": "Il reçoit la chaleur d'un composant électronique.",
+        "vraie": true,
+        "explication": "Vrai : il est posé sur le composant qui chauffe."
+      },
+      {
+        "id": "air",
+        "texte": "Il rend cette chaleur à l'air par ses ailettes.",
+        "vraie": true,
+        "explication": "Vrai : plus la chaleur le traverse facilement, mieux il refroidit."
+      },
+      {
+        "id": "carte",
+        "texte": "Il est fixé sur la carte électronique.",
+        "vraie": true,
+        "explication": "Vrai : s'il est lourd, il tire sur les soudures de la carte."
+      },
+      {
+        "id": "forme",
+        "texte": "C'est un profilé à ailettes, coupé à la longueur.",
+        "vraie": true,
+        "explication": "Vrai : une longue barre à ailettes, découpée en morceaux."
+      },
+      {
+        "id": "deux-cents",
+        "texte": "Il est chauffé à plus de 200 °C.",
+        "vraie": false,
+        "explication": "Faux : le composant chauffe, mais bien moins : une centaine de degrés au plus."
+      },
+      {
+        "id": "courant",
+        "texte": "Le courant de la carte doit le traverser.",
+        "vraie": false,
+        "explication": "Faux : le courant passe dans le composant, pas dans le dissipateur."
+      },
+      {
+        "id": "immersion",
+        "texte": "Il baigne dans l'eau.",
+        "vraie": false,
+        "explication": "Faux : il est enfermé dans le boîtier, à l'abri."
+      }
+    ],
+    "criteres": [
+      {
+        "ref": "conduitChaleur",
+        "pourquoi": "Il doit faire passer la chaleur vers l'air.",
+        "questionClassement": "Relis l'étape 1 : à quoi sert le dissipateur ? Un matériau qui garde la chaleur peut-il convenir ?",
+        "questionRetour": "Si la chaleur ne traverse pas le dissipateur, où reste-t-elle ?"
+      },
+      {
+        "ref": "leger",
+        "seuil": 3,
+        "pourquoi": "Il est fixé sur la carte.",
+        "questionClassement": "Relis l'étape 1 : où est fixé le dissipateur ? Peut-il être lourd ?",
+        "questionRetour": "Un dissipateur lourd posé sur la carte : que deviennent les soudures ? Compare les masses volumiques."
+      },
+      {
+        "ref": "cout",
+        "pourquoi": "Il est fabriqué à 10 000 exemplaires."
+      },
+      {
+        "ref": "corrosion",
+        "pourquoi": "Il vit dans le boîtier d'un robinet."
+      },
+      {
+        "ref": "elec",
+        "pourquoi": "Piège : le courant ne passe pas dans le dissipateur.",
+        "questionClassement": "Relis l'étape 1 : le courant de la carte doit-il traverser le dissipateur ? Ce critère concerne-t-il cette pièce ?"
+      },
+      {
+        "ref": "chaleur200",
+        "pourquoi": "Piège : le composant chauffe bien moins.",
+        "questionClassement": "Relis l'étape 1 : le dissipateur est-il chauffé à plus de 200 °C ? Ce critère concerne-t-il cette pièce ?"
+      }
+    ],
+    "reference": {
+      "4": {
+        "conduitChaleur": "indispensable",
+        "leger": "indispensable",
+        "cout": "souhaitable",
+        "corrosion": "souhaitable",
+        "elec": "sans",
+        "chaleur200": "sans"
+      }
+    },
+    "formeProcedes": {
+      "serie": "extrusion",
+      "prototype": "usinage"
+    },
+    "materiauPrototype": "alu",
+    "sansProcede": {
+      "nonParceQue": "ne peut pas être fabriqué en profilé à ailettes en grande série",
+      "question": "Quel procédé de grande série donne un profilé à ailettes dans ce matériau ? Regarde quels procédés conviennent à chaque matériau, puis reviens au tri."
+    },
+    "reponsesAttendues": {
+      "4": [
+        "alu"
+      ]
+    },
+    "elimineAttendus": {
+      "4": [
+        "acier",
+        "inox",
+        "cuivre",
+        "laiton",
+        "pla",
+        "abs",
+        "pehd",
+        "pp",
+        "pmma",
+        "pa6",
+        "pom"
+      ]
+    },
+    "materiauxVisibles": {
+      "4": [
+        "acier",
+        "inox",
+        "alu",
+        "cuivre",
+        "laiton",
+        "pla",
+        "abs",
+        "pehd",
+        "pp",
+        "pmma",
+        "pa6",
+        "pom"
+      ]
+    }
+  },
+  {
+    "id": "coque-robot",
+    "systeme": "Robot explorateur RS-1",
+    "sequence": "P11 — Le robot explorateur de Robot Scan (évaluation n°1)",
+    "quantiteSerie": 300,
+    "piece": "Coque du robot",
+    "niveaux": [
+      4
+    ],
+    "objet": "robot",
+    "entete": {
+      "classe": "Classe de 4ᵉ",
+      "sequence": "P11 — L’eau, ressource essentielle",
+      "titre": "Matériauthèque — bibliothèque de pièces",
+      "sousTitre": "Le choix du matériau : coque du robot (Robot explorateur RS-1)"
+    },
+    "presentation": "La coque recouvre le robot RS-1 : elle protège la batterie et l'électronique dans les canalisations humides. Robot Scan fabriquera 300 robots. Quel matériau choisir pour cette coque ?",
+    "nom": {
+      "le": "la coque",
+      "seul": "coque",
+      "un": "une coque",
+      "pluriel": "coques",
+      "essai": "la coque d'essai",
+      "unEssai": "une coque d'essai",
+      "pronom": "elle",
+      "feminin": true
+    },
+    "aideObservation": "Relis le cahier des charges du robot (évaluation n°1) : ligne ⑤, humidité, écoulements d'eau et légers chocs ; ligne ⑦, de −10 °C à 80 °C ; ligne ④, au moins 30 minutes d'autonomie : chaque gramme compte.",
+    "lexiqueObservation": [
+      "léger",
+      "masse volumique"
+    ],
+    "forme": "coque",
+    "formePrototype": "creuse-fine",
+    "formeDescription": "La coque est une forme creuse, en un seul morceau.",
+    "formeCourte": "pour une coque",
+    "butPrototype": "Elle sert à vérifier que la batterie et la carte trouvent leur place.",
+    "proprietesCarte": [
+      "masseVolumique",
+      "notes.chocs",
+      "notes.eau",
+      "tempMax",
+      "cout"
+    ],
+    "contraintes": [
+      {
+        "id": "humidite",
+        "texte": "Elle reçoit de l'humidité et de faibles écoulements d'eau (ligne ⑤).",
+        "vraie": true,
+        "explication": "Vrai : le robot roule dans des canalisations où l'eau fuit."
+      },
+      {
+        "id": "chocs",
+        "texte": "Elle reçoit de légers chocs contre les parois (ligne ⑤).",
+        "vraie": true,
+        "explication": "Vrai : la canalisation est étroite, le robot la heurte."
+      },
+      {
+        "id": "temperature",
+        "texte": "Elle doit supporter de −10 °C à 80 °C (ligne ⑦).",
+        "vraie": true,
+        "explication": "Vrai : c'est écrit dans le cahier des charges ; 80 °C est le maximum à tenir."
+      },
+      {
+        "id": "masse",
+        "texte": "Chaque gramme compte pour l'autonomie de la batterie (ligne ④).",
+        "vraie": true,
+        "explication": "Vrai : un robot plus lourd vide sa batterie plus vite."
+      },
+      {
+        "id": "deux-cents",
+        "texte": "Elle est chauffée à plus de 200 °C.",
+        "vraie": false,
+        "explication": "Faux : le cahier des charges s'arrête à 80 °C."
+      },
+      {
+        "id": "courant",
+        "texte": "Le courant de la batterie la traverse.",
+        "vraie": false,
+        "explication": "Faux : le courant passe dans les fils, la coque les protège."
+      },
+      {
+        "id": "immersion",
+        "texte": "Elle reste plongée sous l'eau pendant des heures.",
+        "vraie": false,
+        "explication": "Faux : le robot reçoit des écoulements, il ne plonge pas (indice IP64)."
+      }
+    ],
+    "criteres": [
+      {
+        "ref": "eau",
+        "pourquoi": "Humidité et écoulements (ligne ⑤).",
+        "questionClassement": "Relis l'étape 1 : la coque reçoit-elle de l'eau ? Un matériau qui s'y abîme peut-il convenir ?",
+        "questionRetour": "Relis la ligne ⑤ : la coque reçoit-elle de l'eau ? Quelle note de résistance à l'eau faut-il ?"
+      },
+      {
+        "ref": "chocs",
+        "seuil": 4,
+        "pourquoi": "Légers chocs contre les parois (ligne ⑤).",
+        "questionClassement": "Relis l'étape 1 : la coque reçoit-elle des chocs ? Peut-on accepter une coque qui se fend ?",
+        "questionRetour": "La coque heurte les parois de la canalisation : quelle note de résistance aux chocs faut-il ?"
+      },
+      {
+        "ref": "tient80",
+        "pourquoi": "Jusqu'à 80 °C (ligne ⑦).",
+        "questionClassement": "Relis l'étape 1 : jusqu'à quelle température la coque doit-elle tenir ? Peut-on s'en passer ?",
+        "questionRetour": "Relis la ligne ⑦ : quelle température la coque doit-elle supporter ? Compare avec la température maximale du matériau."
+      },
+      {
+        "ref": "leger",
+        "pourquoi": "L'autonomie de la batterie (ligne ④).",
+        "questionClassement": "Relis l'étape 1 : pourquoi chaque gramme compte-t-il ? Peut-on accepter une coque lourde ?",
+        "questionRetour": "Un robot plus lourd vide sa batterie plus vite : compare les masses volumiques."
+      },
+      {
+        "ref": "cout",
+        "pourquoi": "Prix maximal du robot (ligne ⑨)."
+      },
+      {
+        "ref": "recyclable",
+        "pourquoi": "Le robot sera recyclé en fin de vie."
+      },
+      {
+        "ref": "chaleur200",
+        "pourquoi": "Piège : le cahier des charges s'arrête à 80 °C.",
+        "questionClassement": "Relis l'étape 1 : la coque doit-elle tenir plus de 200 °C ? Ce critère concerne-t-il cette pièce ?"
+      },
+      {
+        "ref": "elec",
+        "pourquoi": "Piège : le courant passe dans les fils.",
+        "questionClassement": "Relis l'étape 1 : un courant traverse-t-il la coque ? Ce critère concerne-t-il cette pièce ?"
+      }
+    ],
+    "reference": {
+      "4": {
+        "eau": "indispensable",
+        "chocs": "indispensable",
+        "tient80": "indispensable",
+        "leger": "indispensable",
+        "cout": "souhaitable",
+        "recyclable": "souhaitable",
+        "chaleur200": "sans",
+        "elec": "sans"
+      }
+    },
+    "formeProcedes": {
+      "serie": "thermoformage",
+      "prototype": "impression-3d"
+    },
+    "materiauPrototype": "pla",
+    "sansProcede": {
+      "nonParceQue": "ne peut pas être fabriqué en coque pour 300 robots",
+      "question": "Quel procédé de petite série donne une coque dans ce matériau ? Regarde quels procédés conviennent à chaque matériau, puis reviens au tri."
+    },
+    "reponsesAttendues": {
+      "4": [
+        "pehd"
+      ]
+    },
+    "elimineAttendus": {
+      "4": [
+        "acier",
+        "inox",
+        "alu",
+        "cuivre",
+        "laiton",
+        "pla",
+        "abs",
+        "pp",
+        "pmma",
+        "pa6",
+        "pom"
+      ]
+    },
+    "materiauxVisibles": {
+      "4": [
+        "acier",
+        "inox",
+        "alu",
+        "cuivre",
+        "laiton",
+        "pla",
+        "abs",
+        "pehd",
+        "pp",
+        "pmma",
+        "pa6",
+        "pom"
+      ]
+    }
+  },
+  {
+    "id": "chassis-robot",
+    "systeme": "Robot explorateur RS-1",
+    "sequence": "P11 — Le robot explorateur de Robot Scan (évaluation n°1)",
+    "quantiteSerie": 300,
+    "piece": "Châssis",
+    "niveaux": [
+      4
+    ],
+    "objet": "robot",
+    "entete": {
+      "classe": "Classe de 4ᵉ",
+      "sequence": "P11 — L’eau, ressource essentielle",
+      "titre": "Matériauthèque — bibliothèque de pièces",
+      "sousTitre": "Le choix du matériau : châssis (Robot explorateur RS-1)"
+    },
+    "presentation": "Le châssis est la plaque pliée qui porte les moteurs, la batterie et les axes des roues du robot RS-1. Robot Scan fabriquera 300 robots. Quel matériau choisir pour ce châssis ?",
+    "nom": {
+      "le": "le châssis",
+      "seul": "châssis",
+      "un": "un châssis",
+      "pluriel": "châssis",
+      "essai": "le châssis d'essai",
+      "unEssai": "un châssis d'essai",
+      "pronom": "il",
+      "feminin": false
+    },
+    "aideObservation": "Le châssis porte tout le robot : s'il plie, les roues ne sont plus alignées. Relis le cahier des charges : humidité (ligne ⑤), autonomie de la batterie (ligne ④), robot solide et démontable (ligne ⑨).",
+    "lexiqueObservation": [
+      "rigide",
+      "corrosion",
+      "masse volumique"
+    ],
+    "forme": "pliee",
+    "formeDescription": "Le châssis est une tôle pliée et percée.",
+    "formeCourte": "pour une tôle pliée",
+    "butPrototype": "Il sert à vérifier les perçages et l'emplacement des moteurs.",
+    "proprietesCarte": [
+      "masseVolumique",
+      "notes.rigidite",
+      "notes.corrosion",
+      "cout"
+    ],
+    "contraintes": [
+      {
+        "id": "porte",
+        "texte": "Il porte les moteurs, la batterie et les axes des roues.",
+        "vraie": true,
+        "explication": "Vrai : s'il plie, les roues ne sont plus alignées."
+      },
+      {
+        "id": "humidite",
+        "texte": "Il roule dans des canalisations humides (ligne ⑤).",
+        "vraie": true,
+        "explication": "Vrai : il ne doit pas rouiller."
+      },
+      {
+        "id": "masse",
+        "texte": "Chaque gramme compte pour l'autonomie de la batterie (ligne ④).",
+        "vraie": true,
+        "explication": "Vrai : c'est la plus grande pièce du robot."
+      },
+      {
+        "id": "forme",
+        "texte": "C'est une tôle pliée et percée.",
+        "vraie": true,
+        "explication": "Vrai : une plaque découpée, pliée sur les bords, percée pour les vis."
+      },
+      {
+        "id": "courant",
+        "texte": "Le courant de la batterie le traverse.",
+        "vraie": false,
+        "explication": "Faux : le courant passe dans les fils."
+      },
+      {
+        "id": "deux-cents",
+        "texte": "Il est chauffé à plus de 200 °C.",
+        "vraie": false,
+        "explication": "Faux : le cahier des charges s'arrête à 80 °C."
+      }
+    ],
+    "criteres": [
+      {
+        "ref": "rigide",
+        "seuil": 4,
+        "pourquoi": "Il porte tout le robot.",
+        "questionClassement": "Relis l'étape 1 : que porte le châssis ? Peut-on accepter un châssis qui plie ?",
+        "questionRetour": "Si le châssis plie sous la batterie, que deviennent les roues ?"
+      },
+      {
+        "ref": "corrosion",
+        "pourquoi": "Canalisations humides (ligne ⑤).",
+        "questionClassement": "Relis l'étape 1 : le châssis vit-il dans l'humidité ? Un matériau qui rouille peut-il convenir ?",
+        "questionRetour": "Après des mois dans des canalisations humides, que devient un métal qui rouille ?"
+      },
+      {
+        "ref": "leger",
+        "seuil": 3,
+        "pourquoi": "L'autonomie de la batterie (ligne ④).",
+        "questionClassement": "Relis l'étape 1 : pourquoi chaque gramme compte-t-il ? Peut-on accepter un châssis lourd ?",
+        "questionRetour": "C'est la plus grande pièce du robot : compare les masses volumiques."
+      },
+      {
+        "ref": "cout",
+        "pourquoi": "Prix maximal du robot (ligne ⑨)."
+      },
+      {
+        "ref": "elec",
+        "pourquoi": "Piège : le courant passe dans les fils.",
+        "questionClassement": "Relis l'étape 1 : un courant traverse-t-il le châssis ? Ce critère concerne-t-il cette pièce ?"
+      },
+      {
+        "ref": "chaleur200",
+        "pourquoi": "Piège : le cahier des charges s'arrête à 80 °C.",
+        "questionClassement": "Relis l'étape 1 : le châssis doit-il tenir plus de 200 °C ? Ce critère concerne-t-il cette pièce ?"
+      }
+    ],
+    "reference": {
+      "4": {
+        "rigide": "indispensable",
+        "corrosion": "indispensable",
+        "leger": "indispensable",
+        "cout": "souhaitable",
+        "elec": "sans",
+        "chaleur200": "sans"
+      }
+    },
+    "formeProcedes": {
+      "serie": "pliage-tole",
+      "prototype": "pliage-tole"
+    },
+    "materiauPrototype": "alu",
+    "sansProcede": {
+      "nonParceQue": "ne se plie pas en tôle : impossible d'obtenir le châssis",
+      "question": "Ce matériau peut-il être plié en tôle ? Regarde quels procédés conviennent à chaque matériau, puis reviens au tri."
+    },
+    "reponsesAttendues": {
+      "4": [
+        "alu"
+      ]
+    },
+    "elimineAttendus": {
+      "4": [
+        "acier",
+        "inox",
+        "cuivre",
+        "laiton",
+        "pla",
+        "abs",
+        "pehd",
+        "pp",
+        "pmma",
+        "pa6"
+      ]
+    },
+    "materiauxVisibles": {
+      "4": [
+        "acier",
+        "inox",
+        "alu",
+        "cuivre",
+        "laiton",
+        "pla",
+        "abs",
+        "pehd",
+        "pp",
+        "pmma",
+        "pa6",
+        "pom"
+      ]
+    }
+  },
+  {
+    "id": "axe-robot",
+    "systeme": "Robot explorateur RS-1",
+    "sequence": "P11 — Le robot explorateur de Robot Scan (évaluation n°1)",
+    "quantiteSerie": 300,
+    "piece": "Axe des roues",
+    "niveaux": [
+      4
+    ],
+    "objet": "robot",
+    "entete": {
+      "classe": "Classe de 4ᵉ",
+      "sequence": "P11 — L’eau, ressource essentielle",
+      "titre": "Matériauthèque — bibliothèque de pièces",
+      "sousTitre": "Le choix du matériau : axe des roues (Robot explorateur RS-1)"
+    },
+    "presentation": "Chaque roue du robot RS-1 tourne sur un axe : une tige qui porte le poids du robot et frotte dans ses paliers. Robot Scan fabriquera 300 robots. Quel matériau choisir pour ces axes ?",
+    "nom": {
+      "le": "l'axe",
+      "seul": "axe",
+      "un": "un axe",
+      "pluriel": "axes",
+      "essai": "l'axe d'essai",
+      "unEssai": "un axe d'essai",
+      "pronom": "il",
+      "feminin": false
+    },
+    "aideObservation": "L'axe traverse la roue : il porte le poids du robot et tourne sans arrêt dans ses paliers. Un axe qui plie fait frotter la roue ; un axe usé prend du jeu. Il roule dans des canalisations humides (ligne ⑤).",
+    "lexiqueObservation": [
+      "rigide",
+      "usure",
+      "corrosion"
+    ],
+    "forme": "volume-simple",
+    "formeDescription": "L'axe est une petite tige cylindrique.",
+    "formeCourte": "pour une tige cylindrique",
+    "butPrototype": "Il sert à vérifier le montage de la roue.",
+    "proprietesCarte": [
+      "masseVolumique",
+      "notes.rigidite",
+      "notes.usure",
+      "notes.corrosion",
+      "cout"
+    ],
+    "contraintes": [
+      {
+        "id": "poids",
+        "texte": "Il porte le poids du robot.",
+        "vraie": true,
+        "explication": "Vrai : le robot (3,2 kg) repose sur ses axes."
+      },
+      {
+        "id": "frottement",
+        "texte": "Il tourne et frotte sans arrêt dans ses paliers.",
+        "vraie": true,
+        "explication": "Vrai : il s'use à chaque tour de roue."
+      },
+      {
+        "id": "humidite",
+        "texte": "Il roule dans des canalisations humides (ligne ⑤).",
+        "vraie": true,
+        "explication": "Vrai : il ne doit pas rouiller, sinon il grippe."
+      },
+      {
+        "id": "mince",
+        "texte": "C'est une tige fine : elle ne doit pas plier.",
+        "vraie": true,
+        "explication": "Vrai : un axe qui plie fait frotter la roue contre le châssis."
+      },
+      {
+        "id": "leger",
+        "texte": "Il doit être le plus léger possible.",
+        "vraie": false,
+        "explication": "Faux : l'axe est une toute petite pièce ; sa solidité compte bien plus que son poids."
+      },
+      {
+        "id": "courant",
+        "texte": "Le courant de la batterie le traverse.",
+        "vraie": false,
+        "explication": "Faux : le courant passe dans les fils et les moteurs."
+      }
+    ],
+    "criteres": [
+      {
+        "ref": "rigide",
+        "seuil": 5,
+        "carte": {
+          "4": "Être très rigide (5/5)"
+        },
+        "pourquoi": "Une tige fine qui porte le robot.",
+        "questionClassement": "Relis l'étape 1 : l'axe peut-il plier ? Que devient la roue ?",
+        "questionRetour": "Une tige fine porte le robot : que se passe-t-il si elle plie un peu ?"
+      },
+      {
+        "ref": "usure",
+        "pourquoi": "Il frotte dans ses paliers.",
+        "questionClassement": "Relis l'étape 1 : l'axe frotte-t-il ? Peut-on accepter un axe qui s'use vite ?",
+        "questionRetour": "Combien de tours fait une roue pendant une inspection ? Que subit l'axe ?"
+      },
+      {
+        "ref": "corrosion",
+        "pourquoi": "Canalisations humides (ligne ⑤).",
+        "questionClassement": "Relis l'étape 1 : l'axe vit-il dans l'humidité ? Un matériau qui rouille peut-il convenir ?",
+        "questionRetour": "Un axe rouillé tourne-t-il encore librement ?"
+      },
+      {
+        "ref": "cout",
+        "pourquoi": "Prix maximal du robot (ligne ⑨)."
+      },
+      {
+        "ref": "leger",
+        "pourquoi": "Piège : l'axe est une toute petite pièce.",
+        "questionClassement": "Relis l'étape 1 : pour une si petite pièce, le poids compte-t-il plus que la solidité ?"
+      },
+      {
+        "ref": "elec",
+        "pourquoi": "Piège : le courant passe dans les fils.",
+        "questionClassement": "Relis l'étape 1 : un courant traverse-t-il l'axe ? Ce critère concerne-t-il cette pièce ?"
+      }
+    ],
+    "reference": {
+      "4": {
+        "rigide": "indispensable",
+        "usure": "indispensable",
+        "corrosion": "indispensable",
+        "cout": "souhaitable",
+        "leger": "sans",
+        "elec": "sans"
+      }
+    },
+    "formeProcedes": {
+      "serie": "usinage",
+      "prototype": "usinage"
+    },
+    "materiauPrototype": "alu",
+    "sansProcede": {
+      "nonParceQue": "ne peut pas être usiné en tige pour 300 robots",
+      "question": "Quel procédé de petite série taille une tige dans ce matériau ? Regarde quels procédés conviennent à chaque matériau, puis reviens au tri."
+    },
+    "reponsesAttendues": {
+      "4": [
+        "inox"
+      ]
+    },
+    "elimineAttendus": {
+      "4": [
+        "acier",
+        "alu",
+        "cuivre",
+        "laiton",
+        "pla",
+        "abs",
+        "pehd",
+        "pp",
+        "pmma",
+        "pa6",
+        "pom"
+      ]
+    },
+    "materiauxVisibles": {
+      "4": [
+        "acier",
+        "inox",
+        "alu",
+        "cuivre",
+        "laiton",
+        "pla",
+        "abs",
+        "pehd",
+        "pp",
+        "pmma",
+        "pa6",
+        "pom"
+      ]
+    }
+  },
+  {
+    "id": "jante-robot",
+    "systeme": "Robot explorateur RS-1",
+    "sequence": "P11 — Le robot explorateur de Robot Scan (évaluation n°1)",
+    "quantiteSerie": 300,
+    "piece": "Jante des roues",
+    "niveaux": [
+      4
+    ],
+    "objet": "robot",
+    "entete": {
+      "classe": "Classe de 4ᵉ",
+      "sequence": "P11 — L’eau, ressource essentielle",
+      "titre": "Matériauthèque — bibliothèque de pièces",
+      "sousTitre": "Le choix du matériau : jante des roues (Robot explorateur RS-1)"
+    },
+    "presentation": "La jante est la partie rigide de la roue, sur laquelle on monte le pneu. Elle tourne autour de l'axe et roule dans l'eau des canalisations. Robot Scan fabriquera 300 robots. Quel matériau choisir pour les jantes ?",
+    "nom": {
+      "le": "la jante",
+      "seul": "jante",
+      "un": "une jante",
+      "pluriel": "jantes",
+      "essai": "la jante d'essai",
+      "unEssai": "une jante d'essai",
+      "pronom": "elle",
+      "feminin": true
+    },
+    "aideObservation": "La jante porte le pneu et tourne sur l'axe : son trou central frotte à chaque tour. Elle roule dans l'eau des canalisations et cogne les obstacles. Quatre jantes, c'est du poids pour la batterie (ligne ④).",
+    "lexiqueObservation": [
+      "usure",
+      "léger",
+      "masse volumique"
+    ],
+    "forme": "volume-simple",
+    "formeDescription": "La jante est un disque épais, percé au centre.",
+    "formeCourte": "pour un disque percé",
+    "butPrototype": "Elle sert à vérifier le montage du pneu et de l'axe.",
+    "proprietesCarte": [
+      "masseVolumique",
+      "notes.usure",
+      "notes.eau",
+      "notes.chocs",
+      "cout"
+    ],
+    "contraintes": [
+      {
+        "id": "frottement",
+        "texte": "Son trou central frotte sur l'axe à chaque tour.",
+        "vraie": true,
+        "explication": "Vrai : il s'use si le matériau résiste mal à l'usure."
+      },
+      {
+        "id": "eau",
+        "texte": "Elle roule dans l'eau des canalisations.",
+        "vraie": true,
+        "explication": "Vrai : elle est mouillée pendant toute l'inspection."
+      },
+      {
+        "id": "chocs",
+        "texte": "Elle cogne les obstacles du fond de la canalisation.",
+        "vraie": true,
+        "explication": "Vrai : petits chocs répétés (ligne ⑤)."
+      },
+      {
+        "id": "masse",
+        "texte": "Quatre jantes, c'est du poids pour la batterie (ligne ④).",
+        "vraie": true,
+        "explication": "Vrai : un robot plus lourd vide sa batterie plus vite."
+      },
+      {
+        "id": "courant",
+        "texte": "Le courant de la batterie la traverse.",
+        "vraie": false,
+        "explication": "Faux : le courant passe dans les fils et les moteurs."
+      },
+      {
+        "id": "deux-cents",
+        "texte": "Elle est chauffée à plus de 200 °C.",
+        "vraie": false,
+        "explication": "Faux : le cahier des charges s'arrête à 80 °C."
+      }
+    ],
+    "criteres": [
+      {
+        "ref": "usure",
+        "pourquoi": "Son trou central frotte sur l'axe.",
+        "questionClassement": "Relis l'étape 1 : la jante frotte-t-elle ? Peut-on accepter qu'elle s'use vite ?",
+        "questionRetour": "Que devient le trou de la jante après des milliers de tours ?"
+      },
+      {
+        "ref": "eau",
+        "pourquoi": "Elle roule dans l'eau.",
+        "questionClassement": "Relis l'étape 1 : la jante est-elle dans l'eau ? Un matériau qui s'y abîme peut-il convenir ?",
+        "questionRetour": "La jante est mouillée pendant toute l'inspection : quelle note de résistance à l'eau faut-il ?"
+      },
+      {
+        "ref": "chocs",
+        "seuil": 3,
+        "pourquoi": "Elle cogne les obstacles.",
+        "questionClassement": "Relis l'étape 1 : la jante reçoit-elle des chocs ? Peut-on accepter qu'elle se fende ?",
+        "questionRetour": "La jante cogne le fond de la canalisation : quelle note de résistance aux chocs faut-il ?"
+      },
+      {
+        "ref": "leger",
+        "pourquoi": "Quatre jantes à porter (ligne ④).",
+        "questionClassement": "Relis l'étape 1 : pourquoi le poids des jantes compte-t-il ?",
+        "questionRetour": "Quatre jantes lourdes : que devient l'autonomie ? Compare les masses volumiques."
+      },
+      {
+        "ref": "cout",
+        "pourquoi": "Prix maximal du robot (ligne ⑨)."
+      },
+      {
+        "ref": "elec",
+        "pourquoi": "Piège : le courant passe dans les fils.",
+        "questionClassement": "Relis l'étape 1 : un courant traverse-t-il la jante ? Ce critère concerne-t-il cette pièce ?"
+      },
+      {
+        "ref": "chaleur200",
+        "pourquoi": "Piège : le cahier des charges s'arrête à 80 °C.",
+        "questionClassement": "Relis l'étape 1 : la jante doit-elle tenir plus de 200 °C ? Ce critère concerne-t-il cette pièce ?"
+      }
+    ],
+    "reference": {
+      "4": {
+        "usure": "indispensable",
+        "eau": "indispensable",
+        "chocs": "indispensable",
+        "leger": "indispensable",
+        "cout": "souhaitable",
+        "elec": "sans",
+        "chaleur200": "sans"
+      }
+    },
+    "formeProcedes": {
+      "serie": "usinage",
+      "prototype": "impression-3d"
+    },
+    "materiauPrototype": "pla",
+    "sansProcede": {
+      "nonParceQue": "ne peut pas être usiné en disque pour 300 robots",
+      "question": "Quel procédé de petite série taille un disque dans ce matériau ? Regarde quels procédés conviennent à chaque matériau, puis reviens au tri."
+    },
+    "reponsesAttendues": {
+      "4": [
+        "pom"
+      ]
+    },
+    "elimineAttendus": {
+      "4": [
+        "acier",
+        "inox",
+        "alu",
+        "cuivre",
+        "laiton",
+        "pla",
+        "abs",
+        "pehd",
+        "pp",
+        "pmma",
+        "pa6"
+      ]
+    },
+    "materiauxVisibles": {
+      "4": [
+        "acier",
+        "inox",
+        "alu",
+        "cuivre",
+        "laiton",
+        "pla",
+        "abs",
+        "pehd",
+        "pp",
+        "pmma",
+        "pa6",
+        "pom"
+      ]
+    }
   }
 ]
