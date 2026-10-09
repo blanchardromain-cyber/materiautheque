@@ -1,6 +1,6 @@
 // Génère RELECTURE.md à partir des données : node outils/genere-relecture.mjs
 import { readFileSync, writeFileSync } from "node:fs";
-import { evaluer, classementReference, criteresDuNiveau, lireChamp, formaterValeur, scenarioPiece, avecCatalogue, usageRequis } from "../app/moteur.js";
+import { evaluer, classementReference, criteresDuNiveau, lireChamp, formaterValeur, scenarioPiece, avecCatalogue, usageRequis, verifierChoix } from "../app/moteur.js";
 
 const racine = new URL("../", import.meta.url);
 const lire = (f) => JSON.parse(readFileSync(new URL(`data/${f}`, racine), "utf8"));
@@ -50,11 +50,21 @@ for (const s of unites) {
     L.push(`### Niveau ${n}e`, "", "| Critère (carte élève) | Statut de référence | Règle | Poids |", "|---|---|---|---|");
     for (const c of criteresDuNiveau(s, n))
       L.push(`| ${c.carte[n]} | ${libelle[ref[c.id]]} | \`${c.regle.champ} ${c.regle.op} ${JSON.stringify(c.regle.valeur)}\` | ${s.poids?.[n]?.[c.id] ?? (ref[c.id] === "souhaitable" ? 1 : "")} |`);
-    L.push("", "| Matériau | Verdict calculé | Score | Raison (éliminé) ou ce que l'on perd | D'accord ? |", "|---|---|---|---|---|");
-    for (const r of evaluer(s, materiaux, n, ref, s.poids?.[n] || {})) {
+    // Score = critères souhaitables respectés, sur le nombre de critères souhaitables (pondérés en 3e).
+    const poids = s.poids?.[n] || {};
+    const total = criteresDuNiveau(s, n).filter((c) => ref[c.id] === "souhaitable").reduce((t, c) => t + (poids[c.id] || 1), 0);
+    L.push("", "| Matériau | Verdict calculé | Critères souhaitables respectés | Raison (éliminé) ou ce que l'on perd | D'accord ? |", "|---|---|---|---|---|");
+    const res = evaluer(s, materiaux, n, ref, poids);
+    const enLice = res.filter((r) => !r.elimine);
+    const refs = res.filter((r) => r.verdict === "reference");
+    for (const r of res) {
       const m = materiaux.find((x) => x.id === r.id);
       const motifs = (r.elimine ? r.raisons : r.pertes).map((x) => x.texte).join(" ; ") || "—";
-      L.push(`| ${m.nom[n]} | ${verdictTexte[r.verdict]} | ${r.elimine ? "" : r.score} | ${motifs} |  |`);
+      const verdict = r.verdict !== "reference" ? verdictTexte[r.verdict]
+        : enLice.length === 1 ? "Seul matériau en lice" : refs.length > 1 ? "Choix de référence (à égalité)" : verdictTexte.reference;
+      const score = r.elimine ? "" : total ? `${r.score} / ${total}` : "— (aucun critère souhaitable)";
+      const fab = r.elimine || verifierChoix(s, materiaux, n, r.id, procedes).ok ? "" : " — refusé : pas de procédé possible";
+      L.push(`| ${m.nom[n]} | ${verdict}${fab} | ${score} | ${motifs} |  |`);
     }
     L.push("");
   }
