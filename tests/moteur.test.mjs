@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import {
   testerRegle, evaluer, verifierChoix, procedesCompatibles, classementReference, formaterValeur,
-  verifierClassement, verifierCoherence, verdictFinal, usageRequis, convientA,
+  verifierClassement, verifierCoherence, verdictFinal, usageRequis, convientA, resoudreCriteres, avecCatalogue,
 } from "../app/moteur.js";
 
 const lire = (f) => JSON.parse(readFileSync(new URL(`../data/${f}`, import.meta.url), "utf8"));
@@ -267,4 +267,29 @@ test("verifierChoix en petite série : POM refusé pour une tôle pliée, alumin
   const sc = { ...turbine, forme: "pliee", quantiteSerie: 300, reference: { 4: {} } };
   assert.equal(verifierChoix(sc, materiaux, 4, "pom", procedes).violations.some((v) => v.critere === "procede"), true);
   assert.equal(verifierChoix(sc, materiaux, 4, "alu", procedes).ok, true);
+});
+
+const catalogue = lire("criteres.json");
+
+test("catalogue : une entrée sans ref est gardée telle quelle (turbine inchangée)", () => {
+  assert.deepEqual(resoudreCriteres(turbine, catalogue).criteres, turbine.criteres);
+});
+
+test("catalogue : ref complétée, seuil reporté dans la règle et la carte, textes propres prioritaires", () => {
+  const fiche = { criteres: [{ ref: "leger", seuil: 3, pourquoi: "Il est fixé sur la carte." }, { ref: "rigide", seuil: 5, carte: { 4: "Être très rigide (5/5)" } }] };
+  const [leger, rigide] = resoudreCriteres(fiche, catalogue).criteres;
+  assert.equal(leger.id, "leger");
+  assert.equal(leger.regle.valeur, 3);
+  assert.equal(leger.carte["4"], "Être léger (3 g/cm³ au plus)");
+  assert.equal(leger.pourquoi, "Il est fixé sur la carte.");
+  assert.equal(catalogue.find((c) => c.id === "leger").regle.valeur, 2, "le catalogue n'est pas modifié");
+  assert.equal(rigide.regle.valeur, 5);
+  assert.equal(rigide.carte["4"], "Être très rigide (5/5)");
+  assert.throws(() => resoudreCriteres({ criteres: [{ ref: "inconnu" }] }, catalogue), /inconnu/);
+});
+
+test("catalogue : la casserole (critères par pièce) traverse avecCatalogue sans changement", () => {
+  const cs = lire("composants.json");
+  const cass = cs.find((s) => s.id === "casserole");
+  assert.deepEqual(avecCatalogue(cs, catalogue).find((s) => s.id === "casserole"), cass);
 });
