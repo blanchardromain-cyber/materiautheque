@@ -48,7 +48,7 @@ Trois rendez-vous, sans jamais donner la réponse avant que l'élève l'ait cher
 
 Placée après « J'observe », en trois temps :
 
-1. **Mon tri** : l'élève range les échantillons dans 4 groupes (A à D) avec ses propres critères et nomme chaque groupe. Rien n'est noté.
+1. **Mon tri** : l'élève range 6 échantillons du quotidien, les mêmes pour toutes les pièces (acier : boîte de conserve ; inox : cuillère ; aluminium : canette ; bois : crayon ; plastique PE-HD : bidon de lait ; verre : bouteille), dans 4 groupes (A à D) avec ses propres critères, et nomme chaque groupe. Rien n'est noté. Liste dans `app/classer.js` (`ECHANTILLONS`), dessins dans `app/illustrations.js` (`objetQuotidienSVG`).
 2. **D'où vient la matière ?** : une seule question par échantillon (minerai, être vivant ou pétrole, roche/sable/argile, assemblage). Pièges voulus : alu et cuivre ne sont pas attirés par l'aimant mais sont des métaux. En 4e, la sous-famille suit (« Contient-il du fer ? » : l'inox est ferreux).
 3. **Le bilan** : ses groupes face aux familles (groupe mélangé, famille éclatée, famille réunie), puis l'arbre de classification. La couleur de chaque famille se retrouve sur le bord des cartes jusqu'à la fin.
 
