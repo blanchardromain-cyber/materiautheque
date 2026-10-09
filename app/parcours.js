@@ -150,7 +150,7 @@ function bibliotheque() {
       const serie = usageRequis(4, s) === "petite" ? "petite série" : "grande série";
       return `<li><button type="button" class="carte-piece" data-composant="${s.id}" aria-pressed="${courant}">
         <strong>${esc(s.piece)}</strong>
-        <span class="carte-piece-serie">${s.quantiteSerie.toLocaleString("fr-FR")} pièces · ${serie}</span>
+        <span class="carte-piece-serie">${s.quantiteSerie.toLocaleString("fr-FR")} pièces<br>${serie}</span>
         ${courant ? `<small>Pièce en cours</small>` : ""}</button></li>`;
     }).join("")}</ul>`;
   }).join("");
