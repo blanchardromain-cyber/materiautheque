@@ -117,6 +117,9 @@ const SCHEMAS = {
   "pliage-chaud": `<rect x="30" y="112" width="180" height="16" rx="3" class="s-caisson"/><rect x="30" y="128" width="16" height="16" class="s-bati"/><rect x="194" y="128" width="16" height="16" class="s-bati"/>
     <path d="M40 108 H200" class="s-chaud-l"/><path d="M40 104 H120 L162 62" class="s-plaque"/>
     <path d="M150 50 a22 22 0 0 1 22 22" class="s-trait"/><path d="M168 66 l4 8 l6 -6" class="s-trait"/>`,
+  // Plieuse : tablier, outil qui serre, tôle relevée le long de la ligne de pliage
+  "pliage-tole": `<rect x="30" y="112" width="180" height="16" rx="3" class="s-caisson"/><rect x="96" y="70" width="48" height="36" class="s-outil"/>
+    <path d="M40 108 H120 L170 66" class="s-plaque"/><path d="M150 54 a22 22 0 0 1 22 22" class="s-trait"/><path d="M168 70 l4 8 l6 -6" class="s-trait"/>`,
   thermoformage: `<rect x="80" y="96" width="80" height="34" rx="12" class="s-outil"/><path d="M40 92 H74 C76 88 78 92 80 96 Q120 70 160 96 C162 92 164 88 166 92 H200" class="s-plaque"/><path d="M100 140 v12 M120 140 v12 M140 140 v12" class="s-trait"/><path d="M60 40 h120" class="s-chaud-l"/>`,
   injection: `<rect x="20" y="70" width="110" height="30" class="s-outil"/><path d="M30 85 h90" class="s-vis"/><rect x="130" y="50" width="34" height="70" class="s-outil"/><rect x="168" y="50" width="34" height="70" class="s-outil"/><path d="M152 74 h24 v22 h-24 z" class="s-matiere"/><path d="M60 50 l10 20 h-20 z" class="s-matiere"/>`,
   fonderie: `<rect x="110" y="90" width="100" height="50" class="s-outil"/><path d="M140 90 v-6 h40 v6" class="s-outil"/><path d="M40 40 l50 0 l-6 24 l-38 0 z" class="s-outil"/><path d="M88 56 Q130 60 158 88" class="s-chaud-l"/><rect x="138" y="104" width="44" height="22" class="s-chaud"/>`,
