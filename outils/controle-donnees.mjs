@@ -96,6 +96,8 @@ for (const e of essais) {
   if (!e.lectures?.length || e.lectures.at(-1).regle) err(`essai ${e.id} : la dernière lecture doit être sans règle`);
   if (e.lectures.slice(0, -1).some((l) => !l.regle)) err(`essai ${e.id} : seule la dernière lecture peut être sans règle`);
 }
+const idsObjets = new Set(lire("objets.json").map((o) => o.id));
+const termes = new Set(lire("glossaire.json").map((g) => g.terme));
 const unites = composants.flatMap((sc) => sc.pieces ? sc.pieces.map((p) => scenarioPiece(sc, p.id)) : [sc]);
 for (const s of unites) {
   const q = `scénario ${s.id}`;
@@ -131,6 +133,18 @@ for (const s of unites) {
   if (!s.sansProcede?.nonParceQue || !s.sansProcede?.question) err(`${q} : textes sansProcede manquants`);
   if (s.contraintes.filter((c) => c.vraie).length < 2 || s.contraintes.every((c) => c.vraie)) err(`${q} : il faut des contraintes vraies et fausses`);
   if (s.materiauPrototype && !idsMateriaux.has(s.materiauPrototype)) err(`${q} : matériau de prototype inconnu`);
+  if (s.objet) {
+    if (!idsObjets.has(s.objet)) err(`${q} : objet ${s.objet} inconnu`);
+    for (const k of ["le", "seul", "un", "pluriel", "essai", "unEssai", "pronom"]) if (!s.nom?.[k]) err(`${q} : nom.${k} manquant`);
+    if (typeof s.nom?.feminin !== "boolean") err(`${q} : nom.feminin manquant`);
+    if (!s.nom?.le?.includes(s.nom?.seul)) err(`${q} : nom.le doit contenir nom.seul`);
+    for (const k of ["systeme", "piece", "sequence", "presentation", "aideObservation", "formeDescription", "formeCourte", "butPrototype"]) if (!s[k]) err(`${q} : ${k} manquant`);
+    for (const t of s.lexiqueObservation || []) if (!termes.has(t)) err(`${q} : terme ${t} absent du glossaire`);
+    for (const c of s.proprietesCarte || []) if (materiaux.every((m) => champ(m, c) === undefined)) err(`${q} : propriété ${c} inconnue`);
+    if (!(s.quantiteSerie > 0)) err(`${q} : quantité invalide`);
+    for (const c of s.contraintes) if (!c.explication) err(`${q}/${c.id} : explication manquante`);
+    for (const c of s.criteres) if (s.reference["4"]?.[c.id] === "indispensable" && !c.questionRetour) err(`${q}/${c.id} : questionRetour manquante`);
+  }
 }
 
 if (erreurs.length) {
