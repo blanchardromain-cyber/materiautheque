@@ -293,3 +293,41 @@ test("catalogue : la casserole (critères par pièce) traverse avecCatalogue san
   const cass = cs.find((s) => s.id === "casserole");
   assert.deepEqual(avecCatalogue(cs, catalogue).find((s) => s.id === "casserole"), cass);
 });
+
+const composants = avecCatalogue(lire("composants.json"), catalogue);
+const bibliotheque = composants.filter((s) => s.objet && s.id !== "turbine-p11");
+
+test("bibliothèque : 7 pièces, 3 du robinet et 4 du robot", () => {
+  assert.deepEqual(bibliotheque.map((s) => s.id), ["boitier-capteur", "support-robinet", "dissipateur", "coque-robot", "chassis-robot", "axe-robot", "jante-robot"]);
+  assert.equal(bibliotheque.filter((s) => s.objet === "robot").every((s) => usageRequis(4, s) === "petite"), true);
+  assert.equal(bibliotheque.filter((s) => s.objet === "robinet").every((s) => usageRequis(4, s) === "serie"), true);
+});
+
+test("bibliothèque : réponse attendue, éliminés, aucune impasse", () => {
+  for (const s of bibliotheque) {
+    const res = evaluer(s, materiaux, 4, classementReference(s, 4));
+    const r = parId(res);
+    for (const id of s.elimineAttendus["4"]) assert.equal(r[id].verdict, "elimine", `${s.id} : ${id} non éliminé`);
+    for (const id of s.reponsesAttendues["4"]) {
+      assert.equal(verifierChoix(s, materiaux, 4, id, procedes).ok, true, `${s.id} : ${id} refusé`);
+      assert.equal(verdictFinal(s, materiaux, 4, id).niveau, "meilleur", `${s.id} : ${id} pas meilleur`);
+    }
+    const valides = res.filter((x) => verifierChoix(s, materiaux, 4, x.id, procedes).ok);
+    assert.ok(valides.length > 0, `${s.id} : impasse`);
+    for (const x of valides) if (x.verdict === "reference") assert.ok(s.reponsesAttendues["4"].includes(x.id), `${s.id} : ${x.id} meilleur non prévu`);
+    for (const q of verifierClassement(s, 4, {})) assert.ok(q.question.length > 10, `${s.id}/${q.critere} : question manquante`);
+  }
+});
+
+test("châssis : le POM passe les critères mais ne se plie pas en tôle", () => {
+  const ch = composants.find((s) => s.id === "chassis-robot");
+  assert.notEqual(parId(evaluer(ch, materiaux, 4, classementReference(ch, 4))).pom.verdict, "elimine");
+  assert.equal(verifierChoix(ch, materiaux, 4, "pom", procedes).violations[0].critere, "procede");
+});
+
+test("coque : l'ABS tombe à 80 °C, le PP aux chocs", () => {
+  const c = composants.find((s) => s.id === "coque-robot");
+  const r = parId(evaluer(c, materiaux, 4, classementReference(c, 4)));
+  assert.deepEqual(r.abs.raisons.map((x) => x.critere), ["tient80"]);
+  assert.equal(r.pp.raisons[0].critere, "chocs");
+});
