@@ -155,7 +155,7 @@ export function objetSVG(objet, options = {}) {
 // ---------- Bibliothèque : un dessin par objet, pièce étudiée surlignée ----------
 const Maj = (t) => t.charAt(0).toUpperCase() + t.slice(1);
 const fem = (n) => (n.feminin ? "e" : "");
-const ANCRES = { "boitier-capteur": [317, 146], "support-robinet": [60, 150], dissipateur: [272, 106],
+const ANCRES = { "boitier-capteur": [317, 146], "support-robinet": [60, 150], mousseur: [340, 131],
   "coque-robot": [205, 125], "chassis-robot": [205, 156], "axe-robot": [145, 178], "jante-robot": [265, 178] };
 const MARQUES = {
   "c-rouille": (x, y) => `<g class="taches">${[[-14, -8, 6], [10, -12, 5], [14, 10, 7], [-8, 12, 5]]
@@ -173,9 +173,10 @@ function robinetPieceSVG(piece, { peau = {}, classe = "", titre = "", enMarche =
     "support-robinet": `<path class="piece-active" ${st} d="M34 138 h20 v-6 h32 v36 h-32 v-6 h-20 z" />
       <circle cx="44" cy="142" r="2.5" class="vis" /><circle cx="44" cy="158" r="2.5" class="vis" />
       <text x="96" y="112" class="etiquette-forte">support mural</text><path d="M 94 108 L 80 134" class="fleche" />`,
-    dissipateur: `<rect x="238" y="118" width="68" height="8" rx="2" class="carte" />
-      <g class="piece-active" ${st}><rect x="250" y="110" width="44" height="8" />${[0, 1, 2, 3, 4, 5].map((k) => `<rect x="${252 + k * 7}" y="94" width="4" height="16" />`).join("")}</g>
-      <text x="234" y="104" text-anchor="end" class="etiquette-forte">dissipateur</text>`,
+    // Mousseur vissé au bout du bec : bague filetée et grille
+    mousseur: `<g class="piece-active" ${st}><rect x="327" y="124" width="26" height="14" rx="3" /></g>
+      <path d="M 331 128 H 349 M 331 131 H 349 M 331 134 H 349" class="grille" />
+      <text x="320" y="118" text-anchor="end" class="etiquette-forte">mousseur</text><path d="M 322 116 L 330 125" class="fleche" />`,
   };
   let s = robinetCoupeSVG()
     .replace('class="robinet"', `class="robinet objet${enMarche ? " en-marche" : ""}${classe ? ` ${classe}` : ""}"`)
