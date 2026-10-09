@@ -1,0 +1,8 @@
+[
+  { "id": "robinet", "nom": "Robinet automatique", "du": "du robinet automatique",
+    "consigne": "Approche les mains du capteur et regarde où se trouve {piece}.",
+    "boutonAnimer": "Approcher les mains du capteur", "boutonArreter": "Retirer les mains" },
+  { "id": "robot", "nom": "Robot explorateur RS-1", "du": "du robot explorateur RS-1",
+    "consigne": "Fais avancer le robot dans la canalisation et repère {piece}.",
+    "boutonAnimer": "Faire avancer le robot", "boutonArreter": "Arrêter le robot" }
+]
