@@ -5,6 +5,7 @@ const ETAT = {
   schema: 2, niveau: 4, etape: 0, max: 6,
   contraintes: { immersion: true, rotation: true, forme: true, aimant: true, potable: true }, contraintesVues: true,
   ordre: ["immersion", "chaleur", "rotation", "courant", "forme", "marteau", "aimant", "potable"],
+  ordreCriteres: ["eau", "leger", "rigide", "usure", "forme", "cout", "elec", "chaleur"],
   classement: { eau: "indispensable", leger: "indispensable", rigide: "souhaitable", usure: "souhaitable", forme: "souhaitable", cout: "souhaitable", elec: "sans", chaleur: "sans" },
   criteresVus: true, justif: { eau: "elle baigne dans l'eau" }, actifs: ["eau", "leger", "rigide", "usure", "forme", "cout"], comparer: ["pom", "abs"],
   choix: "pom", essais: 1, serie: "injection", proto: "impression-3d", texte: { parceQue: "Parce que la turbine doit résister à l'eau." },
