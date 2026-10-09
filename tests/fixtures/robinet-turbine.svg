@@ -1,0 +1,49 @@
+<svg class="robinet" viewBox="0 0 400 300" role="img" aria-labelledby="robinet-titre robinet-desc">
+    <title id="robinet-titre">Robinet automatique en coupe</title>
+    <desc id="robinet-desc">Quand des mains s'approchent du capteur, l'électrovanne s'ouvre : l'eau monte par le tuyau, traverse la turbine qui fait tourner l'aimant du générateur, puis sort par le bec. Quand les mains s'éloignent, l'eau s'arrête aussitôt.</desc>
+    <rect x="0" y="0" width="34" height="300" class="mur" />
+    <path d="M 70 300 L 70 120 Q 70 70 120 70 L 300 70 Q 340 70 340 110 L 340 130" class="tuyau-ext" />
+    <path d="M 70 300 L 70 120 Q 70 70 120 70 L 300 70 Q 340 70 340 110 L 340 130" class="tuyau-int" />
+    <path d="M 70 300 L 70 120 Q 70 70 120 70 L 300 70 Q 340 70 340 110 L 340 130" class="eau-flux" />
+    <path d="M 340 138 L 340 220" class="eau-chute" />
+    <g transform="translate(70 214)">
+      <circle r="34" class="repere" />
+      <g transform="scale(.27)">
+    <title>Turbine</title>
+    <circle r="96" class="turbine-carter" />
+    <g class="turbine-rotor">
+      <g class="turbine-aubes" fill="#F2F0EA" stroke="#55606b" stroke-width="2.5" stroke-linejoin="round"><path d="M 4 -20 C 30 -36, 40 -62, 22 -88 L 8 -89 C 20 -64, 14 -40, -8 -21 Z" transform="rotate(0)" /><path d="M 4 -20 C 30 -36, 40 -62, 22 -88 L 8 -89 C 20 -64, 14 -40, -8 -21 Z" transform="rotate(45)" /><path d="M 4 -20 C 30 -36, 40 -62, 22 -88 L 8 -89 C 20 -64, 14 -40, -8 -21 Z" transform="rotate(90)" /><path d="M 4 -20 C 30 -36, 40 -62, 22 -88 L 8 -89 C 20 -64, 14 -40, -8 -21 Z" transform="rotate(135)" /><path d="M 4 -20 C 30 -36, 40 -62, 22 -88 L 8 -89 C 20 -64, 14 -40, -8 -21 Z" transform="rotate(180)" /><path d="M 4 -20 C 30 -36, 40 -62, 22 -88 L 8 -89 C 20 -64, 14 -40, -8 -21 Z" transform="rotate(225)" /><path d="M 4 -20 C 30 -36, 40 -62, 22 -88 L 8 -89 C 20 -64, 14 -40, -8 -21 Z" transform="rotate(270)" /><path d="M 4 -20 C 30 -36, 40 -62, 22 -88 L 8 -89 C 20 -64, 14 -40, -8 -21 Z" transform="rotate(315)" /></g>
+      <circle r="22" fill="#F2F0EA" stroke="#55606b" stroke-width="3" />
+      <circle r="6" fill="#55606b" />
+    </g>
+  </g>
+    </g>
+    <rect x="112" y="174" width="108" height="80" rx="8" class="boitier" />
+    <line x1="96" y1="214" x2="166" y2="214" class="axe" />
+    <rect x="146" y="178" width="40" height="12" rx="3" class="bobine" />
+    <rect x="146" y="238" width="40" height="12" rx="3" class="bobine" />
+    <g transform="translate(166 214)"><g class="turbine-rotor">
+      <rect x="-9" y="-20" width="18" height="20" fill="#C0392B" /><rect x="-9" y="0" width="18" height="20" fill="#2C5D9E" />
+      <text y="-6" text-anchor="middle" class="pole">N</text><text y="15" text-anchor="middle" class="pole">S</text>
+    </g></g>
+    <rect x="200" y="54" width="44" height="32" rx="4" class="boitier" />
+    <rect x="300" y="140" width="34" height="18" rx="4" class="capteur" />
+    <g class="ondes"><path d="M310 164 q8 8 16 0" /><path d="M304 170 q14 14 28 0" /><path d="M298 176 q20 20 40 0" /></g>
+    <g class="mains" aria-hidden="true">
+      <rect x="320" y="246" width="36" height="30" rx="9" /><rect x="320" y="226" width="7" height="26" rx="3.5" />
+      <rect x="329" y="222" width="7" height="30" rx="3.5" /><rect x="338" y="223" width="7" height="29" rx="3.5" />
+      <rect x="347" y="228" width="7" height="24" rx="3.5" /><rect x="306" y="252" width="18" height="8" rx="4" transform="rotate(-35 315 256)" />
+    </g>
+    <g class="etiquettes">
+      <text x="166" y="272" text-anchor="middle" class="etiquette-forte">générateur</text>
+      <text x="222" y="44" text-anchor="middle">électrovanne</text>
+      <text x="296" y="153" text-anchor="end">capteur</text>
+      <text x="118" y="140" class="etiquette-forte">turbine</text>
+      <path d="M 116 136 L 98 196" class="fleche" />
+      <text x="228" y="188">bobines</text>
+      <path d="M 226 185 L 188 184" class="fleche" />
+      <text x="228" y="222">aimant qui tourne</text>
+      <text x="228" y="238">(le rotor)</text>
+      <path d="M 226 218 L 178 214" class="fleche" />
+    </g>
+  </svg>
