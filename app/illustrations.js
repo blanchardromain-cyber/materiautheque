@@ -133,6 +133,10 @@ export function schemaProcede(id, nom) {
 }
 
 export function consequence(type, materiau, S) {
+  if (S && S.dessin !== "turbine") {
+    const g = (GENERIQUES[type] || GENERIQUES.deformation)(materiau, S.nom);
+    return { ...g, svg: dessinPiece(S, materiau.peau3D, g.classe, `${Maj(S.nom.seul)} en ${materiau.nom["4"]} : ${g.texte}`) };
+  }
   const r = (RECITS[type] || RECITS.deformation)(materiau);
   const svg = turbineSVG({ ...materiau.peau3D, classe: r.classe }, `Turbine en ${materiau.nom["4"]} : ${r.texte}`)
     .replace("</svg>", `${r.classe === "c-rouille" ? taches() : ""}${r.classe === "c-aimant" ? aimant() : ""}</svg>`);
@@ -145,8 +149,98 @@ export function dessinPiece(S, peau = {}, classe = "", titre) {
   return objetSVG(S.objet, { piece: S.id, peau, classe, titre });
 }
 export function objetSVG(objet, options = {}) {
-  return robinetCoupeSVG(); // provisoire : remplacé par les dessins d'objets
+  return objet === "robot" ? robotSVG(options.piece, options) : robinetPieceSVG(options.piece, options);
 }
+
+// ---------- Bibliothèque : un dessin par objet, pièce étudiée surlignée ----------
+const Maj = (t) => t.charAt(0).toUpperCase() + t.slice(1);
+const fem = (n) => (n.feminin ? "e" : "");
+const ANCRES = { "boitier-capteur": [317, 146], "support-robinet": [60, 150], dissipateur: [272, 106],
+  "coque-robot": [205, 125], "chassis-robot": [205, 156], "axe-robot": [145, 178], "jante-robot": [265, 178] };
+const MARQUES = {
+  "c-rouille": (x, y) => `<g class="taches">${[[-14, -8, 6], [10, -12, 5], [14, 10, 7], [-8, 12, 5]]
+    .map(([dx, dy, r], i) => `<circle cx="${x + dx}" cy="${y + dy}" r="${r}" style="animation-delay:${0.3 + i * 0.25}s" />`).join("")}</g>`,
+  "c-casse": (x, y) => `<path class="fissure" d="M${x - 16} ${y - 14} l10 9 l-6 6 l12 7 l-4 6 l10 6" />`,
+  "c-court": (x, y) => `<polygon class="eclair" points="${x + 4},${y - 26} ${x - 10},${y + 2} ${x},${y + 2} ${x - 6},${y + 26} ${x + 12},${y - 4} ${x + 2},${y - 4}" />`,
+};
+const marque = (classe, [x, y]) => (MARQUES[classe] || (() => ""))(x, y);
+
+// Robinet en coupe : on part du dessin de la turbine, on retire son repère et on ajoute la pièce étudiée.
+function robinetPieceSVG(piece, { peau = {}, classe = "", titre = "", enMarche = false } = {}) {
+  const st = `style="--peau:${peau.couleur || "#F2C230"}"`;
+  const ajouts = {
+    "boitier-capteur": "",
+    "support-robinet": `<path class="piece-active" ${st} d="M34 138 h20 v-6 h32 v36 h-32 v-6 h-20 z" />
+      <circle cx="44" cy="142" r="2.5" class="vis" /><circle cx="44" cy="158" r="2.5" class="vis" />
+      <text x="96" y="112" class="etiquette-forte">support mural</text><path d="M 94 108 L 80 134" class="fleche" />`,
+    dissipateur: `<rect x="238" y="118" width="68" height="8" rx="2" class="carte" />
+      <g class="piece-active" ${st}><rect x="250" y="110" width="44" height="8" />${[0, 1, 2, 3, 4, 5].map((k) => `<rect x="${252 + k * 7}" y="94" width="4" height="16" />`).join("")}</g>
+      <text x="234" y="104" text-anchor="end" class="etiquette-forte">dissipateur</text>`,
+  };
+  let s = robinetCoupeSVG()
+    .replace('class="robinet"', `class="robinet objet${enMarche ? " en-marche" : ""}${classe ? ` ${classe}` : ""}"`)
+    .replace('<circle r="34" class="repere" />', "")
+    .replace('<text x="118" y="140" class="etiquette-forte">turbine</text>', '<text x="118" y="140">turbine</text>');
+  if (piece === "boitier-capteur") s = s
+    .replace('<rect x="300" y="140" width="34" height="18" rx="4" class="capteur" />',
+      `<rect x="294" y="132" width="46" height="28" rx="6" class="piece-active" ${st} /><rect x="305" y="139" width="24" height="10" rx="2" class="capteur" />`)
+    .replace('<text x="296" y="153" text-anchor="end">capteur</text>', '<text x="290" y="153" text-anchor="end" class="etiquette-forte">boîtier du capteur</text>');
+  if (titre) s = s.replace(/<title id="robinet-titre">[^<]*<\/title>/, `<title id="robinet-titre">${titre}</title>`);
+  const [x, y] = ANCRES[piece];
+  return s.replace('<g class="mains"', `${ajouts[piece]}<circle cx="${x}" cy="${y}" r="30" class="repere" />${marque(classe, [x, y])}<g class="mains"`);
+}
+
+// Robot RS-1 dans une canalisation (couleurs du visuel de l'évaluation n°1).
+function robotSVG(piece, { peau = {}, classe = "", titre = "", enMarche = false } = {}) {
+  const st = `style="--peau:${peau.couleur || "#F2C230"}"`;
+  const cl = (id, base) => (piece === id ? `class="piece-active" ${st}` : `class="${base}"`);
+  const forte = (id) => (piece === id ? ' class="etiquette-forte"' : "");
+  const roue = (x) => `<g transform="translate(${x} 178)"><g class="roue-tourne">
+      <circle r="26" class="pneu" /><circle r="17" ${cl("jante-robot", "jante")} />
+      <path d="M -17 0 H 17 M 0 -17 V 17" class="rayons" /><circle r="5" ${cl("axe-robot", "axe-roue")} /></g></g>`;
+  const a = ANCRES[piece] || [205, 125];
+  return `<svg class="robot objet${enMarche ? " en-marche" : ""}${classe ? ` ${classe}` : ""}" viewBox="0 0 400 240" role="img" aria-labelledby="robot-titre robot-desc">
+    <title id="robot-titre">${titre || "Robot explorateur RS-1 dans une canalisation"}</title>
+    <desc id="robot-desc">Le robot roule dans une canalisation d'eau enterrée, phares allumés ; sa caméra filme la fuite.</desc>
+    <rect x="0" y="24" width="400" height="196" class="canalisation" />
+    <path d="M 0 206 Q 100 198 200 206 T 400 206 V 220 H 0 Z" class="flaque" />
+    <g class="robot-corps">
+      <polygon points="298,108 392,78 392,158" class="faisceau" />
+      <rect x="110" y="150" width="190" height="12" rx="2" ${cl("chassis-robot", "chassis")} />
+      <rect x="120" y="98" width="170" height="54" rx="14" ${cl("coque-robot", "coque")} />
+      <rect x="200" y="72" width="10" height="28" class="mat" />
+      <rect x="182" y="52" width="48" height="24" rx="6" class="camera" /><circle cx="222" cy="64" r="7" class="objectif" />
+      <rect x="288" y="110" width="10" height="9" rx="2" class="phare" /><rect x="288" y="128" width="10" height="9" rx="2" class="phare" />
+      ${roue(145)}${roue(265)}
+    </g>
+    <circle cx="${a[0]}" cy="${a[1]}" r="30" class="repere" />${marque(classe, a)}
+    <g class="etiquettes">
+      <text x="60" y="96"${forte("coque-robot")}>coque</text><path d="M 92 92 L 128 108" class="fleche" />
+      <text x="60" y="140"${forte("chassis-robot")}>châssis</text><path d="M 100 138 L 114 154" class="fleche" />
+      <text x="40" y="212"${forte("axe-robot")}>axe</text><path d="M 66 206 L 140 180" class="fleche" />
+      <text x="340" y="212"${forte("jante-robot")}>jante</text><path d="M 336 206 L 280 186" class="fleche" />
+    </g>
+  </svg>`;
+}
+
+// Conséquences hors turbine : textes écrits avec le nom de la pièce (n = fiche.nom).
+const GENERIQUES = {
+  eau: (m, n) => (m.famille === "metal"
+    ? { titre: "Six mois plus tard…", texte: `${Maj(n.le)} a rouillé : des écailles se détachent.`, classe: "c-rouille" }
+    : { titre: "Six mois plus tard…", texte: `${Maj(n.le)} s'est abîmé${fem(n)} dans l'eau : ${n.pronom} gonfle et se déforme.`, classe: "c-gonfle" }),
+  corrosion: (m, n) => (m.famille === "metal"
+    ? { titre: "Quelques mois plus tard…", texte: `${Maj(n.le)} a rouillé : ${n.pronom} se ronge et perd sa solidité.`, classe: "c-rouille" }
+    : { titre: "Quelques mois plus tard…", texte: `${Maj(n.le)} s'est dégradé${fem(n)} : ${n.pronom} se ramollit et se fend.`, classe: "c-gonfle" }),
+  deformation: (m, n) => ({ titre: "Sous l'effort…", texte: `${Maj(n.le)} plie : ${n.pronom} ne garde pas sa forme.`, classe: "c-tordu" }),
+  usure: (m, n) => ({ titre: "Quelques mois plus tard…", texte: `${Maj(n.le)} s'est usé${fem(n)} : ${n.pronom} prend du jeu et vibre.`, classe: "c-use" }),
+  lourd: (m, n) => ({ titre: "Sur la balance…", texte: `${Maj(n.le)} pèse trop lourd : tout l'objet s'alourdit et consomme plus d'énergie.`, classe: "c-lourd" }),
+  casse: (m, n) => ({ titre: "Au premier choc…", texte: `${Maj(n.le)} se fend : ${n.pronom} ne supporte pas les coups.`, classe: "c-casse" }),
+  ramollit: (m, n) => ({ titre: "Par forte chaleur…", texte: `${Maj(n.le)} ramollit et se déforme : ${n.pronom} ne supporte pas cette température.`, classe: "c-mou" }),
+  "court-circuit": (m, n) => ({ titre: "On met en marche…", texte: `${Maj(n.le)} conduit le courant : la carte électronique est en court-circuit.`, classe: "c-court" }),
+  surchauffe: (m, n) => ({ titre: "Au bout de quelques minutes…", texte: `${Maj(n.le)} ne laisse pas passer la chaleur : la carte électronique surchauffe et s'arrête.`, classe: "c-chauffe" }),
+  "freinage-aimant": (m, n) => ({ titre: "Près d'un aimant…", texte: `${Maj(n.le)} est attiré${fem(n)} par l'aimant.`, classe: "c-aimant" }),
+  fabrication: (m, n) => ({ titre: "À l'atelier, on lance la fabrication…", texte: `Aucun procédé ne permet de fabriquer ${n.le} dans ce matériau, pour cette quantité.`, classe: "c-fabrication" }),
+};
 
 const taches = () => `<g class="taches">${[[-40, -30, 14], [35, -50, 10], [50, 30, 16], [-20, 55, 12], [0, -70, 8], [-60, 20, 9]]
   .map(([x, y, r], i) => `<circle cx="${x}" cy="${y}" r="${r}" style="animation-delay:${0.3 + i * 0.25}s" />`).join("")}</g>`;
