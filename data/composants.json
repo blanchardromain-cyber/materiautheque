@@ -1155,7 +1155,7 @@
     "id": "axe-robot",
     "systeme": "Robot explorateur RS-1",
     "sequence": "P11 — Le robot explorateur de Robot Scan (évaluation n°1)",
-    "quantiteSerie": 300,
+    "quantiteSerie": 1200,
     "piece": "Axe des roues",
     "niveaux": [
       4
@@ -1167,7 +1167,7 @@
       "titre": "Matériauthèque — bibliothèque de pièces",
       "sousTitre": "Le choix du matériau : axe des roues (Robot explorateur RS-1)"
     },
-    "presentation": "Chaque roue du robot RS-1 tourne sur un axe : une tige qui porte le poids du robot et frotte dans ses paliers. Robot Scan fabriquera 300 robots. Quel matériau choisir pour ces axes ?",
+    "presentation": "Chaque roue du robot RS-1 tourne sur un axe : une tige qui porte le poids du robot et frotte dans ses paliers. Robot Scan fabriquera 300 robots à 4 roues, soit 1 200 axes. Quel matériau choisir pour ces axes ?",
     "nom": {
       "le": "l'axe",
       "seul": "axe",
@@ -1331,7 +1331,7 @@
     "id": "jante-robot",
     "systeme": "Robot explorateur RS-1",
     "sequence": "P11 — Le robot explorateur de Robot Scan (évaluation n°1)",
-    "quantiteSerie": 300,
+    "quantiteSerie": 1200,
     "piece": "Jante des roues",
     "niveaux": [
       4
@@ -1343,7 +1343,7 @@
       "titre": "Matériauthèque — bibliothèque de pièces",
       "sousTitre": "Le choix du matériau : jante des roues (Robot explorateur RS-1)"
     },
-    "presentation": "La jante est la partie rigide de la roue, sur laquelle on monte le pneu. Elle tourne autour de l'axe et roule dans l'eau des canalisations. Robot Scan fabriquera 300 robots. Quel matériau choisir pour les jantes ?",
+    "presentation": "La jante est la partie rigide de la roue, sur laquelle on monte le pneu. Elle tourne autour de l'axe et roule dans l'eau des canalisations. Robot Scan fabriquera 300 robots à 4 roues, soit 1 200 jantes. Quel matériau choisir pour les jantes ?",
     "nom": {
       "le": "la jante",
       "seul": "jante",
