@@ -1,6 +1,6 @@
 // Génère RELECTURE.md à partir des données : node outils/genere-relecture.mjs
 import { readFileSync, writeFileSync } from "node:fs";
-import { evaluer, classementReference, criteresDuNiveau, lireChamp, formaterValeur, scenarioPiece, avecCatalogue } from "../app/moteur.js";
+import { evaluer, classementReference, criteresDuNiveau, lireChamp, formaterValeur, scenarioPiece, avecCatalogue, usageRequis } from "../app/moteur.js";
 
 const racine = new URL("../", import.meta.url);
 const lire = (f) => JSON.parse(readFileSync(new URL(`data/${f}`, racine), "utf8"));
@@ -38,7 +38,7 @@ const unites = scenarios.flatMap((sc) => sc.pieces ? sc.pieces.map((p) => ({ ...
 for (const s of unites) {
   L.push(`## 2. Scénario « ${s.titre} » (${s.systeme})`, "", s.avertissement ? `> ${s.avertissement}` : "", "");
   if (s.objet && s.id !== "turbine-p11") {
-    L.push(`Quantité : ${s.quantiteSerie} (${s.quantiteSerie < 1000 ? "petite" : "grande"} série). Forme : ${s.forme}.`, "");
+    L.push(`Quantité : ${s.quantiteSerie} (${usageRequis(4, s) === "petite" ? "petite" : "grande"} série). Forme : ${s.forme}.`, "");
     L.push("| Étape 1 : affirmation | Vraie ? | Explication | Correction |", "|---|---|---|---|");
     for (const c of s.contraintes) L.push(`| ${c.texte} | ${c.vraie ? "vraie" : "fausse (piège)"} | ${c.explication} |  |`);
     L.push("", "| Critère | Pourquoi | Question si mal classé | Question si choix refusé | Correction |", "|---|---|---|---|---|");
