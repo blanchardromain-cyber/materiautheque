@@ -266,56 +266,63 @@ Quantité : 10000 (grande série). Forme : pliee.
 | PMMA | Éliminé |  | n'est pas assez rigide (rigidité 3/5) |  |
 | PA | Éliminé |  | n'est pas assez rigide (rigidité 3/5) |  |
 
-## 2. Scénario « Dissipateur de la carte électronique » (Robinet automatique)
+## 2. Scénario « Mousseur du bec » (Robinet automatique)
 
 
 
-Quantité : 10000 (grande série). Forme : profile.
+Quantité : 10000 (grande série). Forme : complexe.
 
 | Étape 1 : affirmation | Vraie ? | Explication | Correction |
 |---|---|---|---|
-| Il reçoit la chaleur d'un composant électronique. | vraie | Vrai : il est posé sur le composant qui chauffe. |  |
-| Il rend cette chaleur à l'air par ses ailettes. | vraie | Vrai : plus la chaleur le traverse facilement, mieux il refroidit. |  |
-| Il est fixé sur la carte électronique. | vraie | Vrai : s'il est lourd, il tire sur les soudures de la carte. |  |
-| C'est un profilé à ailettes, coupé à la longueur. | vraie | Vrai : une longue barre à ailettes, découpée en morceaux. |  |
-| Il est chauffé à plus de 200 °C. | fausse (piège) | Faux : le composant chauffe, mais bien moins : une centaine de degrés au plus. |  |
-| Le courant de la carte doit le traverser. | fausse (piège) | Faux : le courant passe dans le composant, pas dans le dissipateur. |  |
-| Il baigne dans l'eau. | fausse (piège) | Faux : il est enfermé dans le boîtier, à l'abri. |  |
+| L'eau le traverse à chaque utilisation. | vraie | Vrai : toute l'eau du robinet passe par sa grille. |  |
+| Le calcaire s'y dépose : on le dévisse pour le nettoyer. | vraie | Vrai : il est vissé et dévissé plusieurs fois par an. |  |
+| Son filetage doit tenir serré au bout du bec. | vraie | Vrai : un filetage qui se déforme laisse fuir l'eau. |  |
+| Il peut être heurté par une casserole ou un verre. | vraie | Vrai : il dépasse au bout du bec, au-dessus du lavabo. |  |
+| C'est une petite pièce à grille fine, de forme complexe. | vraie | Vrai : la grille est faite de trous et de lamelles très fins. |  |
+| Il est chauffé à plus de 200 °C. | fausse (piège) | Faux : l'eau du robinet ne dépasse pas 60 °C. |  |
+| Un courant électrique le traverse. | fausse (piège) | Faux : il ne fait partie d'aucun circuit électrique. |  |
+| Il doit être le plus léger possible. | fausse (piège) | Faux : il ne pèse que quelques grammes ; son poids ne compte pas. |  |
 
 | Critère | Pourquoi | Question si mal classé | Question si choix refusé | Correction |
 |---|---|---|---|---|
-| Conduire la chaleur | Il doit faire passer la chaleur vers l'air. | Relis l'étape 1 : à quoi sert le dissipateur ? Un matériau qui garde la chaleur peut-il convenir ? | Si la chaleur ne traverse pas le dissipateur, où reste-t-elle ? |  |
-| Être léger (3 g/cm³ au plus) | Il est fixé sur la carte. | Relis l'étape 1 : où est fixé le dissipateur ? Peut-il être lourd ? | Un dissipateur lourd posé sur la carte : que deviennent les soudures ? Compare les masses volumiques. |  |
+| Résister à l'eau et à l'humidité | L'eau le traverse à chaque utilisation. | Relis l'étape 1 : l'eau traverse-t-elle le mousseur ? Un matériau qui s'y abîme peut-il convenir ? | L'eau traverse le mousseur à chaque utilisation : quelle note de résistance à l'eau faut-il au minimum ? |  |
+| Être rigide (3/5 au moins) | Son filetage doit tenir serré. | Relis l'étape 1 : comment le mousseur tient-il au bout du bec ? Un filetage mou peut-il tenir serré ? | Un filetage souple se déforme quand on serre : l'eau reste-t-elle dans le bec ? |  |
 | Coûter peu (€ ou €€) | Il est fabriqué à 10 000 exemplaires. |  |  |  |
-| Ne pas rouiller ni se dégrader | Il vit dans le boîtier d'un robinet. |  |  |  |
-| Conduire l'électricité | Piège : le courant ne passe pas dans le dissipateur. | Relis l'étape 1 : le courant de la carte doit-il traverser le dissipateur ? Ce critère concerne-t-il cette pièce ? |  |  |
-| Résister à plus de 200 °C | Piège : le composant chauffe bien moins. | Relis l'étape 1 : le dissipateur est-il chauffé à plus de 200 °C ? Ce critère concerne-t-il cette pièce ? |  |  |
+| Résister à l'usure | On le visse et on le dévisse pour enlever le calcaire. |  |  |  |
+| Résister aux chocs (4/5 au moins) | Il peut être heurté par une casserole ou un verre. |  |  |  |
+| Se recycler en fin de vie | Le robinet finira à la déchetterie. |  |  |  |
+| Conduire l'électricité | Piège : aucun courant ne traverse le mousseur. | Relis l'étape 1 : un courant traverse-t-il le mousseur ? Ce critère concerne-t-il cette pièce ? |  |  |
+| Résister à plus de 200 °C | Piège : l'eau du robinet ne dépasse pas 60 °C. | Relis l'étape 1 : le mousseur est-il chauffé à plus de 200 °C ? Ce critère concerne-t-il cette pièce ? |  |  |
+| Être léger (2 g/cm³ au plus) | Piège : il ne pèse que quelques grammes. | Relis l'étape 1 : pour une pièce de quelques grammes, le poids compte-t-il ? |  |  |
 
 ### Niveau 4e
 
 | Critère (carte élève) | Statut de référence | Règle | Poids |
 |---|---|---|---|
-| Conduire la chaleur | Indispensable | `therm == "conducteur"` |  |
-| Être léger (3 g/cm³ au plus) | Indispensable | `masseVolumique <= 3` |  |
+| Résister à l'eau et à l'humidité | Indispensable | `notes.eau >= 3` |  |
+| Être rigide (3/5 au moins) | Indispensable | `notes.rigidite >= 3` |  |
 | Coûter peu (€ ou €€) | Souhaitable | `cout <= 2` | 1 |
-| Ne pas rouiller ni se dégrader | Souhaitable | `notes.corrosion >= 3` | 1 |
+| Résister à l'usure | Souhaitable | `notes.usure >= 4` | 1 |
+| Résister aux chocs (4/5 au moins) | Souhaitable | `notes.chocs >= 4` | 1 |
+| Se recycler en fin de vie | Souhaitable | `recyclage.note >= 3` | 1 |
 | Conduire l'électricité | Sans importance (piège) | `elec == "conducteur"` |  |
 | Résister à plus de 200 °C | Sans importance (piège) | `tempMax >= 200` |  |
+| Être léger (2 g/cm³ au plus) | Sans importance (piège) | `masseVolumique <= 2` |  |
 
 | Matériau | Verdict calculé | Critères souhaitables respectés | Raison (éliminé) ou ce que l'on perd | D'accord ? |
 |---|---|---|---|---|
-| Alu | Seul matériau en lice | 2 / 2 | — |  |
-| Acier | Éliminé |  | est trop lourd (7,85 g/cm³) |  |
-| Inox | Éliminé |  | est trop lourd (7,9 g/cm³) |  |
-| Cu | Éliminé |  | est trop lourd (8,96 g/cm³) |  |
-| Laiton | Éliminé |  | est trop lourd (8,5 g/cm³) |  |
-| PLA | Éliminé |  | est isolant thermique : la chaleur reste piégée |  |
-| ABS | Éliminé |  | est isolant thermique : la chaleur reste piégée |  |
-| PE-HD | Éliminé |  | est isolant thermique : la chaleur reste piégée |  |
-| PP | Éliminé |  | est isolant thermique : la chaleur reste piégée |  |
-| PMMA | Éliminé |  | est isolant thermique : la chaleur reste piégée |  |
-| PA | Éliminé |  | est isolant thermique : la chaleur reste piégée |  |
-| POM | Éliminé |  | est isolant thermique : la chaleur reste piégée |  |
+| Inox | Choix de référence (à égalité) — refusé : pas de procédé possible | 3 / 4 | coûte plus cher (coût 3 sur 3) |  |
+| ABS | Choix de référence (à égalité) | 3 / 4 | s'use vite (usure 3/5) |  |
+| POM | Choix de référence (à égalité) | 3 / 4 | résiste mal aux chocs (chocs 3/5) |  |
+| Alu | Acceptable | 2 / 4 | s'use vite (usure 2/5) ; résiste mal aux chocs (chocs 3/5) |  |
+| PMMA | Acceptable | 2 / 4 | s'use vite (usure 3/5) ; résiste mal aux chocs (chocs 1/5) |  |
+| Cu | Acceptable — refusé : pas de procédé possible | 1 / 4 | coûte plus cher (coût 3 sur 3) ; s'use vite (usure 2/5) ; résiste mal aux chocs (chocs 3/5) |  |
+| Laiton | Acceptable | 1 / 4 | coûte plus cher (coût 3 sur 3) ; s'use vite (usure 3/5) ; résiste mal aux chocs (chocs 3/5) |  |
+| Acier | Éliminé |  | s'abîme dans l'eau (résistance à l'eau 1/5) |  |
+| PLA | Éliminé |  | s'abîme dans l'eau (résistance à l'eau 2/5) |  |
+| PE-HD | Éliminé |  | n'est pas assez rigide (rigidité 2/5) |  |
+| PP | Éliminé |  | n'est pas assez rigide (rigidité 2/5) |  |
+| PA | Éliminé |  | s'abîme dans l'eau (résistance à l'eau 2/5) |  |
 
 ## 2. Scénario « Coque du robot » (Robot explorateur RS-1)
 
@@ -484,7 +491,7 @@ Quantité : 1200 (petite série). Forme : volume-simple.
 | Étape 1 : affirmation | Vraie ? | Explication | Correction |
 |---|---|---|---|
 | Son trou central frotte sur l'axe à chaque tour. | vraie | Vrai : il s'use si le matériau résiste mal à l'usure. |  |
-| Elle roule dans l'eau des canalisations. | vraie | Vrai : elle est mouillée pendant toute l'inspection. |  |
+| Elle roule dans l'eau des canalisations. | vraie | Vrai : elle est mouillée pendant l'inspection (une demi-heure), puis elle sèche. |  |
 | Elle cogne les obstacles du fond de la canalisation. | vraie | Vrai : petits chocs répétés (ligne ⑤). |  |
 | Quatre jantes, c'est du poids pour la batterie (ligne ④). | vraie | Vrai : un robot plus lourd vide sa batterie plus vite. |  |
 | Le courant de la batterie la traverse. | fausse (piège) | Faux : le courant passe dans les fils et les moteurs. |  |
@@ -493,8 +500,8 @@ Quantité : 1200 (petite série). Forme : volume-simple.
 | Critère | Pourquoi | Question si mal classé | Question si choix refusé | Correction |
 |---|---|---|---|---|
 | Résister à l'usure | Son trou central frotte sur l'axe. | Relis l'étape 1 : la jante frotte-t-elle ? Peut-on accepter qu'elle s'use vite ? | Que devient le trou de la jante après des milliers de tours ? |  |
-| Résister à l'eau et à l'humidité | Elle roule dans l'eau. | Relis l'étape 1 : la jante est-elle dans l'eau ? Un matériau qui s'y abîme peut-il convenir ? | La jante est mouillée pendant toute l'inspection : quelle note de résistance à l'eau faut-il ? |  |
-| Résister aux chocs (3/5 au moins) | Elle cogne les obstacles. | Relis l'étape 1 : la jante reçoit-elle des chocs ? Peut-on accepter qu'elle se fende ? | La jante cogne le fond de la canalisation : quelle note de résistance aux chocs faut-il ? |  |
+| Résister à l'eau et à l'humidité | Elle roule dans l'eau pendant l'inspection, puis sèche. |  |  |  |
+| Résister aux chocs (4/5 au moins) | Elle cogne les obstacles. |  |  |  |
 | Être légère (2 g/cm³ au plus) | Quatre jantes à porter (ligne ④). | Relis l'étape 1 : pourquoi le poids des jantes compte-t-il ? | Quatre jantes lourdes : que devient l'autonomie ? Compare les masses volumiques. |  |
 | Coûter peu (€ ou €€) | Prix maximal du robot (ligne ⑨). |  |  |  |
 | Conduire l'électricité | Piège : le courant passe dans les fils. | Relis l'étape 1 : un courant traverse-t-il la jante ? Ce critère concerne-t-il cette pièce ? |  |  |
@@ -505,8 +512,8 @@ Quantité : 1200 (petite série). Forme : volume-simple.
 | Critère (carte élève) | Statut de référence | Règle | Poids |
 |---|---|---|---|
 | Résister à l'usure | Indispensable | `notes.usure >= 4` |  |
-| Résister à l'eau et à l'humidité | Indispensable | `notes.eau >= 3` |  |
-| Résister aux chocs (3/5 au moins) | Indispensable | `notes.chocs >= 3` |  |
+| Résister à l'eau et à l'humidité | Souhaitable | `notes.eau >= 3` | 1 |
+| Résister aux chocs (4/5 au moins) | Souhaitable | `notes.chocs >= 4` | 1 |
 | Être légère (2 g/cm³ au plus) | Indispensable | `masseVolumique <= 2` |  |
 | Coûter peu (€ ou €€) | Souhaitable | `cout <= 2` | 1 |
 | Conduire l'électricité | Sans importance (piège) | `elec == "conducteur"` |  |
@@ -514,18 +521,18 @@ Quantité : 1200 (petite série). Forme : volume-simple.
 
 | Matériau | Verdict calculé | Critères souhaitables respectés | Raison (éliminé) ou ce que l'on perd | D'accord ? |
 |---|---|---|---|---|
-| POM | Seul matériau en lice | 1 / 1 | — |  |
-| Acier | Éliminé |  | s'abîme dans l'eau (résistance à l'eau 1/5) ; est trop lourd (7,85 g/cm³) |  |
+| PA | Choix de référence (à égalité) | 2 / 3 | s'abîme dans l'eau (résistance à l'eau 2/5) |  |
+| POM | Choix de référence (à égalité) | 2 / 3 | résiste mal aux chocs (chocs 3/5) |  |
+| Acier | Éliminé |  | est trop lourd (7,85 g/cm³) |  |
 | Inox | Éliminé |  | est trop lourd (7,9 g/cm³) |  |
 | Alu | Éliminé |  | s'use vite (usure 2/5) ; est trop lourd (2,7 g/cm³) |  |
 | Cu | Éliminé |  | s'use vite (usure 2/5) ; est trop lourd (8,96 g/cm³) |  |
 | Laiton | Éliminé |  | s'use vite (usure 3/5) ; est trop lourd (8,5 g/cm³) |  |
-| PLA | Éliminé |  | s'use vite (usure 2/5) ; s'abîme dans l'eau (résistance à l'eau 2/5) ; résiste mal aux chocs (chocs 2/5) |  |
+| PLA | Éliminé |  | s'use vite (usure 2/5) |  |
 | ABS | Éliminé |  | s'use vite (usure 3/5) |  |
 | PE-HD | Éliminé |  | s'use vite (usure 3/5) |  |
 | PP | Éliminé |  | s'use vite (usure 3/5) |  |
-| PMMA | Éliminé |  | s'use vite (usure 3/5) ; résiste mal aux chocs (chocs 1/5) |  |
-| PA | Éliminé |  | s'abîme dans l'eau (résistance à l'eau 2/5) |  |
+| PMMA | Éliminé |  | s'use vite (usure 3/5) |  |
 
 ## 3. Questions pour le relecteur
 
