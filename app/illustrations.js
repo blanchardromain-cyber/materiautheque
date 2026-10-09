@@ -298,3 +298,32 @@ export function essaiSVG(idEssai, materiau, classe, texte) {
   };
   return `<svg class="essai-svg essai-${idEssai} issue-${classe}" viewBox="0 0 240 140" role="img" aria-label="${texte}"><title>${texte}</title>${scenes[idEssai] || ""}</svg>`;
 }
+
+// ---------- « Je classe » : l'objet du quotidien de chaque échantillon (pictogramme de 44 px) ----------
+const OBJETS_QUOTIDIENS = {
+  // boîte de conserve : cylindre cerclé
+  acier: (c, t) => `<path d="M10 9 h24 v27 h-24 z" fill="${c}" stroke="${t}" stroke-width="2"/><ellipse cx="22" cy="9" rx="12" ry="3.5" fill="${c}" stroke="${t}" stroke-width="2"/>
+    <path d="M10 18 h24 M10 27 h24" stroke="${t}" stroke-width="1.5"/>`,
+  // cuillère
+  inox: (c, t) => `<ellipse cx="14" cy="13" rx="7" ry="9" fill="${c}" stroke="${t}" stroke-width="2" transform="rotate(-40 14 13)"/>
+    <path d="M19 19 L37 38" stroke="${t}" stroke-width="6" stroke-linecap="round"/><path d="M19 19 L37 38" stroke="${c}" stroke-width="3" stroke-linecap="round"/>`,
+  // canette : cylindre, couvercle et languette
+  alu: (c, t) => `<path d="M13 9 h18 l2 4 v22 l-2 4 h-18 l-2 -4 v-22 z" fill="${c}" stroke="${t}" stroke-width="2"/>
+    <path d="M11 14 h22 M11 34 h22" stroke="${t}" stroke-width="1.5"/><ellipse cx="22" cy="9" rx="5" ry="1.8" fill="none" stroke="${t}" stroke-width="1.5"/>`,
+  // crayon : corps, mine taillée
+  bois: (c, t) => `<path d="M7 31 L28 10 L34 16 L13 37 Z" fill="${c}" stroke="${t}" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M7 31 L4 40 L13 37" fill="#F1D9B5" stroke="${t}" stroke-width="2" stroke-linejoin="round"/><path d="M4 40 l3 -1 l-2 -2 z" fill="${t}"/>
+    <path d="M28 10 L34 16" stroke="#E07A8C" stroke-width="4"/>`,
+  // bidon de lait : poignée et bouchon
+  pehd: (c, t) => `<path d="M12 15 q0 -4 5 -6 h6 v-4 h6 v4 q4 2 4 6 v22 q0 3 -3 3 h-15 q-3 0 -3 -3 z" fill="${c}" stroke="${t}" stroke-width="2" stroke-linejoin="round"/>
+    <rect x="22" y="2.5" width="8" height="4" rx="1" fill="#2F7FC1"/><path d="M14 16 q-6 3 0 9" fill="none" stroke="${t}" stroke-width="2"/>`,
+  // bouteille de verre, transparente
+  verre: (c, t) => `<path d="M18 4 h8 v8 q8 4 8 12 v15 q0 2 -2 2 h-20 q-2 0 -2 -2 v-15 q0 -8 8 -12 z" fill="${c}" fill-opacity=".55" stroke="${t}" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M15 26 v10" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" opacity=".9"/>`,
+};
+
+export function objetQuotidienSVG(id, peau = {}) {
+  const dessin = OBJETS_QUOTIDIENS[id];
+  if (!dessin) return "";
+  return `<svg viewBox="0 0 44 44" width="44" height="44">${dessin(peau.couleur || "#C9CDD2", "#3B4652")}</svg>`;
+}
