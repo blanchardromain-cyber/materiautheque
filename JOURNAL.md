@@ -136,6 +136,13 @@ Chaque itération suit la boucle : spécifier → construire → vérifier techn
 - Mis en ligne le 2026-10-09 (sw 2026-10-09a).
 - Question du professeur : les propositions sont-elles dans un ordre aléatoire ? Seule l'étape 1 l'était. Les cartes de critères (4e et 5e) suivaient l'ordre des données, indispensables en tête : elles sont désormais tirées au sort une fois par élève et par pièce, puis gardées (vérifié : 3 élèves, 3 ordres ; ordre conservé au rechargement). Publié en 2026-10-09b.
 
+## I5b — 2026-10-09 : « Je classe » allégé
+
+- Avis du professeur : trop d'échantillons (12 en 4e), noms inconnus des élèves, beaucoup de temps pour peu de bénéfice. Désormais 6 échantillons du quotidien, identiques pour toutes les pièces et les deux niveaux, chacun avec un nom simple, son objet (boîte de conserve, cuillère, canette, crayon, bidon de lait, bouteille) et un petit dessin. Trois familles au lieu de deux (le verre ajoute les céramiques) ; les pièges de l'aimant restent (inox, aluminium).
+- Un tri commencé avec l'ancienne liste repart de zéro.
+- Vérifié : 4e (familles, sous-familles, bilan à trois familles), 5e, 375 px, console vide, 48 tests.
+- Fiche A8 V2 : « jusqu'à l'étape 4 » corrigé en « jusqu'à l'étape 5 (Je choisis le procédé) » ; carte mentale de la démarche (`P11/P11_activite_8/carte_mentale/`) à insérer à la fin par le professeur.
+
 ## Backlog (itérations suivantes)
 
 - Procédés présents au collège mais hors référentiel : cisaillage (cisaille guillotine), pliage de tôle (plieuse), poinçonnage (poinçonneuse) ; à ajouter en I6 si utile.
