@@ -134,6 +134,7 @@ Chaque itération suit la boucle : spécifier → construire → vérifier techn
 - Relecture du professeur (scores à 0 signalés) : le 0 était juste (critères souhaitables respectés) mais trompeur. Corrigé : score « x / n » et mentions « seul en lice », « à égalité », « refusé faute de procédé » dans `RELECTURE.md` ; verdict de l'élève « Seul choix possible », « Meilleur compromis, à égalité », critères souhaitables manqués toujours signalés.
 - Décision du professeur : des compromis plutôt que des réponses uniques (la démarche compte plus que le résultat). Support : inox ou alu ; axe : inox ou POM ; jante : POM ou PA 6 ; coque : PE-HD seul (80 °C du cahier des charges). Le dissipateur (pièce inventée : un robinet sur pile ne chauffe pas) est remplacé par le mousseur du bec : POM ou ABS à égalité.
 - Mis en ligne le 2026-10-09 (sw 2026-10-09a).
+- Question du professeur : les propositions sont-elles dans un ordre aléatoire ? Seule l'étape 1 l'était. Les cartes de critères (4e et 5e) suivaient l'ordre des données, indispensables en tête : elles sont désormais tirées au sort une fois par élève et par pièce, puis gardées (vérifié : 3 élèves, 3 ordres ; ordre conservé au rechargement). Publié en 2026-10-09b.
 
 ## Backlog (itérations suivantes)
 
