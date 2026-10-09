@@ -131,7 +131,9 @@ Chaque itération suit la boucle : spécifier → construire → vérifier techn
 - Décisions prises en cours de réalisation : seuil 5 000 au lieu de 1 000 (1 200 jantes = 300 robots à 4 roues restent une petite série) ; nouveau procédé nommé « à la plieuse » (l'emboutissage s'appelle déjà « pliage de tôle ») ; « résiste mal aux chocs » (un métal se cabosse, il ne se fend pas).
 - Défaut corrigé, présent aussi en ligne : PDF presque vide quand l'élève clique « Enregistrer » en bas de page défilée (capture décalée de la hauteur défilée). Vérifié page défilée de 1 600 px : PDF complet.
 - Vérifié : turbine identique, étape par étape, à la version publiée (empreintes ; seuls ajouts : bouton « Choisir une autre pièce », cartes de la plieuse) ; 45 tests ; parcours coque complet avec PDF ; boîtier (court-circuit), châssis (POM refusé), jantes (injection refusée pour 1 200 pièces) ; enregistrements séparés par pièce ; 375 px ; console vide.
-- Reste au professeur : relire les 7 pièces dans `RELECTURE.md` avant la mise en ligne.
+- Relecture du professeur (scores à 0 signalés) : le 0 était juste (critères souhaitables respectés) mais trompeur. Corrigé : score « x / n » et mentions « seul en lice », « à égalité », « refusé faute de procédé » dans `RELECTURE.md` ; verdict de l'élève « Seul choix possible », « Meilleur compromis, à égalité », critères souhaitables manqués toujours signalés.
+- Décision du professeur : des compromis plutôt que des réponses uniques (la démarche compte plus que le résultat). Support : inox ou alu ; axe : inox ou POM ; jante : POM ou PA 6 ; coque : PE-HD seul (80 °C du cahier des charges). Le dissipateur (pièce inventée : un robinet sur pile ne chauffe pas) est remplacé par le mousseur du bec : POM ou ABS à égalité.
+- Mis en ligne le 2026-10-09 (sw 2026-10-09a).
 
 ## Backlog (itérations suivantes)
 
