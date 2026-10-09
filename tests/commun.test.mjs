@@ -35,3 +35,10 @@ test("mise en page PDF : une page si possible sans descendre sous 9 pt, sinon re
   assert.deepEqual(choisirMiseEnPage(1600), { pages: 2, echelle: 1 }, "trop long : on garde deux pages lisibles");
   assert.ok(14 * REDUCTION_MINI * 0.75 >= 9, "texte courant (14 px) au moins à 9 pt une fois réduit");
 });
+
+import { nomFichierPDF } from "../app/commun.js";
+
+test("nom du fichier PDF : la pièce après le niveau, sans accent", () => {
+  assert.equal(nomFichierPDF(4, { nom: "Durand", prenom: "léa" }, "châssis"), "Materiautheque-4e-chassis-DURAND-Lea.pdf");
+  assert.equal(nomFichierPDF(4, { nom: "Durand", prenom: "léa" }), "Materiautheque-4e-DURAND-Lea.pdf");
+});
