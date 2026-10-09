@@ -37,6 +37,14 @@ const verdictTexte = { reference: "Choix de référence", acceptable: "Acceptabl
 const unites = scenarios.flatMap((sc) => sc.pieces ? sc.pieces.map((p) => ({ ...scenarioPiece(sc, p.id), titre: `${sc.piece} — ${p.piece}` })) : [{ ...sc, titre: sc.piece }]);
 for (const s of unites) {
   L.push(`## 2. Scénario « ${s.titre} » (${s.systeme})`, "", s.avertissement ? `> ${s.avertissement}` : "", "");
+  if (s.objet && s.id !== "turbine-p11") {
+    L.push(`Quantité : ${s.quantiteSerie} (${s.quantiteSerie < 1000 ? "petite" : "grande"} série). Forme : ${s.forme}.`, "");
+    L.push("| Étape 1 : affirmation | Vraie ? | Explication | Correction |", "|---|---|---|---|");
+    for (const c of s.contraintes) L.push(`| ${c.texte} | ${c.vraie ? "vraie" : "fausse (piège)"} | ${c.explication} |  |`);
+    L.push("", "| Critère | Pourquoi | Question si mal classé | Question si choix refusé | Correction |", "|---|---|---|---|---|");
+    for (const c of s.criteres) L.push(`| ${c.carte["4"]} | ${c.pourquoi || ""} | ${c.questionClassement || ""} | ${c.questionRetour || ""} |  |`);
+    L.push("");
+  }
   for (const n of (s.niveaux || [4, 5, 3])) {
     const ref = classementReference(s, n);
     L.push(`### Niveau ${n}e`, "", "| Critère (carte élève) | Statut de référence | Règle | Poids |", "|---|---|---|---|");
