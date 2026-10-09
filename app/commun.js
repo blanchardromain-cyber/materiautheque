@@ -129,7 +129,9 @@ export async function enregistrerPDF({ entete, ident, contenu, fichier }) {
     await window.html2pdf().set({
       margin: MARGES_MM, filename: fichier,
       image: { type: "jpeg", quality: 0.92 },
-      html2canvas: { scale: 2, backgroundColor: "#ffffff" },
+      // Sans scrollX/scrollY à 0, la capture est décalée de la hauteur défilée : page presque vide quand
+      // l'élève clique en bas de l'écran.
+      html2canvas: { scale: 2, backgroundColor: "#ffffff", scrollX: 0, scrollY: 0 },
       jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
       pagebreak: { mode: ["css", "legacy"], avoid: ["tr", ".verdict", ".fixe", "figure", "li", ".pdf-bande"] },
     }).from(source).save();
