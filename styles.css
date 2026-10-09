@@ -553,7 +553,7 @@ dialog::backdrop { background: rgba(16, 22, 29, .7); }
 .objet .piece-active { fill: var(--peau, #F2C230); stroke: var(--marquage); stroke-width: 3; transform-box: fill-box; transform-origin: center; }
 .robinet.objet .repere, .robot .repere { fill: none; stroke: var(--marquage); stroke-width: 3; stroke-dasharray: 6 5; }
 .objet .vis { fill: var(--encre-2); }
-.objet .carte { fill: #2E7D4F; }
+.objet .grille { stroke: var(--encre-2); stroke-width: 1.2; }
 .robot { width: 100%; height: auto; }
 .robot .canalisation { fill: var(--surface-2); stroke: var(--encre-2); stroke-width: 4; }
 .robot .flaque { fill: var(--eau); opacity: .35; }
