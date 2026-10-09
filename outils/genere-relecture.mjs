@@ -1,12 +1,12 @@
 // Génère RELECTURE.md à partir des données : node outils/genere-relecture.mjs
 import { readFileSync, writeFileSync } from "node:fs";
-import { evaluer, classementReference, criteresDuNiveau, lireChamp, formaterValeur, scenarioPiece } from "../app/moteur.js";
+import { evaluer, classementReference, criteresDuNiveau, lireChamp, formaterValeur, scenarioPiece, avecCatalogue } from "../app/moteur.js";
 
 const racine = new URL("../", import.meta.url);
 const lire = (f) => JSON.parse(readFileSync(new URL(`data/${f}`, racine), "utf8"));
 const materiaux = lire("materiaux.json");
 const procedes = lire("procedes.json");
-const scenarios = lire("composants.json");
+const scenarios = avecCatalogue(lire("composants.json"), lire("criteres.json"));
 const familles = Object.fromEntries(lire("familles.json").map((f) => [f.id, f]));
 const nomProcede = Object.fromEntries(procedes.map((p) => [p.id, p.nom.split(" (")[0]]));
 
