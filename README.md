@@ -18,7 +18,7 @@ python -m http.server 8820
 
 puis ouvrir <http://localhost:8820>. Une fois chargée, elle fonctionne hors connexion.
 
-Paramètre : `?composant=turbine-p11` (seul scénario pour l'instant).
+Paramètre : `?composant=<identifiant>` ouvre directement une pièce de la bibliothèque (4e), par exemple `?composant=coque-robot`.
 
 ## Les niveaux
 
@@ -54,6 +54,25 @@ Placée après « J'observe », en trois temps :
 
 Les textes viennent de `data/familles.json` (`origine`, `explication`, `questionSousFamille`) et de `noteFamille` dans `data/materiaux.json`. Un parcours enregistré avant cette étape est recalé automatiquement.
 
+## Bibliothèque de pièces (4e)
+
+À l'accueil 4e, « Choisir une autre pièce » ouvre la bibliothèque. Chaque pièce garde son propre travail en cours (la turbine garde son enregistrement d'origine).
+
+| Objet | Pièce (identifiant) | Quantité | Réponse attendue |
+|---|---|---|---|
+| Robinet automatique | Turbine (`turbine-p11`) | 10 000 | POM |
+| | Boîtier du capteur (`boitier-capteur`) | 10 000 | ABS |
+| | Support mural (`support-robinet`) | 10 000 | inox |
+| | Dissipateur (`dissipateur`) | 10 000 | aluminium |
+| Robot explorateur RS-1 (évaluation n°1) | Coque (`coque-robot`) | 300 | PE-HD |
+| | Châssis (`chassis-robot`) | 300 | aluminium (le POM est refusé : il ne se plie pas) |
+| | Axe des roues (`axe-robot`) | 1 200 | inox |
+| | Jante des roues (`jante-robot`) | 1 200 | POM |
+
+**La quantité choisit la série** : à partir de 5 000 pièces, grande série (injection, emboutissage, extrusion…) ; en dessous, petite série (usinage, pliage de tôle, thermoformage…), un moule d'injection étant trop coûteux pour si peu de pièces.
+
+**Ajouter une pièce** : une fiche dans `data/composants.json` (modèle : `boitier-capteur`). Ses critères renvoient au catalogue `data/criteres.json` (`ref`, `seuil` éventuel, textes propres à la pièce) ; son objet (`objet`) est décrit dans `data/objets.json` et dessiné dans `app/illustrations.js` (la pièce y a son identifiant et son point de repère). Puis lancer le contrôle des données et les tests : chaque fiche est vérifiée (réponse attendue, éliminés, aucune impasse).
+
 ## Ajouter ou corriger un matériau
 
 Tout le contenu est dans `data/` ; on n'a pas à toucher au code.
@@ -70,7 +89,7 @@ Node.js du poste : `ClaudeConfig/nodejs/node-v24.18.0-win-x64/node.exe`.
 
 | Fichier | Rôle |
 |---|---|
-| `data/*.json` | familles, propriétés, 18 matériaux, 10 procédés, scénarios, glossaire |
+| `data/*.json` | familles, propriétés, 19 matériaux, 11 procédés, pièces (`composants`), catalogue de critères, objets, glossaire |
 | `app/moteur.js` | tri : élimination argumentée, classement, contrôle du choix, procédés compatibles (sans DOM, testé) |
 | `app/parcours.js` | les 6 étapes de l'élève (4e) et l'aiguillage des niveaux |
 | `app/cinquieme.js` | les étapes propres à la 5e (casserole, banc d'essai) |
