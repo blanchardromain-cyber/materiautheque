@@ -59,7 +59,7 @@ export function evaluer(scenario, materiaux, niveau, classement, poids = {}) {
 
 // Usage de fabrication exigé à l'étape 5 : procédés du labo en 5e ; ensuite la quantité décide.
 // Un scénario peut l'imposer (« tout » : n'importe quel procédé compatible, ex. la casserole en 5e).
-export const SEUIL_GRANDE_SERIE = 1000;
+export const SEUIL_GRANDE_SERIE = 5000; // « des milliers de pièces » : 1 200 jantes restent une petite série
 export const usageRequis = (niveau, scenario) =>
   scenario?.usageFabrication || (Number(niveau) === 5 ? "prototype"
     : (scenario?.quantiteSerie ?? SEUIL_GRANDE_SERIE) < SEUIL_GRANDE_SERIE ? "petite" : "serie");
