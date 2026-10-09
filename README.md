@@ -62,12 +62,14 @@ Les textes viennent de `data/familles.json` (`origine`, `explication`, `question
 |---|---|---|---|
 | Robinet automatique | Turbine (`turbine-p11`) | 10 000 | POM |
 | | Boîtier du capteur (`boitier-capteur`) | 10 000 | ABS |
-| | Support mural (`support-robinet`) | 10 000 | inox |
-| | Dissipateur (`dissipateur`) | 10 000 | aluminium |
-| Robot explorateur RS-1 (évaluation n°1) | Coque (`coque-robot`) | 300 | PE-HD |
+| | Support mural (`support-robinet`) | 10 000 | inox ou alu, à égalité |
+| | Mousseur du bec (`mousseur`) | 10 000 | POM ou ABS, à égalité (laiton, alu, PMMA acceptables) |
+| Robot explorateur RS-1 (évaluation n°1) | Coque (`coque-robot`) | 300 | PE-HD seul (ligne ⑦ : 80 °C) |
 | | Châssis (`chassis-robot`) | 300 | aluminium (le POM est refusé : il ne se plie pas) |
-| | Axe des roues (`axe-robot`) | 1 200 | inox |
-| | Jante des roues (`jante-robot`) | 1 200 | POM |
+| | Axe des roues (`axe-robot`) | 1 200 | inox ou POM, à égalité |
+| | Jante des roues (`jante-robot`) | 1 200 | POM ou PA 6, à égalité |
+
+Choix pédagogique du professeur : la démarche compte plus que le matériau final ; la plupart des pièces admettent donc deux réponses à égalité, à défendre par l'élève. La coque garde une réponse unique, parce que les 80 °C sont écrits dans le cahier des charges.
 
 **La quantité choisit la série** : à partir de 5 000 pièces, grande série (injection, emboutissage, extrusion…) ; en dessous, petite série (usinage, pliage de tôle, thermoformage…), un moule d'injection étant trop coûteux pour si peu de pièces.
 
