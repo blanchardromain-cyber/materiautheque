@@ -897,6 +897,7 @@
       },
       {
         "ref": "leger",
+        "carte": { "4": "Être légère (2 g/cm³ au plus)" },
         "pourquoi": "L'autonomie de la batterie (ligne ④).",
         "questionClassement": "Relis l'étape 1 : pourquoi chaque gramme compte-t-il ? Peut-on accepter une coque lourde ?",
         "questionRetour": "Un robot plus lourd vide sa batterie plus vite : compare les masses volumiques."
@@ -1430,6 +1431,7 @@
       },
       {
         "ref": "leger",
+        "carte": { "4": "Être légère (2 g/cm³ au plus)" },
         "pourquoi": "Quatre jantes à porter (ligne ④).",
         "questionClassement": "Relis l'étape 1 : pourquoi le poids des jantes compte-t-il ?",
         "questionRetour": "Quatre jantes lourdes : que devient l'autonomie ? Compare les masses volumiques."
