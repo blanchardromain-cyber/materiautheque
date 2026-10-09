@@ -1,7 +1,7 @@
 // Chargement du référentiel (data/*.json).
 import { avecCatalogue } from "./moteur.js";
 
-const FICHIERS = ["familles", "proprietes", "materiaux", "procedes", "composants", "glossaire", "essais", "criteres"];
+const FICHIERS = ["familles", "proprietes", "materiaux", "procedes", "composants", "glossaire", "essais", "criteres", "objets"];
 
 export async function chargerDonnees(base = "data/") {
   const entrees = await Promise.all(
