@@ -533,10 +533,17 @@ function etape5() {
   const candidats = [m.id, ...(autres.length ? autres : res.filter((r) => !r.elimine && r.id !== m.id).map((r) => r.id))].slice(0, 3).map(mat);
   const elimines = res.filter((r) => r.elimine && r.id !== m.id);
   // Rendez-vous 3 : verdict selon la référence, sans nommer le meilleur compromis.
-  const v = verdictFinal(S, D.materiaux, etat.niveau, m.id);
+  const v = verdictFinal(S, D.materiaux, etat.niveau, m.id, D.procedes);
   const cartes = (ids) => ids.map((id) => `« ${esc(critere(id).carte[etat.niveau])} »`).join(", ");
-  const verdict = v.niveau === "meilleur"
-    ? `<div class="verdict meilleur"><p><strong>Meilleur compromis.</strong> ${esc(majuscule(le(nomM(m))))} respecte tous les critères indispensables et satisfait le plus de critères souhaitables. À toi de le justifier.</p></div>`
+  const Le = esc(majuscule(le(nomM(m))));
+  // Un « meilleur » choix peut manquer des critères souhaitables : on le dit, au lieu de prétendre le contraire.
+  const manque = v.pertes.length ? ` Mais il ${v.pertes.map((p) => esc(p.texte)).join(" ; il ")} : c'est le prix du compromis.` : "";
+  const verdict = v.niveau === "meilleur" && v.seul
+    ? `<div class="verdict meilleur"><p><strong>Seul choix possible.</strong> ${Le} est le seul matériau en lice qui respecte tous les critères indispensables.${manque} À toi de le justifier.</p></div>`
+    : v.niveau === "meilleur" && v.exAequo
+    ? `<div class="verdict meilleur"><p><strong>Meilleur compromis, à égalité.</strong> ${Le} respecte tous les critères indispensables ; un autre matériau en lice fait aussi bien, avec d'autres qualités.${manque} Explique pourquoi tu le préfères.</p></div>`
+    : v.niveau === "meilleur"
+    ? `<div class="verdict meilleur"><p><strong>Meilleur compromis.</strong> ${Le} respecte tous les critères indispensables et satisfait le plus de critères souhaitables.${manque} À toi de le justifier.</p></div>`
     : `<div class="verdict acceptable"><p><strong>Choix acceptable.</strong> ${esc(majuscule(le(nomM(m))))} respecte tous les critères indispensables, mais il ${v.pertes.map((p) => esc(p.texte)).join(" ; il ")}.</p>
         ${v.mieux.length ? `<p>Un autre matériau encore en lice fait mieux sur ${cartes(v.mieux)}. Explique pourquoi tu acceptes ce compromis, ou retourne au tri pour le trouver.</p>` : ""}
         <div class="actions ecran-seul"><button type="button" class="bouton-discret" data-aller="${ETAPE.trier}">Retourner au tri</button></div></div>`;
