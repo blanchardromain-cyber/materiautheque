@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import {
   testerRegle, evaluer, verifierChoix, procedesCompatibles, classementReference, formaterValeur,
-  verifierClassement, verifierCoherence, verdictFinal,
+  verifierClassement, verifierCoherence, verdictFinal, usageRequis, convientA,
 } from "../app/moteur.js";
 
 const lire = (f) => JSON.parse(readFileSync(new URL(`../data/${f}`, import.meta.url), "utf8"));
@@ -237,4 +237,34 @@ test("je classe : croisement tri libre × familles", () => {
 test("je classe : chaque famille a une origine, chaque matériau une note de famille", () => {
   for (const f of familles) assert.ok(f.origine && f.explication, f.id);
   for (const m of materiaux) assert.ok(m.noteFamille && m.noteFamille.length > 20, m.id);
+});
+
+test("série selon la quantité : grande à partir de 1 000 pièces, petite en dessous", () => {
+  assert.equal(usageRequis(4, turbine), "serie");
+  assert.equal(usageRequis(4, { ...turbine, quantiteSerie: 300 }), "petite");
+  assert.equal(usageRequis(5, turbine), "prototype");
+  assert.equal(usageRequis(5, { usageFabrication: "tout" }), "tout");
+});
+
+test("petite série : usinage et pliage de tôle oui, injection non (outillage trop coûteux)", () => {
+  const sc = { ...turbine, forme: "pliee", quantiteSerie: 300 };
+  const alu = parId(procedesCompatibles(mat("alu"), procedes, sc, 4));
+  assert.equal(alu["pliage-tole"].compatible, true);
+  assert.equal(convientA(alu["pliage-tole"], "petite"), true);
+  assert.equal(convientA(alu.emboutissage, "petite"), false, "emboutissage : grande série seulement");
+  assert.equal(convientA(alu.emboutissage, "serie"), true);
+  const pom = parId(procedesCompatibles(mat("pom"), procedes, { ...turbine, forme: "volume-simple", quantiteSerie: 300 }, 4));
+  assert.equal(convientA(pom.usinage, "petite"), true);
+  assert.equal(convientA(pom.injection, "petite"), false);
+});
+
+test("PE-HD : thermoformé en coque", () => {
+  const p = parId(procedesCompatibles(mat("pehd"), procedes, { ...turbine, forme: "coque", quantiteSerie: 300 }, 4));
+  assert.equal(convientA(p.thermoformage, "petite"), true);
+});
+
+test("verifierChoix en petite série : POM refusé pour une tôle pliée, aluminium accepté", () => {
+  const sc = { ...turbine, forme: "pliee", quantiteSerie: 300, reference: { 4: {} } };
+  assert.equal(verifierChoix(sc, materiaux, 4, "pom", procedes).violations.some((v) => v.critere === "procede"), true);
+  assert.equal(verifierChoix(sc, materiaux, 4, "alu", procedes).ok, true);
 });
