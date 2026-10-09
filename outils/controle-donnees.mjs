@@ -31,7 +31,7 @@ const idsMateriaux = new Set(materiaux.map((m) => m.id));
 
 if (materiaux.length !== 19) err(`19 matériaux attendus, ${materiaux.length} trouvés`);
 if (idsMateriaux.size !== materiaux.length) err("identifiants de matériaux en double");
-if (procedes.length !== 10) err(`10 procédés attendus, ${procedes.length} trouvés`);
+if (procedes.length !== 11) err(`11 procédés attendus, ${procedes.length} trouvés`);
 if (idsProcedes.size !== procedes.length) err("identifiants de procédés en double");
 
 for (const p of procedes) {
