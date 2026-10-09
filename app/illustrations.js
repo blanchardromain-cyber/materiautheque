@@ -212,13 +212,13 @@ function robotSVG(piece, { peau = {}, classe = "", titre = "", enMarche = false 
       <rect x="182" y="52" width="48" height="24" rx="6" class="camera" /><circle cx="222" cy="64" r="7" class="objectif" />
       <rect x="288" y="110" width="10" height="9" rx="2" class="phare" /><rect x="288" y="128" width="10" height="9" rx="2" class="phare" />
       ${roue(145)}${roue(265)}
-    </g>
-    <circle cx="${a[0]}" cy="${a[1]}" r="30" class="repere" />${marque(classe, a)}
-    <g class="etiquettes">
-      <text x="60" y="96"${forte("coque-robot")}>coque</text><path d="M 92 92 L 128 108" class="fleche" />
-      <text x="60" y="140"${forte("chassis-robot")}>châssis</text><path d="M 100 138 L 114 154" class="fleche" />
-      <text x="40" y="212"${forte("axe-robot")}>axe</text><path d="M 66 206 L 140 180" class="fleche" />
-      <text x="340" y="212"${forte("jante-robot")}>jante</text><path d="M 336 206 L 280 186" class="fleche" />
+      <circle cx="${a[0]}" cy="${a[1]}" r="30" class="repere" />${marque(classe, a)}
+      <g class="etiquettes">
+        <text x="60" y="96"${forte("coque-robot")}>coque</text><path d="M 92 92 L 128 108" class="fleche" />
+        <text x="60" y="140"${forte("chassis-robot")}>châssis</text><path d="M 100 138 L 114 154" class="fleche" />
+        <text x="40" y="212"${forte("axe-robot")}>axe</text><path d="M 66 206 L 140 180" class="fleche" />
+        <text x="340" y="212"${forte("jante-robot")}>jante</text><path d="M 336 206 L 280 186" class="fleche" />
+      </g>
     </g>
   </svg>`;
 }
@@ -234,7 +234,9 @@ const GENERIQUES = {
   deformation: (m, n) => ({ titre: "Sous l'effort…", texte: `${Maj(n.le)} plie : ${n.pronom} ne garde pas sa forme.`, classe: "c-tordu" }),
   usure: (m, n) => ({ titre: "Quelques mois plus tard…", texte: `${Maj(n.le)} s'est usé${fem(n)} : ${n.pronom} prend du jeu et vibre.`, classe: "c-use" }),
   lourd: (m, n) => ({ titre: "Sur la balance…", texte: `${Maj(n.le)} pèse trop lourd : tout l'objet s'alourdit et consomme plus d'énergie.`, classe: "c-lourd" }),
-  casse: (m, n) => ({ titre: "Au premier choc…", texte: `${Maj(n.le)} se fend : ${n.pronom} ne supporte pas les coups.`, classe: "c-casse" }),
+  casse: (m, n) => (m.famille === "metal"
+    ? { titre: "Au premier choc…", texte: `${Maj(n.le)} se cabosse : ${n.pronom} se déforme sous les coups.`, classe: "c-tordu" }
+    : { titre: "Au premier choc…", texte: `${Maj(n.le)} se fend : ${n.pronom} ne supporte pas les coups.`, classe: "c-casse" }),
   ramollit: (m, n) => ({ titre: "Par forte chaleur…", texte: `${Maj(n.le)} ramollit et se déforme : ${n.pronom} ne supporte pas cette température.`, classe: "c-mou" }),
   "court-circuit": (m, n) => ({ titre: "On met en marche…", texte: `${Maj(n.le)} conduit le courant : la carte électronique est en court-circuit.`, classe: "c-court" }),
   surchauffe: (m, n) => ({ titre: "Au bout de quelques minutes…", texte: `${Maj(n.le)} ne laisse pas passer la chaleur : la carte électronique surchauffe et s'arrête.`, classe: "c-chauffe" }),
