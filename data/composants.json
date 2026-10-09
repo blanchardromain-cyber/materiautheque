@@ -451,7 +451,7 @@
       "titre": "Matériauthèque — bibliothèque de pièces",
       "sousTitre": "Le choix du matériau : support mural (Robinet automatique)"
     },
-    "presentation": "Le robinet est fixé au mur par un support en tôle pliée. Il porte le poids du robinet et encaisse les efforts quand on s'appuie dessus. Quel matériau choisir pour ce support ?",
+    "presentation": "Le robinet est fixé au mur par un support en tôle pliée. Il porte le poids du robinet et encaisse les efforts quand on s'appuie dessus ou qu'on le cogne. Quel matériau choisir pour ce support ?",
     "nom": {
       "le": "le support",
       "seul": "support",
@@ -475,7 +475,7 @@
       "masseVolumique",
       "notes.rigidite",
       "notes.corrosion",
-      "elec",
+      "notes.chocs",
       "cout"
     ],
     "contraintes": [
@@ -504,6 +504,12 @@
         "explication": "Vrai : une plaque pliée, vissée au mur."
       },
       {
+        "id": "coups",
+        "texte": "On peut le cogner avec une casserole, un seau ou le coude.",
+        "vraie": true,
+        "explication": "Vrai : il est à hauteur de main, au-dessus du lavabo."
+      },
+      {
         "id": "courant",
         "texte": "Un courant électrique le traverse.",
         "vraie": false,
@@ -525,10 +531,7 @@
     "criteres": [
       {
         "ref": "rigide",
-        "seuil": 5,
-        "carte": {
-          "4": "Être très rigide (5/5)"
-        },
+        "seuil": 4,
         "pourquoi": "S'il plie, le robinet penche.",
         "questionClassement": "Relis l'étape 1 : que porte le support ? Peut-on accepter un support qui plie ?",
         "questionRetour": "Si le support plie un peu à chaque appui, que devient le robinet au bout d'un an ?"
@@ -542,6 +545,15 @@
       {
         "ref": "cout",
         "pourquoi": "Il est fabriqué à 10 000 exemplaires."
+      },
+      {
+        "ref": "chocs",
+        "seuil": 4,
+        "pourquoi": "On le cogne avec une casserole, un seau, le coude."
+      },
+      {
+        "ref": "recyclable",
+        "pourquoi": "Le robinet finira à la déchetterie."
       },
       {
         "ref": "elec",
@@ -559,6 +571,8 @@
         "rigide": "indispensable",
         "corrosion": "indispensable",
         "cout": "souhaitable",
+        "chocs": "souhaitable",
+        "recyclable": "souhaitable",
         "elec": "sans",
         "leger": "sans"
       }
@@ -574,22 +588,20 @@
     },
     "reponsesAttendues": {
       "4": [
-        "inox"
+        "inox",
+        "alu"
       ]
     },
     "elimineAttendus": {
       "4": [
         "acier",
-        "alu",
         "cuivre",
-        "laiton",
         "pla",
         "abs",
         "pehd",
         "pp",
         "pmma",
-        "pa6",
-        "pom"
+        "pa6"
       ]
     },
     "materiauxVisibles": {
@@ -1193,6 +1205,7 @@
       "notes.rigidite",
       "notes.usure",
       "notes.corrosion",
+      "notes.chocs",
       "cout"
     ],
     "contraintes": [
@@ -1221,6 +1234,12 @@
         "explication": "Vrai : un axe qui plie fait frotter la roue contre le châssis."
       },
       {
+        "id": "coups",
+        "texte": "Quand une roue heurte un obstacle, l'axe encaisse le choc.",
+        "vraie": true,
+        "explication": "Vrai : le fond des canalisations est encombré (ligne ⑤ : légers chocs)."
+      },
+      {
         "id": "leger",
         "texte": "Il doit être le plus léger possible.",
         "vraie": false,
@@ -1236,10 +1255,7 @@
     "criteres": [
       {
         "ref": "rigide",
-        "seuil": 5,
-        "carte": {
-          "4": "Être très rigide (5/5)"
-        },
+        "seuil": 4,
         "pourquoi": "Une tige fine qui porte le robot.",
         "questionClassement": "Relis l'étape 1 : l'axe peut-il plier ? Que devient la roue ?",
         "questionRetour": "Une tige fine porte le robot : que se passe-t-il si elle plie un peu ?"
@@ -1261,6 +1277,11 @@
         "pourquoi": "Prix maximal du robot (ligne ⑨)."
       },
       {
+        "ref": "chocs",
+        "seuil": 4,
+        "pourquoi": "Les roues cognent les obstacles : l'axe encaisse le choc."
+      },
+      {
         "ref": "leger",
         "pourquoi": "Piège : l'axe est une toute petite pièce.",
         "questionClassement": "Relis l'étape 1 : pour une si petite pièce, le poids compte-t-il plus que la solidité ?"
@@ -1277,6 +1298,7 @@
         "usure": "indispensable",
         "corrosion": "indispensable",
         "cout": "souhaitable",
+        "chocs": "souhaitable",
         "leger": "sans",
         "elec": "sans"
       }
@@ -1292,7 +1314,8 @@
     },
     "reponsesAttendues": {
       "4": [
-        "inox"
+        "inox",
+        "pom"
       ]
     },
     "elimineAttendus": {
@@ -1306,8 +1329,7 @@
         "pehd",
         "pp",
         "pmma",
-        "pa6",
-        "pom"
+        "pa6"
       ]
     },
     "materiauxVisibles": {
