@@ -132,11 +132,20 @@ export function schemaProcede(id, nom) {
   return `<svg class="schema" viewBox="0 0 240 160" role="img" aria-label="Schéma de principe : ${nom}"><title>${nom}</title>${SCHEMAS[id] || ""}</svg>`;
 }
 
-export function consequence(type, materiau) {
+export function consequence(type, materiau, S) {
   const r = (RECITS[type] || RECITS.deformation)(materiau);
   const svg = turbineSVG({ ...materiau.peau3D, classe: r.classe }, `Turbine en ${materiau.nom["4"]} : ${r.texte}`)
     .replace("</svg>", `${r.classe === "c-rouille" ? taches() : ""}${r.classe === "c-aimant" ? aimant() : ""}</svg>`);
   return { ...r, svg };
+}
+
+// Dessin d'une pièce : la turbine a son propre dessin ; les autres pièces, celui de leur objet.
+export function dessinPiece(S, peau = {}, classe = "", titre) {
+  if (S.dessin === "turbine") return turbineSVG({ ...peau, classe }, titre);
+  return objetSVG(S.objet, { piece: S.id, peau, classe, titre });
+}
+export function objetSVG(objet, options = {}) {
+  return robinetCoupeSVG(); // provisoire : remplacé par les dessins d'objets
 }
 
 const taches = () => `<g class="taches">${[[-40, -30, 14], [35, -50, 10], [50, 30, 16], [-20, 55, 12], [0, -70, 8], [-60, 20, 9]]
