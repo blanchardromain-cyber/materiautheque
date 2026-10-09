@@ -72,7 +72,11 @@ export function creerCinquieme(ctx) {
   function etape2() {
     const c = e5();
     const s = sc(c.piece);
-    const cartes = criteresDuNiveau(s, NIVEAU).map((cr) => {
+    // Cartes dans un ordre tiré au sort par élève (l'ordre des données mettrait les indispensables en tête).
+    const liste = criteresDuNiveau(s, NIVEAU);
+    const cle = `criteres-${c.piece}`;
+    c.ordre[cle] = ordreAuSort(liste, c.ordre[cle]);
+    const cartes = c.ordre[cle].map((id) => liste.find((x) => x.id === id)).map((cr) => {
       const statut = c.classement[c.piece][cr.id];
       const aRevoir = c.criteresVus && erreursCriteres(c.piece).find((x) => x.critere === cr.id);
       return `<li class="carte-critere ${aRevoir ? "a-revoir" : ""}">
