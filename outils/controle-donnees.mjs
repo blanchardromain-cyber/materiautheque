@@ -2,7 +2,7 @@
 // Code de sortie 1 et liste des erreurs si une règle n'est pas respectée.
 import { readFileSync, existsSync } from "node:fs";
 import { join, dirname } from "node:path";
-import { scenarioPiece } from "../app/moteur.js";
+import { scenarioPiece, avecCatalogue } from "../app/moteur.js";
 import { fileURLToPath } from "node:url";
 
 const dossier = process.argv[2] || join(dirname(fileURLToPath(import.meta.url)), "..", "data");
@@ -16,7 +16,8 @@ const familles = lire("familles.json");
 const proprietes = lire("proprietes.json");
 const materiaux = lire("materiaux.json");
 const procedes = lire("procedes.json");
-const composants = lire("composants.json");
+const catalogue = lire("criteres.json");
+const composants = avecCatalogue(lire("composants.json"), catalogue);
 lire("glossaire.json");
 
 const NIVEAUX = ["5", "4", "3"];
@@ -85,7 +86,10 @@ for (const p of proprietes)
   if (champ(materiaux[0], p.champ) === undefined) err(`propriété ${p.id} : champ ${p.champ} absent des matériaux`);
 
 const OPS = [">=", "<=", "==", "contient"];
-const CONSEQUENCES = ["eau", "corrosion", "demarrage-lent", "deformation", "usure", "freinage-aimant", "cuisson-lente", "fond", "brulure", "poignee-molle"];
+const CONSEQUENCES = ["eau", "corrosion", "demarrage-lent", "deformation", "usure", "freinage-aimant", "cuisson-lente", "fond", "brulure", "poignee-molle",
+  "lourd", "casse", "ramollit", "court-circuit", "surchauffe"];
+for (const c of catalogue)
+  if (!c.carte?.["4"] || !c.nonParceQue || !OPS.includes(c.regle?.op)) err(`catalogue ${c.id} : carte 4e, motif ou règle manquants`);
 const essais = lire("essais.json");
 const idsEssais = new Set(essais.map((e) => e.id));
 for (const e of essais) {
