@@ -6,7 +6,7 @@
     "elec": "conducteur", "therm": "conducteur", "magnetique": true,
     "notes": { "rigidite": 5, "chocs": 4, "usure": 4, "eau": 1, "corrosion": 1 },
     "cout": 1, "recyclage": { "note": 5, "code": "Acier (tri par aimant)" }, "origine": "minerai", "energieGrise": 25,
-    "procedes": ["usinage", "emboutissage", "assemblage"],
+    "procedes": ["usinage", "emboutissage", "pliage-tole", "assemblage"],
     "peau3D": { "couleur": "#8A8F96", "metal": 1, "rugosite": 0.45 },
     "exemples": ["vis", "charpentes", "carrosseries"], "noteFamille": "L'acier, c'est du fer avec un peu de carbone : un métal ferreux, attiré par l'aimant.",
     "aValider": ["energieGrise", "notes.chocs", "notes.usure", "notes.corrosion", "cout", "procedes", "absorptionEau"]
@@ -18,7 +18,7 @@
     "elec": "conducteur", "therm": "conducteur", "magnetique": false,
     "notes": { "rigidite": 5, "chocs": 4, "usure": 4, "eau": 5, "corrosion": 5 },
     "cout": 3, "recyclage": { "note": 5, "code": "Acier inoxydable" }, "origine": "minerai", "energieGrise": 60,
-    "procedes": ["usinage", "emboutissage", "assemblage"],
+    "procedes": ["usinage", "emboutissage", "pliage-tole", "assemblage"],
     "peau3D": { "couleur": "#C9CDD2", "metal": 1, "rugosite": 0.25 },
     "exemples": ["éviers", "couverts", "cuves de casserole"], "noteFamille": "L'inox est un acier : du fer mêlé de chrome et de nickel. Il est donc ferreux, même si l'aimant ne l'attire pas (inox 304).",
     "aValider": ["energieGrise", "notes.chocs", "notes.usure", "notes.corrosion", "cout", "magnetique", "procedes", "absorptionEau"]
@@ -30,7 +30,7 @@
     "elec": "conducteur", "therm": "conducteur", "magnetique": false,
     "notes": { "rigidite": 4, "chocs": 3, "usure": 2, "eau": 4, "corrosion": 4 },
     "cout": 2, "recyclage": { "note": 5, "code": "Aluminium" }, "origine": "minerai", "energieGrise": 200,
-    "procedes": ["usinage", "fonderie", "emboutissage", "extrusion", "assemblage"],
+    "procedes": ["usinage", "fonderie", "emboutissage", "pliage-tole", "extrusion", "assemblage"],
     "peau3D": { "couleur": "#D5D8DC", "metal": 1, "rugosite": 0.35 },
     "exemples": ["cadres de trottinette", "canettes", "profilés de fenêtre"], "noteFamille": "L'aluminium vient d'un minerai, la bauxite : c'est un métal, même si l'aimant ne l'attire pas. Il ne contient pas de fer : non ferreux.",
     "aValider": ["energieGrise", "notes.chocs", "notes.usure", "notes.corrosion", "cout", "procedes", "absorptionEau"]
@@ -42,7 +42,7 @@
     "elec": "conducteur", "therm": "conducteur", "magnetique": false,
     "notes": { "rigidite": 3, "chocs": 3, "usure": 2, "eau": 4, "corrosion": 4 },
     "cout": 3, "recyclage": { "note": 5, "code": "Cuivre" }, "origine": "minerai", "energieGrise": 60,
-    "procedes": ["usinage", "emboutissage", "extrusion", "assemblage"],
+    "procedes": ["usinage", "emboutissage", "pliage-tole", "extrusion", "assemblage"],
     "peau3D": { "couleur": "#B87333", "metal": 1, "rugosite": 0.3 },
     "exemples": ["fils électriques", "tuyaux de plomberie"], "noteFamille": "Le cuivre est extrait d'un minerai : c'est un métal. Il ne contient pas de fer : non ferreux, et l'aimant ne l'attire pas.",
     "aValider": ["energieGrise", "notes.chocs", "notes.usure", "notes.corrosion", "cout", "procedes", "absorptionEau"]
@@ -54,7 +54,7 @@
     "elec": "conducteur", "therm": "conducteur", "magnetique": false,
     "notes": { "rigidite": 4, "chocs": 3, "usure": 3, "eau": 4, "corrosion": 4 },
     "cout": 3, "recyclage": { "note": 5, "code": "Laiton" }, "origine": "minerai", "energieGrise": 40,
-    "procedes": ["usinage", "fonderie", "assemblage"],
+    "procedes": ["usinage", "fonderie", "pliage-tole", "assemblage"],
     "peau3D": { "couleur": "#C9A54A", "metal": 1, "rugosite": 0.2 },
     "exemples": ["corps de robinet", "raccords de plomberie", "clés"], "noteFamille": "Le laiton mélange le cuivre et le zinc, tirés de minerais : un métal non ferreux.",
     "aValider": ["energieGrise", "notes.chocs", "notes.usure", "notes.corrosion", "cout", "procedes", "absorptionEau"]
@@ -91,7 +91,7 @@
     "elec": "isolant", "therm": "isolant", "magnetique": false,
     "notes": { "rigidite": 2, "chocs": 4, "usure": 3, "eau": 5, "corrosion": 5 },
     "cout": 1, "recyclage": { "note": 5, "code": "2 / PE-HD" }, "origine": "fossile", "energieGrise": 80,
-    "procedes": ["injection", "extrusion"],
+    "procedes": ["injection", "extrusion", "thermoformage"],
     "peau3D": { "couleur": "#F4F4F0", "metal": 0, "rugosite": 0.7 },
     "exemples": ["bidons", "flacons de lessive", "tuyaux d'arrosage"], "noteFamille": "Le PE-HD est un plastique fabriqué à partir du pétrole : organique synthétique.",
     "aValider": ["energieGrise", "notes.chocs", "notes.usure", "notes.corrosion", "cout", "absorptionEau", "procedes"]
