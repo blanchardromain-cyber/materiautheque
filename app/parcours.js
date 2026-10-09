@@ -12,8 +12,11 @@ import {
 import { creerCinquieme } from "./cinquieme.js";
 import { creerClasser } from "./classer.js";
 
-// Un enregistrement par niveau : changer de niveau ne perd pas le travail de l'autre.
-const CLES = { 4: "materiautheque-i2", 5: "materiautheque-5e" };
+// Un enregistrement par niveau, et en 4e par pièce : changer de niveau ou de pièce ne perd pas le travail.
+// La turbine garde sa clé d'origine : les parcours en cours sur les postes sont conservés.
+const PIECE_DEFAUT = "turbine-p11";
+const CLE_PIECE = "materiautheque-piece";
+const cle = (niveau, composant) => (niveau === 5 ? "materiautheque-5e" : composant === PIECE_DEFAUT ? "materiautheque-i2" : `materiautheque-4e-${composant}`);
 const CLE_NIVEAU = "materiautheque-niveau";
 const ETAPES = ["J'observe", "Je classe", "Je définis mes critères", "Je trie", "Je choisis le procédé", "Je justifie"];
 const STATUTS = [["indispensable", "Indispensable"], ["souhaitable", "Souhaitable"], ["sans", "Sans importance"]];
@@ -24,11 +27,12 @@ const GESTES = { ajout: "ajout de matière", enlevement: "enlèvement de matièr
 let D, S; // données, scénario
 let etat = nouvelEtat();
 let robinetOuvert = false;
+let bibliothequeOuverte = false;
 let C5; // niveau 5e
 let CL; // étape « Je classe », commune aux niveaux
 
-function nouvelEtat(niveau = 4) {
-  return { schema: SCHEMA, niveau, etape: 0, max: 0, contraintes: {}, contraintesVues: false, ordre: null, classement: {}, criteresVus: false, justif: {},
+function nouvelEtat(niveau = 4, composant = PIECE_DEFAUT) {
+  return { schema: SCHEMA, niveau, composant: niveau === 5 ? null : composant, etape: 0, max: 0, contraintes: {}, contraintesVues: false, ordre: null, classement: {}, criteresVus: false, justif: {},
     actifs: [], comparer: [], choix: null, essais: 0, serie: null, proto: null, texte: {},
     familleRep: null, sousFamilleRep: null, ident: {} };
 }
@@ -59,13 +63,23 @@ const objet = () => D.objets.find((o) => o.id === S.objet);
 const formeProto = () => (S.formePrototype ? { ...S, forme: S.formePrototype } : S);
 
 function sauver() {
-  try { localStorage.setItem(CLES[etat.niveau], JSON.stringify(etat)); localStorage.setItem(CLE_NIVEAU, String(etat.niveau)); }
-  catch { /* stockage indisponible */ }
+  try {
+    localStorage.setItem(cle(etat.niveau, etat.composant), JSON.stringify(etat));
+    localStorage.setItem(CLE_NIVEAU, String(etat.niveau));
+    if (etat.niveau === 4) localStorage.setItem(CLE_PIECE, etat.composant);
+  } catch { /* stockage indisponible */ }
 }
-function charger(niveau) {
-  try { const e = JSON.parse(localStorage.getItem(CLES[niveau])); if (e && e.niveau === niveau) return { ...nouvelEtat(niveau), ...recaler(e) }; }
-  catch { /* stockage indisponible */ }
-  return nouvelEtat(niveau);
+function charger(niveau, composant = PIECE_DEFAUT) {
+  try {
+    const e = JSON.parse(localStorage.getItem(cle(niveau, composant)));
+    if (e && e.niveau === niveau && (niveau === 5 || (e.composant || PIECE_DEFAUT) === composant)) return { ...nouvelEtat(niveau, composant), ...recaler(e) };
+  } catch { /* stockage indisponible */ }
+  return nouvelEtat(niveau, composant);
+}
+const pieceValide = (id) => D.composants.some((s) => s.id === id && s.objet && (s.niveaux || [5, 4, 3]).includes(4));
+function pieceMemorisee() {
+  try { const id = localStorage.getItem(CLE_PIECE); if (pieceValide(id)) return id; } catch { /* stockage indisponible */ }
+  return PIECE_DEFAUT;
 }
 // Parcours enregistré avant l'ajout de « Je classe » : les étapes 2 et suivantes avancent d'un cran.
 function recaler(e) {
@@ -80,18 +94,31 @@ function recaler(e) {
 function restaurer() {
   let n = 4;
   try { n = Number(localStorage.getItem(CLE_NIVEAU)) || 4; } catch { /* stockage indisponible */ }
-  etat = charger(NIVEAUX_ACTIFS.includes(n) ? n : 4);
+  etat = charger(NIVEAUX_ACTIFS.includes(n) ? n : 4, pieceMemorisee());
 }
-const scenarioDuNiveau = (n) => D.composants.find((s) => (s.niveaux || [5, 4, 3]).includes(n) && (n === 5 ? s.id === "casserole" : s.id === "turbine-p11"));
+const scenarioCourant = () => (etat.niveau === 5
+  ? D.composants.find((s) => s.id === "casserole")
+  : D.composants.find((s) => s.id === etat.composant) || D.composants.find((s) => s.id === PIECE_DEFAUT));
 function changerNiveau(n) {
+  bibliothequeOuverte = false;
   sauver();
-  etat = charger(n);
-  S = scenarioDuNiveau(n);
+  etat = charger(n, pieceMemorisee());
+  S = scenarioCourant();
   sauver();
   rendre();
 }
+function changerPiece(id) {
+  sauver();
+  bibliothequeOuverte = false;
+  etat = charger(4, id);
+  S = scenarioCourant();
+  sauver();
+  rendre();
+  $("#scene").focus();
+}
 
 function aller(etape) {
+  bibliothequeOuverte = false;
   etat.etape = etape;
   etat.max = Math.max(etat.max, etape);
   sauver();
@@ -115,7 +142,28 @@ function rendreEntete() {
 }
 
 // ---------- Accueil ----------
+function bibliotheque() {
+  const groupes = D.objets.map((o) => {
+    const pieces = D.composants.filter((s) => s.objet === o.id && (s.niveaux || [5, 4, 3]).includes(4));
+    return `<h2>${esc(o.nom)}</h2><ul class="cartes-pieces">${pieces.map((s) => {
+      const courant = s.id === etat.composant;
+      const serie = usageRequis(4, s) === "petite" ? "petite série" : "grande série";
+      return `<li><button type="button" class="carte-piece" data-composant="${s.id}" aria-pressed="${courant}">
+        <strong>${esc(s.piece)}</strong>
+        <span class="carte-piece-serie">${s.quantiteSerie.toLocaleString("fr-FR")} pièces · ${serie}</span>
+        ${courant ? `<small>Pièce en cours</small>` : ""}</button></li>`;
+    }).join("")}</ul>`;
+  }).join("");
+  return `<section class="bibliotheque">
+    <h1 tabindex="-1">Choisis une pièce</h1>
+    <p class="chapeau">La démarche est la même pour chaque pièce. Chaque pièce garde ton travail en cours.</p>
+    ${groupes}
+    <div class="actions"><button type="button" class="bouton-discret" data-action="fermer-bibliotheque">Revenir à l'accueil</button></div>
+  </section>`;
+}
+
 function accueil() {
+  if (bibliothequeOuverte) return bibliotheque();
   const cinq = etat.niveau === 5;
   const bouton = (n, sous) => NIVEAUX_ACTIFS.includes(n)
     ? `<button type="button" data-niveau="${n}" class="${etat.niveau === n ? "actif" : ""}" aria-pressed="${etat.niveau === n}">${NOMS_NIVEAUX[n]} <small>${sous}</small></button>`
@@ -132,6 +180,7 @@ function accueil() {
       </fieldset>
       <div class="actions">
         <button type="button" class="bouton" data-aller="${ETAPE.observer}">Observer la pièce</button>
+        ${cinq ? "" : `<button type="button" class="bouton-discret" data-action="bibliotheque">Choisir une autre pièce</button>`}
         ${etat.max ? `<button type="button" class="bouton-discret" data-action="recommencer">Recommencer depuis le début</button>` : ""}
       </div>
     </div>
@@ -455,7 +504,7 @@ async function enregistrer(bouton) {
   bouton.disabled = true;
   bouton.textContent = "Préparation du PDF…";
   try {
-    await enregistrerPDF({ entete: S.entete, ident: etat.ident, contenu: copieStatique($(".justification")), fichier: nomFichierPDF(etat.niveau, etat.ident) });
+    await enregistrerPDF({ entete: S.entete, ident: etat.ident, contenu: copieStatique($(".justification")), fichier: nomFichierPDF(etat.niveau, etat.ident, S.nom.seul) });
   } catch (err) {
     alert(`Le PDF n'a pas pu être créé (${err.message}). Vérifie la connexion internet lors du premier enregistrement.`);
   } finally {
@@ -551,6 +600,7 @@ function brancher() {
     if (!b) return;
     if (b.dataset.aller !== undefined) return aller(Number(b.dataset.aller));
     if (b.dataset.niveau) return changerNiveau(Number(b.dataset.niveau));
+    if (b.dataset.composant) return changerPiece(b.dataset.composant);
     if (b.id === "theme") return basculerTheme();
     if (etat.niveau === 5) return; // les commandes de la 5e sont gérées par cinquieme.js
     if (b.dataset.activer) {
@@ -570,10 +620,12 @@ function brancher() {
     if (action === "verifier-criteres") { etat.criteresVus = true; sauver(); rendreGarderFocus('[data-action="verifier-criteres"]'); }
     if (action === "vider-comparaison") { etat.comparer = []; sauver(); rendreGarderFocus(".tri-grille"); }
     if (action === "verifier-contraintes") { etat.contraintesVues = true; sauver(); rendreGarderFocus('[data-action="verifier-contraintes"]'); }
+    if (action === "bibliotheque") { bibliothequeOuverte = true; rendreGarderFocus(".bibliotheque h1"); }
+    if (action === "fermer-bibliotheque") { bibliothequeOuverte = false; rendreGarderFocus('[data-action="bibliotheque"]'); }
     if (action === "valider-choix") validerChoix();
     if (action === "fermer-consequence") $("#consequence").close();
     if (action === "imprimer") enregistrer(b);
-    if (action === "recommencer" && confirm("Effacer ton travail et recommencer ?")) { etat = nouvelEtat(etat.niveau); sauver(); aller(0); }
+    if (action === "recommencer" && confirm("Effacer ton travail et recommencer ?")) { etat = nouvelEtat(etat.niveau, etat.composant); sauver(); aller(0); }
   });
 
   document.addEventListener("change", (e) => {
@@ -662,9 +714,12 @@ async function demarrer() {
     return;
   }
   restaurer();
-  const n = Number(new URLSearchParams(location.search).get("niveau"));
-  if (NIVEAUX_ACTIFS.includes(n) && n !== etat.niveau) etat = charger(n);
-  S = scenarioDuNiveau(etat.niveau);
+  const q = new URLSearchParams(location.search);
+  const n = Number(q.get("niveau"));
+  if (NIVEAUX_ACTIFS.includes(n) && n !== etat.niveau) etat = charger(n, pieceMemorisee());
+  const c = q.get("composant");
+  if (pieceValide(c) && (etat.niveau !== 4 || c !== etat.composant)) etat = charger(4, c);
+  S = scenarioCourant();
   CL = creerClasser({ etat: () => etat, D: () => D, S: () => S, sauver, rendreGarderFocus });
   C5 = creerCinquieme({
     etat: () => etat, D: () => D, S: () => S, sauver, aller, rendre, rendreGarderFocus, etapeClasser: CL.etape,
