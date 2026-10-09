@@ -122,6 +122,17 @@ Chaque itération suit la boucle : spécifier → construire → vérifier techn
 - Vérifié au navigateur : 4e (pièges alu, cuivre, inox ; note au 2e essai ; bilan), 5e (sans sous-familles, enchaînement vers les critères), 375 px sans débordement (tableau du bilan empilé sur mobile).
 - Correction en cours de test : une famille seule dans un groupe mais éclatée sur plusieurs groupes n'est plus saluée d'un « ✓ ».
 
+## I5a — 2026-10-09 : bibliothèque de pièces (4e)
+
+- Demande du professeur : préparer l'évaluation n°2 (rechercher le matériau d'une pièce tirée au sort) ; objet support pas encore choisi, d'où deux objets. Chantier 1 : la bibliothèque ; chantier 2 (à venir) : le mode Défi avec envoi direct vers un Google Form.
+- Spécification et plan : `docs/superpowers/specs/2026-10-08-materiautheque-bibliotheque-design.md`, `docs/superpowers/plans/2026-10-09-materiautheque-bibliotheque.md`.
+- Parcours 4e rendu général : textes, dessins, fabrication tirés de la fiche de la pièce. 7 pièces ajoutées (robinet : boîtier du capteur, support mural, dissipateur ; robot RS-1 : coque, châssis, axe, jante). Catalogue de critères `criteres.json`, objets `objets.json`.
+- Série selon la quantité (grande à partir de 5 000) ; procédé « pliage de tôle à la plieuse » ; PE-HD thermoformable (à valider).
+- Décisions prises en cours de réalisation : seuil 5 000 au lieu de 1 000 (1 200 jantes = 300 robots à 4 roues restent une petite série) ; nouveau procédé nommé « à la plieuse » (l'emboutissage s'appelle déjà « pliage de tôle ») ; « résiste mal aux chocs » (un métal se cabosse, il ne se fend pas).
+- Défaut corrigé, présent aussi en ligne : PDF presque vide quand l'élève clique « Enregistrer » en bas de page défilée (capture décalée de la hauteur défilée). Vérifié page défilée de 1 600 px : PDF complet.
+- Vérifié : turbine identique, étape par étape, à la version publiée (empreintes ; seuls ajouts : bouton « Choisir une autre pièce », cartes de la plieuse) ; 45 tests ; parcours coque complet avec PDF ; boîtier (court-circuit), châssis (POM refusé), jantes (injection refusée pour 1 200 pièces) ; enregistrements séparés par pièce ; 375 px ; console vide.
+- Reste au professeur : relire les 7 pièces dans `RELECTURE.md` avant la mise en ligne.
+
 ## Backlog (itérations suivantes)
 
 - Procédés présents au collège mais hors référentiel : cisaillage (cisaille guillotine), pliage de tôle (plieuse), poinçonnage (poinçonneuse) ; à ajouter en I6 si utile.
