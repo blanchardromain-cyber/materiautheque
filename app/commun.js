@@ -65,10 +65,10 @@ function chargerScript(src) {
 }
 
 const sansAccents = (t) => t.normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^A-Za-z0-9-]+/g, "-").replace(/^-|-$/g, "");
-export function nomFichierPDF(niveau, i) {
+export function nomFichierPDF(niveau, i, piece) {
   const eleves = [[i.nom, i.prenom], i.binome ? [i.nom2, i.prenom2] : null].filter(Boolean)
     .map(([n, p]) => `${formaterNom(n || "")}-${formaterPrenom(p || "")}`).join("_");
-  return `Materiautheque-${niveau}e-${sansAccents(eleves) || "eleve"}.pdf`;
+  return `Materiautheque-${niveau}e-${piece ? `${sansAccents(piece)}-` : ""}${sansAccents(eleves) || "eleve"}.pdf`;
 }
 
 // Copie statique de l'écran : saisies → texte, boutons et éléments « écran seul » retirés.
