@@ -589,3 +589,15 @@ dialog::backdrop { background: rgba(16, 22, 29, .7); }
 .objet .fissure { fill: none; stroke: var(--encre); stroke-width: 3; stroke-dasharray: 80; stroke-dashoffset: 80; animation: trace 1.2s .4s forwards; }
 @keyframes trace { to { stroke-dashoffset: 0; } }
 .objet .eclair { fill: #FFD400; stroke: #8A6D00; stroke-width: 1.5; opacity: 0; animation: apparait .5s .3s 4 alternate forwards; }
+
+/* ---------- Bibliothèque de pièces : un cartouche par pièce ---------- */
+.bibliotheque h2 { margin: 22px 0 8px; font-family: var(--titre); font-size: 1.5rem; letter-spacing: .02em; }
+.cartes-pieces { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr)); gap: 12px; }
+.carte-piece { width: 100%; min-height: 84px; display: grid; align-content: start; gap: 6px; text-align: left; padding: 12px 14px 12px 16px;
+  background: var(--surface); color: var(--encre); border: 1px solid var(--trait); border-left: 6px solid var(--trait); border-radius: var(--r);
+  font: inherit; cursor: pointer; box-shadow: var(--ombre); transition: border-color .15s, transform .15s; }
+.carte-piece:hover { border-left-color: var(--marquage); transform: translateY(-1px); }
+.carte-piece[aria-pressed="true"] { border-color: var(--marquage); border-left-color: var(--marquage); }
+.carte-piece strong { font-size: 1.02rem; }
+.carte-piece-serie { font-family: var(--mono); font-size: .82rem; color: var(--encre-2); }
+.carte-piece small { justify-self: start; padding: 1px 8px; border-radius: 999px; background: var(--marquage); color: #1b1b1b; font-weight: 700; font-size: .75rem; }
