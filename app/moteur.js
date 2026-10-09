@@ -57,10 +57,16 @@ export function evaluer(scenario, materiaux, niveau, classement, poids = {}) {
   return [...survivants, ...elimines].map(({ rang, ...r }) => r);
 }
 
-// Usage de fabrication exigé à l'étape 4 : procédés du labo en 5e, grande série ensuite.
+// Usage de fabrication exigé à l'étape 5 : procédés du labo en 5e ; ensuite la quantité décide.
 // Un scénario peut l'imposer (« tout » : n'importe quel procédé compatible, ex. la casserole en 5e).
+export const SEUIL_GRANDE_SERIE = 1000;
 export const usageRequis = (niveau, scenario) =>
-  scenario?.usageFabrication || (Number(niveau) === 5 ? "prototype" : "serie");
+  scenario?.usageFabrication || (Number(niveau) === 5 ? "prototype"
+    : (scenario?.quantiteSerie ?? SEUIL_GRANDE_SERIE) < SEUIL_GRANDE_SERIE ? "petite" : "serie");
+
+// Un procédé compatible convient-il à l'usage exigé ? En petite série, un procédé de grande série
+// seulement (moule, outillage) est refusé : trop coûteux pour si peu de pièces.
+export const convientA = (p, usage) => p.compatible && (usage === "tout" || (usage === "petite" ? p.petite : p.usage === usage));
 
 // Une pièce d'un scénario à plusieurs pièces, vue comme un scénario autonome.
 export function scenarioPiece(scenario, idPiece) {
@@ -88,7 +94,7 @@ export function verifierChoix(scenario, materiaux, niveau, idMateriau, procedes)
     .map(({ c, v }) => ({ ...motif(c, v), consequence: c.consequence || null, question: c.questionRetour || "" }));
   const usage = usageRequis(niveau, scenario);
   const fabricable = procedesCompatibles(m, procedes, scenario, niveau)
-    .some((p) => p.compatible && (usage === "tout" || p.usage === usage));
+    .some((p) => convientA(p, usage));
   if (!fabricable)
     violations.push({ critere: "procede", texte: scenario.sansProcede.nonParceQue,
       consequence: "fabrication", question: scenario.sansProcede.question });
@@ -136,7 +142,7 @@ export function procedesCompatibles(materiau, procedes, scenario, niveau) {
       if (!p.formes.includes(scenario.forme))
         return { id: p.id, compatible: false, usage: null, raison: `Ce procédé ne donne pas cette forme. ${p.regleForme}` };
       const usage = p.serie.includes("grande") ? "serie" : "prototype";
-      return { id: p.id, compatible: true, usage, raison: p.regleForme };
+      return { id: p.id, compatible: true, usage, petite: p.serie.includes("petite"), raison: p.regleForme };
     });
 }
 
