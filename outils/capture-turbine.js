@@ -1,6 +1,6 @@
 // Capture du rendu de la turbine, étape par étape, pour vérifier qu'il ne change pas.
 // Dans le navigateur, sur le site servi : const { capturer } = await import("/outils/capture-turbine.js"); await capturer();
-const IDS = ["acier", "inox", "alu", "cuivre", "laiton", "pla", "abs", "pehd", "pp", "pmma", "pa6", "pom"];
+const IDS = ["acier", "inox", "alu", "bois", "pehd", "verre"]; // échantillons de « Je classe »
 const ETAT = {
   schema: 2, niveau: 4, etape: 0, max: 6,
   contraintes: { immersion: true, rotation: true, forme: true, aimant: true, potable: true }, contraintesVues: true,
@@ -10,7 +10,7 @@ const ETAT = {
   criteresVus: true, justif: { eau: "elle baigne dans l'eau" }, actifs: ["eau", "leger", "rigide", "usure", "forme", "cout"], comparer: ["pom", "abs"],
   choix: "pom", essais: 1, serie: "injection", proto: "impression-3d", texte: { parceQue: "Parce que la turbine doit résister à l'eau." },
   familleRep: "organique", sousFamilleRep: "Synthétiques (plastiques, caoutchoucs)", ident: { prenom: "Test", nom: "ESSAI", classe: "4A" },
-  classe: { phase: "bilan", boites: Object.fromEntries(IDS.map((id, i) => [id, i < 5 ? 0 : 1])), noms: ["métaux", "plastiques", "", ""],
+  classe: { phase: "bilan", boites: Object.fromEntries(IDS.map((id, i) => [id, i < 3 ? 0 : 1])), noms: ["métaux", "plastiques", "", ""],
     familles: {}, sous: {}, essaisF: 1, essaisS: 1, vusF: true, vusS: true },
 };
 const attendre = (ms) => new Promise((r) => setTimeout(r, ms));
