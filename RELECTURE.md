@@ -421,7 +421,7 @@ Quantité : 300 (petite série). Forme : pliee.
 
 
 
-Quantité : 300 (petite série). Forme : volume-simple.
+Quantité : 1200 (petite série). Forme : volume-simple.
 
 | Étape 1 : affirmation | Vraie ? | Explication | Correction |
 |---|---|---|---|
@@ -471,7 +471,7 @@ Quantité : 300 (petite série). Forme : volume-simple.
 
 
 
-Quantité : 300 (petite série). Forme : volume-simple.
+Quantité : 1200 (petite série). Forme : volume-simple.
 
 | Étape 1 : affirmation | Vraie ? | Explication | Correction |
 |---|---|---|---|
