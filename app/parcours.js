@@ -32,7 +32,7 @@ let C5; // niveau 5e
 let CL; // étape « Je classe », commune aux niveaux
 
 function nouvelEtat(niveau = 4, composant = PIECE_DEFAUT) {
-  return { schema: SCHEMA, niveau, composant: niveau === 5 ? null : composant, etape: 0, max: 0, contraintes: {}, contraintesVues: false, ordre: null, classement: {}, criteresVus: false, justif: {},
+  return { schema: SCHEMA, niveau, composant: niveau === 5 ? null : composant, etape: 0, max: 0, contraintes: {}, contraintesVues: false, ordre: null, ordreCriteres: null, classement: {}, criteresVus: false, justif: {},
     actifs: [], comparer: [], choix: null, essais: 0, serie: null, proto: null, texte: {},
     familleRep: null, sousFamilleRep: null, ident: {} };
 }
@@ -237,8 +237,16 @@ function carteCritere(c) {
     <div class="segments" role="radiogroup" aria-label="Importance : ${esc(c.carte[etat.niveau])}">${radios}</div>${pourquoi}${retour}</li>`;
 }
 
-function etape2() {
+// Cartes de critères dans un ordre tiré au sort par élève : l'ordre des données mettrait les indispensables en tête.
+function criteresAuSort() {
   const cs = criteres();
+  const o = ordreAuSort(cs, etat.ordreCriteres);
+  if (o !== etat.ordreCriteres) { etat.ordreCriteres = o; sauver(); }
+  return o.map((id) => cs.find((c) => c.id === id));
+}
+
+function etape2() {
+  const cs = criteresAuSort();
   const pile = cs.filter((c) => !etat.classement[c.id]);
   const zone = (v, t, aide) => `<div class="zone zone-${v}" data-zone="${v}"><h3>${t}</h3><p class="aide">${aide}</p>
     <ul>${cs.filter((c) => etat.classement[c.id] === v).map(carteCritere).join("")}</ul></div>`;
