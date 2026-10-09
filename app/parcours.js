@@ -2,9 +2,9 @@
 import { chargerDonnees } from "./donnees.js";
 import {
   evaluer, verifierChoix, procedesCompatibles, criteresDuNiveau, materiauxVisibles, testerRegle, formaterValeur, usageRequis,
-  verifierClassement, verifierCoherence, verdictFinal,
+  verifierClassement, verifierCoherence, verdictFinal, convientA,
 } from "./moteur.js";
-import { fondPastille, turbineSVG, robinetCoupeSVG, consequence, schemaProcede, casseroleSVG } from "./illustrations.js";
+import { fondPastille, robinetCoupeSVG, consequence, schemaProcede, casseroleSVG, dessinPiece, objetSVG } from "./illustrations.js";
 import {
   $, esc, minuscule, majuscule, le, du, au, ordreAuSort, lexique as lexiqueCommun,
   ETAPE, SCHEMA, identiteHTML, identiteComplete, texteIdentite, formaterIdent, enregistrerPDF, copieStatique, nomFichierPDF,
@@ -55,6 +55,8 @@ const nomM = (m) => m.nom[etat.niveau];
 const famille = (m) => D.familles.find((f) => f.id === m.famille);
 const criteres = () => criteresDuNiveau(S, etat.niveau);
 const critere = (id) => S.criteres.find((c) => c.id === id);
+const objet = () => D.objets.find((o) => o.id === S.objet);
+const formeProto = () => (S.formePrototype ? { ...S, forme: S.formePrototype } : S);
 
 function sauver() {
   try { localStorage.setItem(CLES[etat.niveau], JSON.stringify(etat)); localStorage.setItem(CLE_NIVEAU, String(etat.niveau)); }
@@ -121,7 +123,7 @@ function accueil() {
   return `<section class="accueil">
     <div class="accueil-texte">
       <p class="surtitre">${esc(S.sequence)}</p>
-      <h1>${cinq ? "Quels matériaux pour la <em>cuve</em> et la <em>poignée</em> d'une casserole&nbsp;?" : "Quel matériau pour la <em>turbine</em> du robinet automatique&nbsp;?"}</h1>
+      <h1>${cinq ? "Quels matériaux pour la <em>cuve</em> et la <em>poignée</em> d'une casserole&nbsp;?" : `Quel matériau pour ${esc(S.nom.le).replace(esc(S.nom.seul), `<em>${esc(S.nom.seul)}</em>`)} ${esc(objet().du)}&nbsp;?`}</h1>
       <p class="chapeau">${esc(S.presentation)}</p>
       <p>${cinq ? "Tu vas tester des échantillons comme au laboratoire, écarter ceux qui ne conviennent pas, puis justifier tes choix." : "Tu ne vas pas deviner : tu vas partir de ce que subit la pièce, écarter ce qui ne convient pas, puis justifier ton choix."}</p>
       <fieldset class="choix-niveau">
@@ -133,7 +135,7 @@ function accueil() {
         ${etat.max ? `<button type="button" class="bouton-discret" data-action="recommencer">Recommencer depuis le début</button>` : ""}
       </div>
     </div>
-    <div class="accueil-visuel">${cinq ? casseroleSVG({ cuve: "#F2C230", poignee: "#18222E", allumee: true }, "Casserole") : turbineSVG({ couleur: "#F2C230" }, "Turbine")}</div>
+    <div class="accueil-visuel">${cinq ? casseroleSVG({ cuve: "#F2C230", poignee: "#18222E", allumee: true }, "Casserole") : dessinPiece(S, { couleur: "#F2C230" }, "", S.dessin === "turbine" ? "Turbine" : S.piece)}</div>
   </section>`;
 }
 
@@ -150,15 +152,17 @@ function etape1() {
   return `<section class="deux-colonnes">
     <div>
       <h2 tabindex="-1">${ETAPE.observer}. J'observe la pièce</h2>
-      <p class="consigne">Approche les mains du capteur et regarde où se trouve la turbine. Coche ce qu'elle subit vraiment.</p>
-      <figure class="cadre">${robinetCoupeSVG().replace('class="robinet"', `class="robinet${robinetOuvert ? " en-marche" : ""}"`)}
-        <figcaption><button type="button" class="bouton-discret" data-action="eau" aria-pressed="${robinetOuvert}">${robinetOuvert ? "Retirer les mains" : "Approcher les mains du capteur"}</button></figcaption>
+      <p class="consigne">${esc(objet().consigne.replace("{piece}", S.nom.le))} Coche ce qu'${S.nom.pronom} subit vraiment.</p>
+      <figure class="cadre">${S.dessin === "turbine"
+        ? robinetCoupeSVG().replace('class="robinet"', `class="robinet${robinetOuvert ? " en-marche" : ""}"`)
+        : objetSVG(S.objet, { piece: S.id, enMarche: robinetOuvert })}
+        <figcaption><button type="button" class="bouton-discret" data-action="eau" aria-pressed="${robinetOuvert}">${esc(robinetOuvert ? objet().boutonArreter : objet().boutonAnimer)}</button></figcaption>
       </figure>
-      <p class="aide">Le capteur détecte les mains : l'électrovanne s'ouvre et l'eau coule. La turbine tourne alors et fait tourner l'aimant du générateur, fixé sur le même axe : c'est ce qui produit l'électricité du robinet. Mains retirées, l'eau s'arrête aussitôt.</p>
-      ${lexique(["aube", "générateur", "rotor", "bobine"])}
+      <p class="aide">${esc(S.aideObservation)}</p>
+      ${lexique(S.lexiqueObservation)}
     </div>
     <div>
-      <h3>Ce que subit la turbine</h3>
+      <h3>Ce que subit ${esc(S.nom.le)}</h3>
       <ul class="liste-cases">${items}</ul>
       <div class="actions">
         <button type="button" class="bouton-discret" data-action="verifier-contraintes">Vérifier mes réponses</button>
@@ -176,7 +180,7 @@ function carteCritere(c) {
     data-classer="${c.id}" ${statut === v ? "checked" : ""}><span>${t}</span></label>`).join("");
   const pourquoi = statut && statut !== "sans"
     ? `<label class="pourquoi"><span>Pourquoi ?</span><input type="text" data-justif="${c.id}" value="${esc(etat.justif[c.id])}"
-       placeholder="Parce que la turbine…" maxlength="140"></label>` : "";
+       placeholder="Parce que ${esc(S.nom.le)}…" maxlength="140"></label>` : "";
   const aRevoir = etat.criteresVus && verifierClassement(S, etat.niveau, etat.classement).find((x) => x.critere === c.id);
   const retour = aRevoir ? `<p class="retour ko"><strong>À revoir.</strong> ${esc(aRevoir.question)}</p>` : "";
   return `<li class="carte-critere ${aRevoir ? "a-revoir" : ""}" draggable="true" data-carte="${c.id}">
@@ -193,7 +197,7 @@ function etape2() {
   const erreurs = verifierClassement(S, etat.niveau, etat.classement);
   const juste = etat.criteresVus && erreurs.length === 0;
   const bilan = !etat.criteresVus ? "" : juste
-    ? `<p class="retour ok"><strong>Tes critères tiennent compte de ce que subit la turbine.</strong> Tu peux trier les matériaux.</p>`
+    ? `<p class="retour ok"><strong>Tes critères tiennent compte de ce que subit ${esc(S.nom.le)}.</strong> Tu peux trier les matériaux.</p>`
     : `<p class="retour ko"><strong>${erreurs.length} carte${erreurs.length > 1 ? "s" : ""} à revoir.</strong> Lis la question sous chaque carte marquée, puis vérifie à nouveau.</p>`;
   return `<section>
     <h2 tabindex="-1">${ETAPE.criteres}. Je définis mes critères</h2>
@@ -218,11 +222,18 @@ const classementActif = () => Object.fromEntries(criteres().map((c) =>
   [c.id, etat.actifs.includes(c.id) ? etat.classement[c.id] || "sans" : "sans"]));
 
 const PROPS_CARTE = [["masseVolumique", "Masse volumique"], ["notes.rigidite", "Rigidité"], ["notes.usure", "Résistance à l'usure"], ["notes.eau", "Résistance à l'eau"], ["cout", "Coût"]];
+// Une fiche peut choisir les propriétés affichées sur les cartes (celles qui comptent pour sa pièce).
+const LIBELLES_PROP = { masseVolumique: "Masse volumique", "notes.rigidite": "Rigidité", "notes.usure": "Résistance à l'usure",
+  "notes.eau": "Résistance à l'eau", "notes.chocs": "Résistance aux chocs", "notes.corrosion": "Résistance à la corrosion",
+  tempMax: "Temp. max (°C)", elec: "Électricité", therm: "Chaleur", cout: "Coût", "recyclage.note": "Recyclabilité" };
+const propsCarte = () => (S.proprietesCarte ? S.proprietesCarte.map((c) => [c, LIBELLES_PROP[c]]) : PROPS_CARTE);
 
 function valeur(m, champ) {
   const v = champ.split(".").reduce((o, k) => o?.[k], m);
   if (champ === "masseVolumique") return `${m.masseVolumiqueTexte || formaterValeur(v)} g/cm³`;
   if (champ === "cout") return "€".repeat(v);
+  if (champ === "tempMax") return esc(m.tempMaxTexte);
+  if (champ === "recyclage.note") return `<span class="jauge" style="--n:${v}" aria-label="${v} sur 5"></span>`;
   if (champ.startsWith("notes.")) return `<span class="jauge" style="--n:${v}" aria-label="${v} sur 5"></span>`;
   return esc(formaterValeur(v ?? "—"));
 }
@@ -241,7 +252,7 @@ function carteMateriau(r) {
       <span class="pastille" style="background:${fondPastille(m.peau3D)}"></span>
       <div><p class="echantillon-nom">${esc(nomM(m))}</p>${courant}</div>
     </div>
-    <dl class="proprietes">${PROPS_CARTE.map(([c, t]) => `<div><dt>${t}</dt><dd>${valeur(m, c)}</dd></div>`).join("")}</dl>
+    <dl class="proprietes">${propsCarte().map(([c, t]) => `<div><dt>${t}</dt><dd>${valeur(m, c)}</dd></div>`).join("")}</dl>
     ${points}${bande}
     <div class="echantillon-actions">
       <label class="case petite"><input type="checkbox" data-comparer="${m.id}" ${compare ? "checked" : ""}><span>Comparer</span></label>
@@ -279,7 +290,7 @@ function etape3() {
         data-activer="${c.id}" aria-pressed="${etat.actifs.includes(c.id)}"><span class="voyant"></span>
         <span>${esc(c.carte[etat.niveau])}</span><small>${etat.classement[c.id]}</small></button></li>`).join("")}</ul>
       <p class="compteur" aria-live="polite"><strong>${restants}</strong> matériau${restants > 1 ? "x" : ""} sur ${res.length} encore en lice</p>
-      ${restants === 0 ? `<p class="retour neutre">Plus aucun matériau ne passe. Un de tes critères indispensables l'est-il vraiment ? Relis ce que subit la turbine, puis reviens à l'étape 2 si besoin.</p>` : ""}
+      ${restants === 0 ? `<p class="retour neutre">Plus aucun matériau ne passe. Un de tes critères indispensables l'est-il vraiment ? Relis ce que subit ${esc(S.nom.le)}, puis reviens à l'étape 2 si besoin.</p>` : ""}
       <p class="aide">● = un critère souhaitable respecté ; ○ = un critère souhaitable manqué.</p>
       ${lexique(["masse volumique", "rigide", "usure", "critère indispensable", "critère souhaitable"])}
     </div>
@@ -308,11 +319,11 @@ function validerChoix() {
   const premiere = violations.find((x) => x.consequence) || violations[0];
   const dlg = $("#consequence");
   if (premiere.consequence) {
-    const c = consequence(premiere.consequence, m);
+    const c = consequence(premiere.consequence, m, S);
     dlg.innerHTML = `<div class="consequence ${c.classe}">
       <div class="consequence-scene">${c.svg}</div>
       <div class="consequence-texte">
-        <p class="surtitre">Turbine en ${esc(nomM(m))}</p>
+        <p class="surtitre">${esc(majuscule(S.nom.seul))} en ${esc(nomM(m))}</p>
         <h2 id="consequence-titre">${esc(c.titre)}</h2>
         <p>${esc(c.texte)}</p>
         <p class="question"><strong>À toi :</strong> ${esc(premiere.question)}</p>
@@ -321,9 +332,9 @@ function validerChoix() {
   } else {
     const carte = critere(premiere.critere)?.carte[etat.niveau] || "";
     dlg.innerHTML = `<div class="consequence">
-      <div class="consequence-scene">${turbineSVG(m.peau3D, `Turbine en ${nomM(m)}`)}</div>
+      <div class="consequence-scene">${dessinPiece(S, m.peau3D, "", `${majuscule(S.nom.seul)} en ${nomM(m)}`)}</div>
       <div class="consequence-texte">
-        <p class="surtitre">Turbine en ${esc(nomM(m))}</p>
+        <p class="surtitre">${esc(majuscule(S.nom.seul))} en ${esc(nomM(m))}</p>
         <h2 id="consequence-titre">Ce matériau n'est plus en lice</h2>
         <p>Il ne respecte pas ton critère indispensable « ${esc(carte)} » : il ${esc(premiere.texte)}.</p>
         <p class="question"><strong>À toi :</strong> active tous tes critères et choisis un matériau encore en lice.</p>
@@ -356,28 +367,32 @@ function etape4() {
   const proc = (id) => D.procedes.find((p) => p.id === id);
   const N = S.quantiteSerie || 10000;
   const nombre = N.toLocaleString("fr-FR");
+  const n = S.nom;
+  const usage = usageRequis(etat.niveau, S);
   const liste = procedesCompatibles(m, D.procedes, S, etat.niveau).filter((p) => p.id !== "assemblage");
+  const listeProto = S.formePrototype ? procedesCompatibles(m, D.procedes, formeProto(), etat.niveau).filter((p) => p.id !== "assemblage") : liste;
   const proto = mat(S.materiauPrototype);
-  const protoListe = procedesCompatibles(proto, D.procedes, S, etat.niveau);
-  const fabricable = liste.some((p) => p.compatible && p.usage === usageRequis(etat.niveau));
+  const protoListe = procedesCompatibles(proto, D.procedes, formeProto(), etat.niveau);
+  const fabricable = liste.some((p) => convientA(p, usage));
 
-  // Question 1 : la série
+  // Question 1 : la série (grande ou petite selon la quantité)
   const retourSerie = (p) => {
     const q = proc(p.id);
-    const duree = q.tempsPiece ? ` Environ ${q.tempsPiece < 120 ? `${q.tempsPiece} secondes` : `${Math.round(q.tempsPiece / 60)} minutes`} par pièce : ${nombre} turbines en ${dureeTexte(q.tempsPiece * N)}.` : "";
-    if (p.compatible && p.usage === "serie") return { ok: true, html: `<strong>Oui.</strong> ${esc(p.raison)}${esc(duree)}` };
-    if (p.compatible) return { ok: false, html: `<strong>Pas pour ${nombre} pièces.</strong> On peut obtenir une turbine en ${esc(nomM(m))} ainsi, mais une pièce à la fois.${esc(duree)} ${q.lieu.includes("industrie") ? "Dans l'industrie, ce procédé sert surtout aux prototypes et aux petites séries." : ""}` };
+    const duree = q.tempsPiece ? ` Environ ${q.tempsPiece < 120 ? `${q.tempsPiece} secondes` : `${Math.round(q.tempsPiece / 60)} minutes`} par pièce : ${nombre} ${n.pluriel} en ${dureeTexte(q.tempsPiece * N)}.` : "";
+    if (convientA(p, usage)) return { ok: true, html: `<strong>Oui.</strong> ${esc(p.raison)}${esc(duree)}` };
+    if (p.compatible && usage === "petite" && p.usage === "serie") return { ok: false, html: `<strong>Pas pour ${nombre} pièces.</strong> Ce procédé demande un moule ou un outillage très coûteux : il n'est rentable que pour des milliers de pièces.` };
+    if (p.compatible) return { ok: false, html: `<strong>Pas pour ${nombre} pièces.</strong> On peut obtenir ${esc(n.un)} en ${esc(nomM(m))} ainsi, mais une pièce à la fois.${esc(duree)} ${q.lieu.includes("industrie") && usage === "serie" ? "Dans l'industrie, ce procédé sert surtout aux prototypes et aux petites séries." : ""}` };
     return { ok: false, html: `<strong>Non.</strong> ${esc(p.raison)}` };
   };
   const s = liste.find((p) => p.id === etat.serie);
   const serieOk = !!s && retourSerie(s).ok;
 
-  // Question 2 : le prototype au collège, dans le matériau choisi ou dans le matériau de prototype du scénario
+  // Question 2 : le prototype au collège, dans le matériau choisi ou dans le matériau de prototype de la fiche
   const retourProto = (id) => {
-    const directe = liste.find((p) => p.id === id);
+    const directe = listeProto.find((p) => p.id === id);
     const via = protoListe.find((p) => p.id === id);
-    if (directe?.compatible) return { ok: true, html: `<strong>Oui.</strong> La turbine d'essai peut être faite directement en ${esc(nomM(m))}.` };
-    if (via?.compatible) return { ok: true, html: `<strong>Oui, avec une adaptation.</strong> Au collège, on ne peut pas travailler ${esc(le(nomM(m)))} ainsi : la turbine d'essai se fait en ${esc(nomM(proto))}. Elle sert à tester la forme des aubes, pas à durer dans l'eau.` };
+    if (directe?.compatible) return { ok: true, html: `<strong>Oui.</strong> ${esc(majuscule(n.essai))} peut être ${n.feminin ? "faite" : "fait"} directement en ${esc(nomM(m))}.` };
+    if (via?.compatible) return { ok: true, html: `<strong>Oui, avec une adaptation.</strong> Au collège, on ne peut pas travailler ${esc(le(nomM(m)))} ainsi : ${esc(n.essai)} se fait en ${esc(nomM(proto))}. ${esc(S.butPrototype)}` };
     return { ok: false, html: `<strong>Non.</strong> ${esc(directe?.raison || via?.raison || "")}` };
   };
   const protoOk = !!etat.proto && retourProto(etat.proto).ok;
@@ -386,7 +401,7 @@ function etape4() {
     const q = proc(p.id);
     const choisi = etat[groupe] === p.id;
     const r = choisi ? (groupe === "serie" ? retourSerie(p) : retourProto(p.id)) : null;
-    const libelle = groupe === "serie" ? `Pour les ${nombre} turbines` : "Pour la turbine d'essai";
+    const libelle = groupe === "serie" ? `Pour les ${nombre} ${n.pluriel}` : `Pour ${n.essai}`;
     return `<li class="fiche-procede ${choisi ? (r.ok ? "retenu ok" : "retenu ko") : ""}">
       <figure class="fiche-media">${schemaProcede(q.id, q.nom)}${q.machineCollege && groupe === "proto" ? `<figcaption>${esc(majuscule(q.machineCollege))}</figcaption>` : ""}</figure>
       <div class="fiche-corps">
@@ -401,19 +416,19 @@ function etape4() {
     </li>`;
   };
 
-  const machines = liste.filter((p) => proc(p.id).machineCollege);
-  const impasse = fabricable ? "" : `<div class="retour ko"><strong>Aucun procédé de grande série ne convient ${esc(au(nomM(m)))} pour des aubes fines.</strong> C'est un indice : retourne au tri et choisis un autre matériau.
+  const machines = listeProto.filter((p) => proc(p.id).machineCollege);
+  const impasse = fabricable ? "" : `<div class="retour ko"><strong>Aucun procédé de ${usage === "petite" ? "petite" : "grande"} série ne convient ${esc(au(nomM(m)))} ${esc(S.formeCourte)}.</strong> C'est un indice : retourne au tri et choisis un autre matériau.
       <div class="actions"><button type="button" class="bouton" data-aller="${ETAPE.trier}">Retourner au tri</button></div></div>`;
   const etat1 = !etat.serie ? "à choisir" : serieOk ? `✓ ${minuscule(proc(etat.serie).nom)}` : "✗ à revoir";
   const etat2 = !etat.proto ? "à choisir" : protoOk ? `✓ ${proc(etat.proto).machineCollege}` : "✗ à revoir";
 
   return `<section class="etape-procedes">
     <h2 tabindex="-1">${ETAPE.procede}. Je choisis le procédé</h2>
-    <p class="consigne">Un matériau ne va jamais sans son procédé. La turbine a des aubes fines, de forme complexe. Réponds à deux questions : comment en fabriquer <strong>${nombre}</strong> pour les vendre, et comment en fabriquer <strong>une seule</strong> au collège pour l'essayer.</p>
+    <p class="consigne">Un matériau ne va jamais sans son procédé. ${esc(S.formeDescription)} Réponds à deux questions : comment en fabriquer <strong>${nombre}</strong> pour les vendre, et comment en fabriquer <strong>${n.feminin ? "une seule" : "un seul"}</strong> au collège pour l'essayer.</p>
     ${impasse}
-    <h3 class="question-procede"><span>1</span> Fabriquer ${nombre} turbines en ${esc(nomM(m))} : quel procédé ?</h3>
+    <h3 class="question-procede"><span>1</span> Fabriquer ${nombre} ${esc(n.pluriel)} en ${esc(nomM(m))} : quel procédé ?</h3>
     <ul class="galerie-procedes">${liste.map((p) => fiche(p, "serie")).join("")}</ul>
-    <h3 class="question-procede"><span>2</span> Fabriquer une turbine d'essai au collège : quelle machine ?</h3>
+    <h3 class="question-procede"><span>2</span> Fabriquer ${esc(n.unEssai)} au collège : quelle machine ?</h3>
     <ul class="galerie-procedes">${machines.map((p) => fiche(p, "proto")).join("")}</ul>
     <div class="barre-choix barre-procedes">
       <p><span>Série : <strong class="${serieOk ? "ok" : etat.serie ? "ko" : ""}">${esc(etat1)}</strong></span>
@@ -477,16 +492,16 @@ function etape5() {
         ${v.mieux.length ? `<p>Un autre matériau encore en lice fait mieux sur ${cartes(v.mieux)}. Explique pourquoi tu acceptes ce compromis, ou retourne au tri pour le trouver.</p>` : ""}
         <div class="actions ecran-seul"><button type="button" class="bouton-discret" data-aller="${ETAPE.trier}">Retourner au tri</button></div></div>`;
   const nomProc = (id) => D.procedes.find((p) => p.id === id).nom;
-  const protoDirect = procedesCompatibles(m, D.procedes, S, etat.niveau).find((p) => p.id === etat.proto)?.compatible;
+  const protoDirect = procedesCompatibles(m, D.procedes, formeProto(), etat.niveau).find((p) => p.id === etat.proto)?.compatible;
   const matProto = protoDirect ? m : mat(S.materiauPrototype);
   const zone = (cle, etiquette, aide) => `<label class="redaction"><span>${etiquette}</span>
     <textarea data-texte="${cle}" rows="3" placeholder="${esc(aide)}">${esc(etat.texte[cle])}</textarea></label>`;
   return `<section class="justification">
     <div class="justif-visuel">
-      <figure class="cadre">${turbineSVG(m.peau3D, `Turbine en ${nomM(m)}`)}<figcaption>La turbine en <strong>${esc(nomM(m))}</strong></figcaption></figure>
-      <table class="carte-identite"><caption>Masses volumiques <small>(pour le mini-tableur « énergie grise »)</small></caption>
-        <tbody>${[m, mat("laiton")].filter((x, k, t) => t.indexOf(x) === k).map((x) =>
-          `<tr><th scope="row">${esc(nomM(x))}${x === m ? " <small>mon choix</small>" : ""}</th><td>${esc(x.masseVolumiqueTexte || formaterValeur(x.masseVolumique))} g/cm³</td></tr>`).join("")}</tbody></table>
+      <figure class="cadre">${dessinPiece(S, m.peau3D, "", `${majuscule(S.nom.seul)} en ${nomM(m)}`)}<figcaption>${esc(majuscule(S.nom.le))} en <strong>${esc(nomM(m))}</strong></figcaption></figure>
+      ${S.carteMasses ? `<table class="carte-identite"><caption>Masses volumiques <small>(pour le mini-tableur « énergie grise »)</small></caption>
+        <tbody>${[m, ...S.carteMasses.map(mat)].filter((x, k, t) => t.indexOf(x) === k).map((x) =>
+          `<tr><th scope="row">${esc(nomM(x))}${x === m ? " <small>mon choix</small>" : ""}</th><td>${esc(x.masseVolumiqueTexte || formaterValeur(x.masseVolumique))} g/cm³</td></tr>`).join("")}</tbody></table>` : ""}
     </div>
     <div class="justif-texte">
       <h2 tabindex="-1">${ETAPE.justifier}. Je justifie mon choix</h2>
@@ -509,7 +524,7 @@ function etape5() {
           (D.familles.find((x) => x.id === etat.familleRep)?.sousFamilles[etat.niveau] || []).map((sf) =>
           `<option ${etat.sousFamilleRep === sf ? "selected" : ""}>${esc(sf)}</option>`).join("")}</select>.
         ${retourFamille(m, f)}</div>
-      ${zone("parceQue", "Parce que la turbine doit…", "Cite au moins deux critères et relie-les à ce que subit la pièce.")}
+      ${zone("parceQue", `Parce que ${esc(S.nom.le)} doit…`, "Cite au moins deux critères et relie-les à ce que subit la pièce.")}
       ${zone("elimination", "J'écarte… parce que…", "Explique au moins une élimination.")}
       <p class="fixe">Fabrication : <strong>${esc(minuscule(nomProc(etat.serie)))}</strong> pour la série ; prototype au collège par <strong>${esc(minuscule(nomProc(etat.proto)))}</strong>, en ${esc(nomM(matProto))}.</p>
       ${zone("recyclage", "En fin de vie, ce matériau…", "Recyclable ou non ? Pense au code de recyclage.")}
