@@ -121,15 +121,22 @@ export function verifierCoherence(scenario, materiaux, niveau, classement, idMat
 }
 
 // Rendez-vous 3 (étape 5) : verdict selon la référence, sans nommer le meilleur compromis.
-export function verdictFinal(scenario, materiaux, niveau, idMateriau) {
-  const res = evaluer(scenario, materiaux, niveau, classementReference(scenario, niveau), scenario.poids?.[String(niveau)] || {});
+// seul : aucun autre matériau ne passe (ni, si procedes est fourni, ne peut être fabriqué) ;
+// exAequo : un autre matériau possible fait aussi bien ; nbSouhaitables : critères souhaitables de référence.
+export function verdictFinal(scenario, materiaux, niveau, idMateriau, procedes) {
+  const ref = classementReference(scenario, niveau);
+  const res = evaluer(scenario, materiaux, niveau, ref, scenario.poids?.[String(niveau)] || {});
   const r = res.find((x) => x.id === idMateriau);
   const meilleur = res[0];
   const niveauVerdict = r.verdict === "reference" ? "meilleur" : r.verdict;
   const perdus = new Set(r.pertes.map((p) => p.critere));
   const tenusParMeilleur = new Set(meilleur.pertes.map((p) => p.critere));
   const mieux = [...perdus].filter((id) => !tenusParMeilleur.has(id));
-  return { niveau: niveauVerdict, pertes: r.pertes, mieux, raisons: r.raisons };
+  const possibles = res.filter((x) => !x.elimine && (!procedes || x.id === idMateriau || verifierChoix(scenario, materiaux, niveau, x.id, procedes).ok));
+  const seul = possibles.length === 1 && possibles[0].id === idMateriau;
+  const exAequo = niveauVerdict === "meilleur" && possibles.some((x) => x.id !== idMateriau && x.verdict === "reference");
+  const nbSouhaitables = criteresDuNiveau(scenario, niveau).filter((c) => ref[c.id] === "souhaitable").length;
+  return { niveau: niveauVerdict, pertes: r.pertes, mieux, raisons: r.raisons, seul, exAequo, nbSouhaitables };
 }
 
 export function procedesCompatibles(materiau, procedes, scenario, niveau) {
