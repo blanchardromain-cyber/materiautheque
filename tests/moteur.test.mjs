@@ -299,7 +299,7 @@ const composants = avecCatalogue(lire("composants.json"), catalogue);
 const bibliotheque = composants.filter((s) => s.objet && s.id !== "turbine-p11");
 
 test("bibliothèque : 7 pièces, 3 du robinet et 4 du robot", () => {
-  assert.deepEqual(bibliotheque.map((s) => s.id), ["boitier-capteur", "support-robinet", "dissipateur", "coque-robot", "chassis-robot", "axe-robot", "jante-robot"]);
+  assert.deepEqual(bibliotheque.map((s) => s.id), ["boitier-capteur", "support-robinet", "mousseur", "coque-robot", "chassis-robot", "axe-robot", "jante-robot"]);
   assert.equal(bibliotheque.filter((s) => s.objet === "robot").every((s) => usageRequis(4, s) === "petite"), true);
   assert.equal(bibliotheque.filter((s) => s.objet === "robinet").every((s) => usageRequis(4, s) === "serie"), true);
 });
@@ -358,4 +358,17 @@ test("support mural et axe : vrais compromis, deux réponses à égalité", () =
       assert.ok(v.pertes.length > 0, `${s.id} : ${id} perd au moins un critère souhaitable`);
     }
   }
+});
+
+test("mousseur et jante : compromis à égalité (POM/ABS, POM/PA 6), inox refusé faute de procédé pour le mousseur", () => {
+  const mousseur = composants.find((s) => s.id === "mousseur");
+  const jante = composants.find((s) => s.id === "jante-robot");
+  for (const [s, ids] of [[mousseur, ["pom", "abs"]], [jante, ["pom", "pa6"]]])
+    for (const id of ids) {
+      const v = verdictFinal(s, materiaux, 4, id, procedes);
+      assert.equal(v.niveau, "meilleur", `${s.id} : ${id}`);
+      assert.equal(v.exAequo, true, `${s.id} : ${id} à égalité`);
+    }
+  assert.equal(verifierChoix(mousseur, materiaux, 4, "inox", procedes).violations[0].critere, "procede");
+  assert.equal(verifierChoix(mousseur, materiaux, 4, "laiton", procedes).ok, true, "laiton acceptable");
 });
